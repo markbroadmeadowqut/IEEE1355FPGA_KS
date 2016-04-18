@@ -4,6 +4,8 @@
 module tb_fpga;
     integer         error_count = 0;
 
+	reg 			clk_100;
+	
 	reg 			rst_n_0;
 	reg 			rst_n_1;
 
@@ -11,10 +13,41 @@ module tb_fpga;
 	reg 			S_0	;	
 	reg 			D_1	;
 	reg 			S_1	;	
+	
+	reg 	[3:0]	sw_0;
+	reg 	[3:0]	btn_0;
+	wire 	[3:0]	led_0;
+	wire 	[3:0]	ledb_0;
+
+	reg 	[3:0]	sw_1;
+	reg 	[3:0]	btn_1;
+	wire	[3:0]	led_1;
+	wire 	[3:0]	ledb_1;	
 
 //#################################################################################################	
 //FPGA
 //#################################################################################################		
+
+    node #() node_0
+	(	   
+		.CLK100MHZ		( clk_100 ),
+		.rst_n			( rst_n_0 ),
+		.sw				( sw_0 ),		//: in 		std_logic_vector(3 downto 0);	-- 4 switches on FPGA board	
+		.btn            ( btn_0 ),		//: in      std_logic_vector(3 downto 0);	-- 4 buttons on FPGA board		  
+		.led			( led_0 ),		//: out		std_logic_vector(3 downto 0);	-- 4 LEDs on FPGA board		
+		.ledb           ( ledb_0 )		//: out     std_logic_vector(3 downto 0)		
+	);		
+
+    node #() node_1
+	(	   
+		.CLK100MHZ		( clk_100 ),
+		.rst_n			( rst_n_1 ),
+		.sw				( sw_1 ),		//: in 		std_logic_vector(3 downto 0);	-- 4 switches on FPGA board	
+		.btn            ( btn_1 ),		//: in      std_logic_vector(3 downto 0);	-- 4 buttons on FPGA board		  
+		.led			( led_1 ),		//: out		std_logic_vector(3 downto 0);	-- 4 LEDs on FPGA board		
+		.ledb           ( ledb_1 )		//: out     std_logic_vector(3 downto 0)		
+	);		
+	
 	
 //#################################################################################################	
 //BFM IEEE1355
@@ -58,14 +91,26 @@ module tb_fpga;
 
 	initial
 	begin
+		#0		clk_100 = 1'b0;
 		#0  	rst_n_0 = 1'b0;
 		#0  	rst_n_1 = 1'b0;
-
+		
+		//Default switches and buttons
+		#0  	sw_0	= 4'b0000;
+		#0  	sw_1	= 4'b0000;
+		#0  	btn_0	= 4'b0000;		
+		#0  	btn_1	= 4'b0000;	
+		
+		
+		//Bring up resets at a different time
 		#705    rst_n_0 = 1'b1;	
 		#151 	rst_n_1 = 1'b1;				
 	end
 
-
+	always
+	begin
+		#5  	clk_100 = !clk_100;
+	end
 
 
 	  
