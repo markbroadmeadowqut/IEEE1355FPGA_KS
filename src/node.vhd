@@ -30,10 +30,10 @@ entity node is
 		rst_n			: in    	std_logic;						-- "reset" button input (negative logic)				
 		sw				: in 		std_logic_vector(3 downto 0);	-- 4 switches on FPGA board	
 		btn             : in        std_logic_vector(3 downto 0);	-- 4 buttons on fpga board		
-		jd              : in        std_logic_vector(1 downto 0);    -- 1st 2 pins of pmod header JD  
+		--jd              : in        std_logic_vector(1 downto 0);    -- 1st 2 pins of pmod header JD  
 		led				: out 		std_logic_vector(3 downto 0);	-- 4 LEDs on FPGA board		
-		ledb            : out       std_logic_vector(3 downto 0);  -- 4 blue LEDs on FPGA board		
-		ja              : out       std_logic_vector(1 downto 0)	-- 1st 2 pins of pmod header JA	
+		ledb            : out       std_logic_vector(3 downto 0)--;  -- 4 blue LEDs on FPGA board		
+		--ja              : out       std_logic_vector(1 downto 0)	-- 1st 2 pins of pmod header JA	
 
 	);
 	
@@ -41,10 +41,12 @@ end node;
 
 architecture RTL of node is
 -- clocks
-	signal clk_tx      : std_logic;                            -- transmitter clock
-	signal clk_rx      : std_logic;                            -- receiver clock
+	signal clk_tx       : std_logic;                            -- transmitter clock
+	signal clk_rx       : std_logic;                            -- receiver clock
 -- data signals	
-    signal display     : std_logic_vector(7 downto 0);         -- output to led's
+    signal display      : std_logic_vector(7 downto 0);         -- output to led's
+    signal data         : std_logic;
+    signal strobe       : std_logic;
 -- flags
     signal data_flag    : std_logic;                            --  1 = send data
 begin
@@ -92,8 +94,8 @@ TX_pipeline_nd: entity work.TX_pipeline            -- instantiate transmission p
         rst_n       => rst_n,
         sw          => sw,
         btn         => btn,
-        data        => ja(0),
-        strobe      => ja(1),
+        data        => data, --ja(0),
+        strobe      => strobe, --ja(1),
         data_flag   => data_flag      
         ); 
 	   
@@ -102,14 +104,14 @@ RX_pipeline_nd: entity work.RX_pipeline            -- instantiate receiver pipel
     port map ( 
         clk         => clk_rx,                      
         rst_n       => rst_n,
-        data        => jd(0),
-        strobe      => jd(1),
+        data        => data, --jd(0),
+        strobe      => strobe, --jd(1),
         display     => display     
         ); 	   
 	
 	
-	led      <= display(7 downto 4);
-	ledb      <=  display(3 downto 0);  
+	led        <= display(7 downto 4);
+	ledb       <= display(3 downto 0);  
 	--led(0)  <= data;
 	--led(1) 	<= strobe;
 	
