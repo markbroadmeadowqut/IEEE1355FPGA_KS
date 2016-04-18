@@ -150,8 +150,8 @@ module bfm_ieee1355
 		end
 		else if ( clk==1'b1 )
 		begin
-			rx_found_null 	= 1'b0;
-			rx_data_valid	= 1'b0;
+			rx_found_null 	<= 1'b0;
+			rx_data_valid	<= 1'b0;
 		
 			//Shift data in
 			rx_buffer		<= {D_in_safe, rx_buffer[9:1]};
@@ -176,6 +176,37 @@ module bfm_ieee1355
 			
 		end		
 	end
+
+	bfm_fifo
+	#(
+		.G_DATA_WIDTH_BITS	(8),
+		.G_ADDR_WIDTH_BITS	(6)
+	)	
+	fifo_rx
+	(  
+		.rst_n	( rst_n ),
+		.clk	( clk ),
+				
+		.w_en	( rx_data_valid ),	
+		.w_data	( rx_data[7:0] ),
+		
+		.r_en	( 1'b0 ),   //Tied low. FIFO expects write DATA during recieve but the TB will take it out via a task
+		.r_data	( )
+    );	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	
 	
@@ -241,7 +272,7 @@ module bfm_ieee1355
 			
 	end		
 	
-	
+
 	
 	
 	

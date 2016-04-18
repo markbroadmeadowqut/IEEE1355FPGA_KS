@@ -88,6 +88,8 @@ module tb_fpga;
 		bfm_ieee1355_0.insert_10b( 10'b1111111111);
 		bfm_ieee1355_0.insert_10b( 10'b0000000000);
 		bfm_ieee1355_0.insert_10b( 10'b1111111111);
+		
+		bfm_ieee1355_1.fifo_rx.wait_fill_level(6);	
 		#50000;		
 		
 		
