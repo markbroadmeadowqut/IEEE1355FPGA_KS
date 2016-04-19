@@ -54,7 +54,8 @@ module tb_fpga;
 //#################################################################################################	
 	bfm_ieee1355	
 	#(
-		.G_MAX_BIT_RATE_Mbs	(100)
+		.G_LINK_PARITY_IS_ODD	(1),
+		.G_MAX_BIT_RATE_Mbs		(100)
 	)	
 	bfm_ieee1355_0
 	(  
@@ -69,7 +70,8 @@ module tb_fpga;
 
 	bfm_ieee1355	
 	#(
-		.G_MAX_BIT_RATE_Mbs	(100)
+		.G_LINK_PARITY_IS_ODD	(1),
+		.G_MAX_BIT_RATE_Mbs		(100)
 	)	
 	bfm_ieee1355_1
 	(  

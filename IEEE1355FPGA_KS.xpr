@@ -3,7 +3,7 @@
 <!--                                                         -->
 <!-- Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.   -->
 
-<Project Version="7" Minor="10" Path="C:/Github/IEEE1355FPGA_KS/IEEE1355FPGA_KS.xpr">
+<Project Version="7" Minor="10" Path="C:/GitHub/IEEE1355FPGA_KS/IEEE1355FPGA_KS.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
     <Option Name="Id" Val="988517e43b1e494d996152a9d5742b15"/>
@@ -21,8 +21,8 @@
     <Option Name="DefaultLib" Val="xil_defaultlib"/>
     <Option Name="EnableCoreContainer" Val="FALSE"/>
     <Option Name="CreateRefXciForCoreContainers" Val="FALSE"/>
-    <Option Name="IPUserFilesDir" Val="$PPRDIR/../../Users/Elical-LAP-1/Documents/Uni/My project/Code/DS_SE_bus/DS_SE_bus.ip_user_files"/>
-    <Option Name="IPStaticSourceDir" Val="$PPRDIR/../../Users/Elical-LAP-1/Documents/Uni/My project/Code/DS_SE_bus/DS_SE_bus.ip_user_files/ipstatic"/>
+    <Option Name="IPUserFilesDir" Val="$PPRDIR/IEEE1355FPGA_KS.ip_user_files"/>
+    <Option Name="IPStaticSourceDir" Val="$PPRDIR/IEEE1355FPGA_KS.ip_user_files/ipstatic"/>
     <Option Name="EnableBDX" Val="FALSE"/>
   </Configuration>
   <FileSets Version="1" Minor="31">
@@ -130,6 +130,7 @@
       </Config>
     </FileSet>
     <FileSet Name="sim_steve" Type="SimulationSrcs" RelSrcDir="$PSRCDIR/sim_steve">
+      <Filter Type="Srcs"/>
       <File Path="$PPRDIR/src_tb/bfm_ieee1355.sv">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -165,10 +166,10 @@
         <Option Name="DesignMode" Val="RTL"/>
         <Option Name="TopModule" Val="tb_fpga"/>
         <Option Name="TopLib" Val="xil_defaultlib"/>
-        <Option Name="SimMode" Val="post-implementation"/>
         <Option Name="SrcSet" Val="sources_1"/>
         <Option Name="XSimWcfgFile" Val="$PPRDIR/waves_nodes.wcfg"/>
         <Option Name="XSimWcfgFile" Val="$PPRDIR/waves_bfm.wcfg"/>
+        <Option Name="xsim.simulate.runtime" Val="10000ns"/>
       </Config>
     </FileSet>
   </FileSets>
