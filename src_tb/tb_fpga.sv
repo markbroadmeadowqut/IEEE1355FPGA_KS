@@ -122,22 +122,36 @@ module tb_fpga;
 //#################################################################################################	
 	initial
 	begin
+		//wire [7:0]	byte_array [0:63];
+	
 		$display("TEST STARTED");
 		
-		#50000;
+		#5000;
 
-		bfm_ieee1355_0.insert_10b( 10'b1111000011);		
-		#50000;
+		bfm_ieee1355_0.insert_tx_data( 8'b11100110 );
+		bfm_ieee1355_0.insert_tx_data( 8'b00101110 );	//These are the NULL codes
+		bfm_ieee1355_0.insert_tx_data( 8'b00101110 );	//Make sure interpreted as DATA not NULLS
+		bfm_ieee1355_0.insert_tx_data( 8'b00111110 );	
+		bfm_ieee1355_0.insert_tx_data( 8'b00111110 );	
+		bfm_ieee1355_0.fifo_tx.update_fill_level( 5 );		
 		
-		bfm_ieee1355_0.insert_10b( 10'b0011001100);
-		bfm_ieee1355_0.insert_10b( 10'b1111111111);
-		bfm_ieee1355_0.insert_10b( 10'b0000000000);		
-		bfm_ieee1355_0.insert_10b( 10'b1111111111);
-		bfm_ieee1355_0.insert_10b( 10'b0000000000);
-		bfm_ieee1355_0.insert_10b( 10'b1111111111);
+		bfm_ieee1355_1.fifo_rx.wait_fill_level(5);	
+		#5000;
 		
-		bfm_ieee1355_1.fifo_rx.wait_fill_level(6);	
-		#50000;		
+		bfm_ieee1355_0.insert_tx_data( 8'h00 );
+		bfm_ieee1355_0.insert_tx_data( 8'h55 );
+		bfm_ieee1355_0.insert_tx_data( 8'hC3 );		
+		bfm_ieee1355_0.insert_tx_data( 8'h89 );
+		bfm_ieee1355_0.insert_tx_data( 8'h72 );
+		bfm_ieee1355_0.insert_tx_data( 8'hFF );
+		bfm_ieee1355_0.fifo_tx.update_fill_level( 6 );
+		bfm_ieee1355_0.insert_tx_data( 8'h01 );
+		bfm_ieee1355_0.insert_tx_data( 8'h02 );
+		bfm_ieee1355_0.insert_tx_data( 8'h03 );		
+		bfm_ieee1355_0.fifo_tx.update_fill_level( 3 );
+		
+		bfm_ieee1355_1.fifo_rx.wait_fill_level(9);	
+		#5000;		
 		
 		
 		

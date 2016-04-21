@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Product Version: Vivado v2015.4.1 (64-bit)              -->
+<!-- Product Version: Vivado v2015.4.2 (64-bit)              -->
 <!--                                                         -->
 <!-- Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.   -->
 
-<Project Version="7" Minor="10" Path="C:/GitHub/IEEE1355FPGA_KS/IEEE1355FPGA_KS.xpr">
+<Project Version="7" Minor="10" Path="C:/Github/IEEE1355FPGA_KS/IEEE1355FPGA_KS.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
     <Option Name="Id" Val="988517e43b1e494d996152a9d5742b15"/>
@@ -169,7 +169,7 @@
         <Option Name="SrcSet" Val="sources_1"/>
         <Option Name="XSimWcfgFile" Val="$PPRDIR/waves_nodes.wcfg"/>
         <Option Name="XSimWcfgFile" Val="$PPRDIR/waves_bfm.wcfg"/>
-        <Option Name="xsim.simulate.runtime" Val="10000ns"/>
+        <Option Name="xsim.simulate.runtime" Val="1ms"/>
       </Config>
     </FileSet>
   </FileSets>

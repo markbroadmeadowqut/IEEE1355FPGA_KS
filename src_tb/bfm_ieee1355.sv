@@ -18,7 +18,8 @@ module bfm_ieee1355
 	#(
     parameter 
 		G_LINK_PARITY_IS_ODD	= 1,	 //If 1 link parity is ODD else EVEN	
-        G_MAX_BIT_RATE_Mbs  	= 100    //Sets max bit rate to be 100Mbs
+        G_MAX_BIT_RATE_Mbs  	= 100,   //Sets max bit rate to be 100Mbs
+		G_FIFO_ADDR_WIDTH_BITS	= 6
     )
 	(  
 		input		rst_n,
@@ -35,6 +36,9 @@ module bfm_ieee1355
 	
 	typedef enum { READY, STARTED, NULL_RECEIVED, RUN } enum_link_sm;
 	enum_link_sm	state_link;
+
+	typedef enum { WAIT_FILL, SEND_DATA } enum_data_sm;
+	enum_data_sm	state_data;
 	
 
 	reg				D_in_edge;
@@ -45,6 +49,7 @@ module bfm_ieee1355
 	
 	reg				tx_active;
 	reg				tx_parity;
+	reg				tx_next_must_be_control;
 	reg				tx_send_null_2;
 	reg				tx_send_data;
 	reg				tx_send_fcc;
@@ -55,18 +60,20 @@ module bfm_ieee1355
 	reg 	[9:0]	tx_buffer;
 	integer 		tx_buffer_length;
 	integer			tx_bit_count;
-	reg				tx_data_insert_waiting;		
-	reg				tx_data_insert_done;	
-	reg     [9:0]   tx_data_insert_data;
-	
+	reg 	[7:0]	tx_data;
+	reg 	    	tx_data_taken;	
+	wire  [G_FIFO_ADDR_WIDTH_BITS:0]   tx_fill_level;
+	reg   [G_FIFO_ADDR_WIDTH_BITS:0]   tx_fill_count;
 	
 	reg 			D_out_last;
-	reg 	[9:0]	rx_buffer;
+	reg 	[11:0]	rx_buffer;				//Holds 12 bits - to allow all of a data packet and the next two bits which will contain the parity etc
 	reg				rx_found_null;
 	reg				rx_null_aligned;
 	integer         rx_bit_count;
-	reg 	[9:0]	rx_data;
+	reg				reset_rx_bit_count;
+	reg 	[7:0]	rx_data;
 	reg 	    	rx_data_valid;
+	wire  [G_FIFO_ADDR_WIDTH_BITS:0]   rx_fill_level;
 	
 	
 function calc_tx_parity;
@@ -77,6 +84,15 @@ begin
 	//XOR with the generic G_LINK_PARITY_IS_ODD to make the parity of the link ODD or EVEN
 	calc_tx_parity = G_LINK_PARITY_IS_ODD ^ current_character[2] ^ current_character[1] ^ is_next_control;
 	
+end	
+endfunction
+
+function calc_tx_parity_data;
+	input [7:0]		data;
+	input			is_next_control;
+begin
+	//XOR with the generic G_LINK_PARITY_IS_ODD to make the parity of the link ODD or EVEN
+	calc_tx_parity_data	= G_LINK_PARITY_IS_ODD ^ data[7] ^ data[6] ^ data[5] ^ data[4] ^ data[3] ^ data[2] ^ data[1] ^ data[0] ^ is_next_control;	
 end	
 endfunction
 	
@@ -172,59 +188,85 @@ endfunction
 	begin				   
 		if ( rst_n==1'b0 ) 
 		begin				
-			rx_null_aligned	= 1'b0;
+			rx_null_aligned		= 1'b0;
 		
-			rx_found_null 	= 1'b0;	
+			rx_found_null 		= 1'b0;	
 
-			rx_bit_count    = 0;			
-			rx_data			= 10'b0000000000;
-			rx_data_valid	= 1'b0;	
+			rx_bit_count    	= 0;	
+			reset_rx_bit_count	= 1'b0;
+			
+			rx_data				= 8'h00;
+			rx_data_valid		= 1'b0;	
 		end
 		else if ( clk==1'b1 )
 		begin
-			rx_found_null 	= 1'b0;
-			rx_data_valid	= 1'b0;
+			rx_found_null 	 	 = 1'b0;
+			reset_rx_bit_count	 = 1'b0;
+			rx_data_valid		<= 1'b0;
 		
 			//Shift data in
-			rx_buffer		<= {D_in_safe, rx_buffer[9:1]};
+			rx_buffer			<= {D_in_safe, rx_buffer[11:1]};
 			
-			//Look for a NULL
-			//TBD NULL will change when followed by DATA as parity will differ. Do we care if we miss one or two ???
-			if ( rx_buffer[7:0] == 8'b00101110 )	
+			
+			if ( rx_null_aligned==1'b0 )
 			begin
-				rx_found_null 	= 1'b1;	
-				rx_null_aligned	= 1'b1;
-			end 	
-	
-            //Valid Data strobes
-            if ( rx_found_null == 1'b0 && rx_null_aligned == 1'b1 && rx_bit_count == 9 )
-            begin
-                rx_data         <= rx_buffer;
-                rx_data_valid   <= 1'b1;                
-            end	
-							
-			//Keep count of incoming bits
-			if ( rx_found_null == 1'b1 || rx_bit_count == 9 )	rx_bit_count = 0;			//Synchronises incoming data bits
-			else 												rx_bit_count = rx_bit_count + 1;			
+				//Look for NULL characters, two parity options
+				if ( rx_buffer[7:0] == 8'b00101110 || rx_buffer[7:0] == 8'b00111110 )	
+				begin
+					rx_found_null    = 1'b1;	
+					rx_null_aligned	<= 1'b1;
+				end 			
+			end
+			else 	
+			begin			
+				if ( rx_bit_count==7 )
+				begin				
+					//Check if CONTROL character is in rx_buffer[3:0]
+				
+					if ( rx_buffer[1] == 1'b1 )
+					begin
+						if ( rx_buffer[7:0] == 8'b00101110 || rx_buffer[7:0] == 8'b00111110 )
+						begin
+							rx_found_null    	= 1'b1;						
+							reset_rx_bit_count	= 1'b1;
+						end
+					end					
+				end			
 			
+				if ( rx_bit_count==9 )
+				begin				
+					//DATA character must be in rx_buffer[9:0]
+					rx_data         			<= rx_buffer[9:2];
+					rx_data_valid   			<= 1'b1; 					
+					
+					reset_rx_bit_count 			= 1'b1;
+				end 
+			
+			
+	
+				if ( reset_rx_bit_count == 1'b1 )	rx_bit_count = 0;
+				else     							rx_bit_count = rx_bit_count + 1;			
+			end 	
 		end		
 	end
 
 	bfm_fifo
 	#(
 		.G_DATA_WIDTH_BITS	(8),
-		.G_ADDR_WIDTH_BITS	(6)
+		.G_ADDR_WIDTH_BITS	( G_FIFO_ADDR_WIDTH_BITS )
 	)	
 	fifo_rx
 	(  
-		.rst_n	( rst_n ),
-		.clk	( clk ),
+		.rst_n		( rst_n ),
+		.clk		( clk ),
 				
-		.w_en	( rx_data_valid ),	
-		.w_data	( rx_data[7:0] ),
+		.w_en		( rx_data_valid ),	
+		.w_data		( rx_data ),
 		
-		.r_en	( 1'b0 ),   //Tied low. FIFO expects write DATA during recieve but the TB will take it out via a task
-		.r_data	( )
+		.r_en		( 1'b0 ),   //Tied low. FIFO expects write DATA during recieve but the TB will take it out via a task
+		.r_data		( ),
+		
+		.fill_level ( rx_fill_level )
     );	
 
 
@@ -295,8 +337,9 @@ endfunction
 		begin		
 			tx_parity 				<= 1'b0;
 		
+			tx_next_must_be_control	<= 1'b0;
+		
 			tx_send_null_2			<= 1'b1;			//Defaults to send a NULL once active
-			tx_send_data			<= 1'b0;
 			tx_send_fcc				<= 1'b0;
 			tx_send_esc				<= 1'b0;
 			tx_send_eop1			<= 1'b0;
@@ -307,14 +350,14 @@ endfunction
 			else 							tx_buffer <= 10'b0000001110;		//Buffer reset to hold a NULL ready for the active flag
 
 			tx_buffer_length		<= 4;
-			tx_data_insert_done 	<= 1'b0;
-			tx_data_insert_waiting	<= 1'b0;
+			
+			tx_data_taken			<= 1'b0;
 		end
 
 		else if ( clk==1'b1 )
 		begin			
-			tx_data_insert_done 	= 1'b0;
-						
+			tx_data_taken			<= 1'b0;
+		
 			if ( tx_active == 1'b1 )
 			begin
 			
@@ -322,31 +365,56 @@ endfunction
 				if ( tx_bit_count == tx_buffer_length-1 ) 
 				begin
 				
-					//TBD Parity calculated with tx_send_data but tx_send_data can change before next CHAR sent
-					//TBD If tx_send_data is low when parity calculated then the next char must be a CONTROL character
+					//Parity calculated with tx_send_data but tx_send_data can change before next CHAR sent
+					//If tx_send_data is low when parity calculated then the next char must be a CONTROL character
+					if ( tx_send_data==1'b0)
+					begin
+						tx_next_must_be_control	<= 1'b1;
+					end					
+					
 						
 					if ( tx_send_null_2 == 1'b1 ) 
-					begin
+					begin					
 						//HIGHEST PRIORITY as we have just done a NULL_1 so must finish with a NULL_2						
 						tx_parity				 = calc_tx_parity(`C_CHAR_NULL_2, ~tx_send_data );
-												
+						
 						tx_buffer[3:1]			<= `C_CHAR_NULL_2;
 						tx_buffer[0]			<= tx_parity;
 						tx_buffer_length		<= 4;			
 						tx_send_null_2			<= 1'b0;				
+						tx_next_must_be_control	<= 1'b0;
 					end
-					else if ( tx_send_data==1'b1 )
+					else if ( tx_send_data==1'b1 && tx_next_must_be_control==1'b0 )
 					begin
+						if ( tx_fill_count==1 )
+						begin
+							//Sending last data now
+							//Make the next sent a control character and calculate parity according
+							tx_next_must_be_control	<= 1'b0;
+							
+							tx_parity			= calc_tx_parity_data( tx_data, 1'b1 );
+						end
+						else
+						begin						
+							tx_parity			= calc_tx_parity_data( tx_data, 1'b0 );
+						end
+					
+					
 						//TBD
-						tx_buffer				<= 10'b1010101010;
-						tx_buffer_length		<= 10;			
+						tx_buffer[9:2]			<= tx_data;
+						tx_buffer[1]			<= 1'b0;		//always 0 for data
+						tx_buffer[0]			<= tx_parity;
+						tx_buffer_length		<= 10;	
+
+						tx_data_taken			<= 1'b1;	
 					end
 					else if ( tx_send_fcc==1'b1 )
 					begin
 						tx_parity				 = calc_tx_parity(`C_CHAR_FCC, ~tx_send_data );												
 						tx_buffer[3:1]			<= `C_CHAR_FCC;
 						tx_buffer[0]			<= tx_parity;
-						tx_buffer_length		<= 4;			
+						tx_buffer_length		<= 4;		
+						tx_next_must_be_control	<= 1'b0;						
 					end			
 					else if ( tx_send_esc==1'b1 )
 					begin
@@ -354,24 +422,28 @@ endfunction
 						tx_buffer[3:1]			<= `C_CHAR_ESC;
 						tx_buffer[0]			<= tx_parity;
 						tx_buffer_length		<= 4;								
+						tx_next_must_be_control	<= 1'b0;
 					end					
 					else if ( tx_send_eop1==1'b1 )
 					begin
 						tx_parity				 = calc_tx_parity(`C_CHAR_EOP_1, ~tx_send_data );												
 						tx_buffer[3:1]			<= `C_CHAR_EOP_1;
 						tx_buffer[0]			<= tx_parity;
-						tx_buffer_length		<= 4;								
+						tx_buffer_length		<= 4;
+						tx_next_must_be_control	<= 1'b0;						
 					end					
 					else if ( tx_send_eop2==1'b1 )
 					begin
 						tx_parity				 = calc_tx_parity(`C_CHAR_EOP_2, ~tx_send_data );												
 						tx_buffer[3:1]			<= `C_CHAR_EOP_2;
 						tx_buffer[0]			<= tx_parity;
-						tx_buffer_length		<= 4;								
+						tx_buffer_length		<= 4;	
+						tx_next_must_be_control	<= 1'b0;
 					end					
 					else
 					begin
 						//Default send first four bits of NULL
+						tx_buffer[9:2]			<= 8'h00;				//Not needed but looks better in sim window
 						tx_buffer[3:1]			<= `C_CHAR_NULL_1;
 						tx_buffer[0]			<= tx_parity;
 						tx_buffer_length		<= 4;			
@@ -380,39 +452,84 @@ endfunction
 				
 				end
 			end
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-//			if ( tx_bit_count==9 )
-//			begin		
-//				if ( tx_data_insert_waiting == 1'b1 )
-//				begin
-//					tx_data_insert_done 	<= 1'b1;
-//					tx_buffer				<= tx_data_insert_data;
-//				end		
-//				else 				
-//				begin
-//					tx_buffer				<= `C_NULL_CHAR;
-//				end	
-//			end	
 		end					
 	end		
-
+	
 //#################################################################################################	
 // OUTPUT STAGE
+// TX FIFO Control
+//#################################################################################################
+	always @( negedge rst_n or posedge clk )		
+	begin		
+		if ( rst_n==1'b0 ) 
+		begin		
+			state_data				<= WAIT_FILL;
+		
+			tx_fill_count			<= 0;
+			tx_send_data			<= 1'b0;						
+		end
+
+		else if ( clk==1'b1 )
+		begin
+			case( state_data )
+				WAIT_FILL : 
+					begin 
+						if ( tx_fill_level > 0 )	
+						begin
+							state_data		<= SEND_DATA;
+							
+							tx_send_data	<= 1'b1;
+							
+							//Takes a snapshot of fill level to send this amount of data
+							//Allows more to be written into FIFO but wont be sent in this stream
+							tx_fill_count	<= tx_fill_level;
+						end 
+					end
+					
+				SEND_DATA : 
+					begin
+						if ( tx_data_taken ) 
+						begin
+							tx_fill_count	<= tx_fill_count - 1;
+						end
+					
+					
+						if ( tx_fill_count == 0 )	
+						begin
+							state_data		<= WAIT_FILL;
+							
+							tx_send_data	<= 1'b0;
+						end 						
+					end				
+					
+			endcase				
+
+		end		
+	end
+	
+	bfm_fifo
+	#(
+		.G_DATA_WIDTH_BITS	(8),
+		.G_ADDR_WIDTH_BITS	( G_FIFO_ADDR_WIDTH_BITS )
+	)	
+	fifo_tx
+	(  
+		.rst_n		( rst_n ),
+		.clk		( clk ),
+				
+		.w_en		( 1'b0 ),	
+		.w_data		( 8'h00 ),
+		
+		.r_en		( tx_data_taken ),
+		.r_data		( tx_data ),
+		
+		.fill_level ( tx_fill_level )
+    );		
+	
+	
+
+//#################################################################################################	
+// LINK STATE MACHINE
 // State machine - Activates LINK and maintains it
 //#################################################################################################	
 	always @( negedge rst_n or posedge clk )		
@@ -438,7 +555,7 @@ endfunction
 					
 				STARTED : 
 					begin
-						tx_active		<= 1'b1;
+						tx_active	<= 1'b1;
 					
 						if ( rx_found_null == 1'b1 )	state_link	<= RUN;
 					
@@ -470,20 +587,13 @@ endfunction
 //#################################################################################################	
 // TASKS
 //#################################################################################################	
-// Write 10bit into tx_buffer
-task insert_10b;
-	input [9:0]  	new_data;
+
+task insert_tx_data;
+	input [7:0]  	new_data;
 begin
-	$display ("%gns ieee1355_insert_10b : %h Data", $time, new_data);
+	$display ("%gns insert_tx_data : %h Data", $time, new_data);
 	
-	tx_data_insert_waiting	= 1'b1;
-	tx_data_insert_data	    = new_data;
-		
-	wait ( tx_data_insert_done	== 1'b1);
-	wait ( tx_data_insert_done	== 1'b0);
-	
-	tx_data_insert_waiting	= 1'b0;
-	
+	fifo_tx.insert_fifo_data ( new_data );
  end
  endtask
 
