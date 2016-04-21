@@ -22,12 +22,11 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
+use IEEE.std_logic_unsigned.all;
 
-
-entity exchange_layer is
+entity exchange_tx is
     Port ( 
-        clk_rx      : in std_logic;             -- receiver clock
-        clk_tx      : in std_logic;             -- transmitter clock
+        clk         : in std_logic;             -- receiver clock
         rst_n       : in std_logic;             -- reset
 --        null_dtcd   : in std_logic;             -- null character detected by signal_rx
 --        time_out    : in std_logic;             -- connection has timed out.  
@@ -35,17 +34,52 @@ entity exchange_layer is
 --        eop_rcvd    : in std_logic;             -- end of packet received at signal_rx
 --        fcc_sent    : in std_logic;             -- used to toggle fcc_flag.
 --        dtct_null   : out std_logic;          -- detect null character at signal_rx
-        data_flag   : out std_logic            -- send data from char_tx
---        fcc_flag    : out std_logic            -- send fcc call
+        data_flag   : out std_logic;            -- send data from char_tx
+        ld_txreg    : out std_logic;
+        req_pkt     : out std_logic;
+        fcc_flag    : out std_logic            -- send fcc call
         );
-end exchange_layer;
+end exchange_tx;
 
-architecture Behavioral of exchange_layer is
+architecture Behavioral of exchange_tx is
 --    type state_type is (s0_ready, s1_null_sent, s2_null_rcvd, s3_rcvg_data, s4_error);
 --    signal state : state_type;
+
+    signal cnt      : integer range 9 downto 0;
 begin
 
-    data_flag <= '1';
+    process (clk,rst_n)
+        begin
+            if (rst_n = '0') then                          -- reset all 
+                data_flag   <= '0'; 
+                req_pkt     <= '0';
+                ld_txreg    <= '0';
+                cnt         <= 0; 
+                fcc_flag    <= '0';                        
+            else
+                if rising_edge(clk) then
+                    cnt <= cnt + 1;
+                    data_flag <= '1';
+                    if (cnt >= 9) then
+                         cnt <= 0;    
+                    end if;  
+                    
+                    if (cnt = 7) then      -- request a char from pkt
+                        req_pkt <= '1';
+                    else
+                        req_pkt <= '0';
+                    end if; 
+                    
+                    if (cnt = 8) then      -- request a char from pkt
+                        ld_txreg <= '1';
+                    else
+                        ld_txreg <= '0';
+                    end if; 
+                                                                
+                end if;
+            end if;           
+        end process;
+ 
 --    process (clk_tx, rst_n)
 --        begin
                         

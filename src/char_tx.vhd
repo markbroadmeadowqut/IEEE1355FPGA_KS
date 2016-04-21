@@ -31,7 +31,6 @@ entity char_tx is
         char_in     : in std_logic_vector(7 downto 0);                
         data_flag   : in std_logic; 
         fcc_flag    : in std_logic;
-        parity      : in std_logic;
         char_out    : out std_logic_vector(9 downto 0);
         fcc_sent    : out std_logic          -- used to toggle fcc_flag to 0   
               
@@ -39,32 +38,38 @@ entity char_tx is
 end char_tx;
 
 architecture Behavioral of char_tx is
-        signal ctrl_char: std_logic;
-        signal fcc      : std_logic_vector(3 downto 0):=  "0100";
-        signal eop_1    : std_logic_vector(3 downto 0):=  "0101";
-        signal eop_2    : std_logic_vector(3 downto 0):=  "0110";
-        signal esc      : std_logic_vector(3 downto 0):=  "0111";
-        signal null_char: std_logic_vector(7 downto 0):=  "01110100";        
+       
+        constant fcc            : std_logic_vector(8 downto 0):=  "100000000";
+        constant eop_1          : std_logic_vector(8 downto 0):=  "101000000";
+        constant eop_2          : std_logic_vector(8 downto 0):=  "110000000";
+        constant esc            : std_logic_vector(8 downto 0):=  "111000000";
+        constant null_char      : std_logic_vector(8 downto 0):=  "111010000"; 
+        
 begin
-     process(clk, rst_n)
+    process(clk, rst_n)
         begin 
-            if rising_edge(clk) then
-                if (rst_n = '0') then                  -- set char out to 0 if reset
-                    char_out <= "0000000000";
-                    ctrl_char <= '0';
-                    fcc_sent <= '0';
-                else 
+            if (rst_n = '0') then                  -- set char out to 0 if reset
+                char_out    <= "0000000000";
+                fcc_sent    <= '0';
+                   
+            else 
+                if rising_edge(clk) then
+                
+                    if ((char_in(7) xor char_in(6) xor char_in(5) xor char_in(4) xor char_in(3) xor char_in(2) xor char_in(1) xor char_in(0))= '0') then
+                        char_out(9) <= '1';
+                    else
+                        char_out(9) <= '0';   
+                    end if;
                     if (fcc_flag = '1') then
-                        fcc(3) <= parity;
-                        char_out(9 downto 6)  <= fcc;
+                        char_out(8 downto 0)  <= fcc;
                         fcc_sent <= '1';
                     else
                         if (data_flag = '1') then           -- send data
-                            char_out <=  parity & ctrl_char & char_in;
+                            char_out(7 downto 0) <= char_in;
+                            char_out(8) <= '0';
                             fcc_sent <= '0';                      
                         else   
-                            null_char(7)    <=  parity;     -- send nulls    
-                            char_out(9 downto 2)  <=  null_char;
+                            char_out(8 downto 0)  <=  null_char;
                             fcc_sent <= '0'; 
                         end if;
                     end if;          
