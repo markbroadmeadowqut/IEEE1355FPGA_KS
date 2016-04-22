@@ -34,18 +34,18 @@ module bfm_ieee1355
 	reg     		clk;
 	reg     		clk_x4;
 	
-	typedef enum { READY, STARTED, NULL_RECEIVED, RUN } enum_link_sm;
+	typedef enum { READY, STARTED, NULL_RECEIVED, RUN } 		enum_link_sm;
 	enum_link_sm	state_link;
-
-	typedef enum { WAIT_FILL, SEND_DATA } enum_data_sm;
-	enum_data_sm	state_data;
-	
 
 	reg				D_in_edge;
 	reg				S_in_edge;
 
 	reg				D_in_safe;
 	reg				S_in_safe;
+
+	//TX SIGNALS
+	typedef enum { WAIT_FILL, SEND_DATA, SEND_EOP, SEND_FCC } 	enum_tx_sm;
+	enum_tx_sm		state_tx;
 	
 	reg				tx_active;
 	reg				tx_parity;
@@ -55,7 +55,9 @@ module bfm_ieee1355
 	reg				tx_send_fcc;
 	reg				tx_send_esc;
 	reg				tx_send_eop1;
-	reg				tx_send_eop2;
+	reg				tx_send_eop2;	
+	reg				tx_send_eop_done;
+	reg				tx_send_fcc_done;
 
 	reg 	[9:0]	tx_buffer;
 	integer 		tx_buffer_length;
@@ -64,10 +66,22 @@ module bfm_ieee1355
 	reg 	    	tx_data_taken;	
 	wire  [G_FIFO_ADDR_WIDTH_BITS:0]   tx_fill_level;
 	reg   [G_FIFO_ADDR_WIDTH_BITS:0]   tx_fill_count;
+
+	
+	//RX SIGNALS
+	typedef enum { WAIT_ALIGN, RX_CONTROL, RX_DATA } 			enum_rx_sm;
+	enum_rx_sm		state_rx;	
 	
 	reg 			D_out_last;
 	reg 	[11:0]	rx_buffer;				//Holds 12 bits - to allow all of a data packet and the next two bits which will contain the parity etc
 	reg				rx_found_null;
+	reg     		rx_found_esc;
+	reg     		rx_found_fcc;
+	reg     		rx_found_eop_1;
+	reg     		rx_found_eop_2;
+	reg             rx_found_data;
+	reg     		rx_char_error;
+	reg				rx_parity_error;
 	reg				rx_null_aligned;
 	integer         rx_bit_count;
 	reg				reset_rx_bit_count;
@@ -95,6 +109,48 @@ begin
 	calc_tx_parity_data	= G_LINK_PARITY_IS_ODD ^ data[7] ^ data[6] ^ data[5] ^ data[4] ^ data[3] ^ data[2] ^ data[1] ^ data[0] ^ is_next_control;	
 end	
 endfunction
+
+function check_rx_char_parity;
+	input [3:0]		bits_to_check;
+	input			parity_should_be;
+begin
+	//Return a 1 if CORRECT
+
+	if ( ( bits_to_check[3] ^ bits_to_check[2] ^ bits_to_check[1] ^ bits_to_check[0] ) == parity_should_be )
+	begin	
+		check_rx_char_parity	= 1'b1;		//All good 
+	end
+	else
+	begin
+		check_rx_char_parity	= 1'b0;		//ERROR	
+		
+		$display ( "%gns %m PARITY ERROR IN CHAR", $time );		
+		inc_error_count();
+	end
+end
+endfunction
+
+function check_rx_data_parity;
+	input [8:0]		bits_to_check;		//8 data bits plus next control bit
+	input			parity_should_be;
+begin
+	//Return a 1 if CORRECT
+
+	if ( ( bits_to_check[8] ^ bits_to_check[7] ^ bits_to_check[6] ^ bits_to_check[5] ^ bits_to_check[4] ^ 
+		   bits_to_check[3] ^ bits_to_check[2] ^ bits_to_check[1] ^ bits_to_check[0] ) == parity_should_be )
+	begin		   
+		check_rx_data_parity	= 1'b1;		//All good 
+	end
+	else
+	begin	
+		check_rx_data_parity	= 1'b0;		//ERROR	
+		
+		$display ( "%gns %m PARITY ERROR IN DATA", $time );
+		inc_error_count();
+	end
+end
+endfunction
+
 	
 //#################################################################################################	
 // CLOCKS
@@ -187,10 +243,20 @@ endfunction
 	always @( negedge rst_n or posedge clk )
 	begin				   
 		if ( rst_n==1'b0 ) 
-		begin				
+		begin			
+			state_rx			<= WAIT_ALIGN;
+		
 			rx_null_aligned		= 1'b0;
 		
 			rx_found_null 		= 1'b0;	
+			rx_found_esc 	 	= 1'b0;
+			rx_found_fcc 	 	= 1'b0;
+			rx_found_eop_1 	 	= 1'b0;
+			rx_found_eop_2 	 	= 1'b0;
+			rx_found_data		= 1'b0;
+			
+			rx_char_error 	 	= 1'b0;	
+			rx_parity_error     = 1'b0;			
 
 			rx_bit_count    	= 0;	
 			reset_rx_bit_count	= 1'b0;
@@ -201,52 +267,146 @@ endfunction
 		else if ( clk==1'b1 )
 		begin
 			rx_found_null 	 	 = 1'b0;
+			rx_found_esc 	 	 = 1'b0;
+			rx_found_fcc 	 	 = 1'b0;
+			rx_found_eop_1 	 	 = 1'b0;
+			rx_found_eop_2 	 	 = 1'b0;
+			
+			rx_char_error 	 	 = 1'b0;			
+			rx_parity_error		 = 1'b0;
+			
 			reset_rx_bit_count	 = 1'b0;
 			rx_data_valid		<= 1'b0;
+		
 		
 			//Shift data in
 			rx_buffer			<= {D_in_safe, rx_buffer[11:1]};
 			
-			
-			if ( rx_null_aligned==1'b0 )
-			begin
-				//Look for NULL characters, two parity options
-				if ( rx_buffer[7:0] == 8'b00101110 || rx_buffer[7:0] == 8'b00111110 )	
-				begin
-					rx_found_null    = 1'b1;	
-					rx_null_aligned	<= 1'b1;
-				end 			
-			end
-			else 	
-			begin			
-				if ( rx_bit_count==7 )
-				begin				
-					//Check if CONTROL character is in rx_buffer[3:0]
-				
-					if ( rx_buffer[1] == 1'b1 )
-					begin
-						if ( rx_buffer[7:0] == 8'b00101110 || rx_buffer[7:0] == 8'b00111110 )
+
+			case( state_rx )
+				WAIT_ALIGN : 
+					begin 			
+						//Look for NULL characters, two parity options
+						if ( rx_buffer[7:0] == 8'b00101110 || rx_buffer[7:0] == 8'b00111110 )	
 						begin
-							rx_found_null    	= 1'b1;						
-							reset_rx_bit_count	= 1'b1;
-						end
-					end					
-				end			
+							rx_found_null    		 = 1'b1;	
+							rx_null_aligned			<= 1'b1;
+							reset_rx_bit_count		 = 1'b1;
+							state_rx				<= RX_CONTROL;
+						end			
+					end
 			
-				if ( rx_bit_count==9 )
-				begin				
-					//DATA character must be in rx_buffer[9:0]
-					rx_data         			<= rx_buffer[9:2];
-					rx_data_valid   			<= 1'b1; 					
+				RX_CONTROL : 
+					begin 			
+						if ( rx_bit_count==3 )
+						begin				
+							//Check if CONTROL character is in rx_buffer[3:0]
+							if ( rx_buffer[1] == 1'b1 )
+							begin
+								//Is CONTROL so reset counter
+								reset_rx_bit_count		= 1'b1;
+						
+								//What have we received ???
+								if ( rx_buffer[3:1] == 3'b111 )
+								begin
+									rx_found_esc    	= 1'b1;						
+								end					
+								else if ( rx_buffer[3:1] == 3'b001 )
+								begin
+									rx_found_fcc    	= 1'b1;						
+								end									
+								else if ( rx_buffer[3:1] == 3'b101 )
+								begin
+									rx_found_eop_1    	= 1'b1;						
+								end					
+								else if ( rx_buffer[3:1] == 3'b011 )
+								begin
+									rx_found_eop_2   	= 1'b1;						
+								end					
+								else
+								begin
+									rx_char_error		= 1'b1;
+								end		
+
+								//Check CHAR parity
+								//At this point we have a CONTROL Char in rx_buffer[3:0]
+								//Calculate that Parity bit in rx_buffer[4] is correct for next character
+								//Data for check is in rx_buffer[3:1] and rx_buffer[5]
+									rx_parity_error			= ~check_rx_char_parity( {rx_buffer[3:1],rx_buffer[5]}, rx_buffer[4] );
+						
+							end
+							else 
+							begin
+								rx_data        			<= rx_buffer[9:2];
+								rx_data_valid  			<= 1'b1;						
+								reset_rx_bit_count 		= 1'b1;
+
+								//Check DATA parity
+								//At this point we have a byte of data in rx_buffer[9:2]
+								//Calculate that Parity bit in rx_buffer[10] is correct for next character
+								//Data for check is in rx_buffer[9:2] and rx_buffer[11]								
+								rx_parity_error			= ~check_rx_data_parity( {rx_buffer[9:2],rx_buffer[11]}, rx_buffer[10] );
+								
+								state_rx				<= RX_DATA;
+							end
+						end			
+					end
 					
-					reset_rx_bit_count 			= 1'b1;
-				end 
+				RX_DATA : 
+					begin 				
+						if ( rx_bit_count==9 )
+						begin
+						
+							//Look for EOP
+							if ( rx_buffer[3:1] == 3'b101 )
+							begin
+								rx_found_eop_1    	= 1'b1;						
+							end					
+							else if ( rx_buffer[3:1] == 3'b011 )
+							begin
+								rx_found_eop_2   	= 1'b1;						
+							end						
+
+
+							if ( rx_found_eop_1==1'b1 || rx_found_eop_2==1'b1 )
+							begin
+								state_rx				<= RX_CONTROL;
+								
+								//Check CHAR parity
+								//At this point we have a CONTROL Char in rx_buffer[3:0]
+								//Calculate that Parity bit in rx_buffer[4] is correct for next character
+								//Data for check is in rx_buffer[3:1] and rx_buffer[5]
+									rx_parity_error			= ~check_rx_char_parity( {rx_buffer[3:1],rx_buffer[5]}, rx_buffer[4] );								
+								
+								//TBD FCC must be in rx_buffer[7:4]
+								
+								reset_rx_bit_count 		= 1'b1;
+							end
+							else
+							begin
+								//DATA character must be in rx_buffer[9:2]
+								rx_data         			<= rx_buffer[9:2];
+								rx_data_valid   			<= 1'b1; 	
+
+								//Check DATA parity
+								//At this point we have a byte of data in rx_buffer[9:2]
+								//Calculate that Parity bit in rx_buffer[10] is correct for next character
+								//Data for check is in rx_buffer[9:2] and rx_buffer[11]								
+								rx_parity_error			= ~check_rx_data_parity( {rx_buffer[9:2],rx_buffer[11]}, rx_buffer[10] );
+							
+								reset_rx_bit_count 			= 1'b1;
+							end
+						end 
+			
+					end
+			
+			endcase
 			
 			
-	
-				if ( reset_rx_bit_count == 1'b1 )	rx_bit_count = 0;
-				else     							rx_bit_count = rx_bit_count + 1;			
-			end 	
+			
+			if ( reset_rx_bit_count == 1'b1 )	rx_bit_count = 0;
+			else     							rx_bit_count = rx_bit_count + 1;			
+				
 		end		
 	end
 
@@ -340,11 +500,11 @@ endfunction
 			tx_next_must_be_control	<= 1'b0;
 		
 			tx_send_null_2			<= 1'b1;			//Defaults to send a NULL once active
-			tx_send_fcc				<= 1'b0;
 			tx_send_esc				<= 1'b0;
-			tx_send_eop1			<= 1'b0;
 			tx_send_eop2			<= 1'b0;
-		
+			
+			tx_send_eop_done		<= 1'b0;
+			tx_send_fcc_done		<= 1'b0;		
 
 			if ( G_LINK_PARITY_IS_ODD==0 )	tx_buffer <= 10'b0000001111;		//First char to send is a NULL with Control=1, so parity defaults to 0 if an ODD link is needed else 1
 			else 							tx_buffer <= 10'b0000001110;		//Buffer reset to hold a NULL ready for the active flag
@@ -357,6 +517,8 @@ endfunction
 		else if ( clk==1'b1 )
 		begin			
 			tx_data_taken			<= 1'b0;
+			tx_send_eop_done		<= 1'b0;
+			tx_send_fcc_done		<= 1'b0;
 		
 			if ( tx_active == 1'b1 )
 			begin
@@ -414,7 +576,8 @@ endfunction
 						tx_buffer[3:1]			<= `C_CHAR_FCC;
 						tx_buffer[0]			<= tx_parity;
 						tx_buffer_length		<= 4;		
-						tx_next_must_be_control	<= 1'b0;						
+						tx_next_must_be_control	<= 1'b0;
+						tx_send_fcc_done		<= 1'b1;				
 					end			
 					else if ( tx_send_esc==1'b1 )
 					begin
@@ -431,6 +594,7 @@ endfunction
 						tx_buffer[0]			<= tx_parity;
 						tx_buffer_length		<= 4;
 						tx_next_must_be_control	<= 1'b0;						
+						tx_send_eop_done		<= 1'b1;
 					end					
 					else if ( tx_send_eop2==1'b1 )
 					begin
@@ -463,20 +627,23 @@ endfunction
 	begin		
 		if ( rst_n==1'b0 ) 
 		begin		
-			state_data				<= WAIT_FILL;
+			state_tx				<= WAIT_FILL;
 		
 			tx_fill_count			<= 0;
+			
 			tx_send_data			<= 1'b0;						
+			tx_send_eop1			<= 1'b0;
+			tx_send_fcc				<= 1'b0;
 		end
 
 		else if ( clk==1'b1 )
 		begin
-			case( state_data )
+			case( state_tx )
 				WAIT_FILL : 
 					begin 
 						if ( tx_fill_level > 0 )	
 						begin
-							state_data		<= SEND_DATA;
+							state_tx		<= SEND_DATA;
 							
 							tx_send_data	<= 1'b1;
 							
@@ -496,11 +663,36 @@ endfunction
 					
 						if ( tx_fill_count == 0 )	
 						begin
-							state_data		<= WAIT_FILL;
+							state_tx		<= SEND_EOP;
 							
 							tx_send_data	<= 1'b0;
 						end 						
-					end				
+					end			
+
+				SEND_EOP : 
+					begin
+						tx_send_eop1		<= 1'b1;
+						
+						if ( tx_send_eop_done == 1'b1 )
+						begin
+							tx_send_eop1	<= 1'b0;
+						
+							state_tx		<= SEND_FCC;
+						end
+					end
+					
+					
+				SEND_FCC :
+					begin
+						tx_send_fcc			<= 1'b1;
+						
+						if ( tx_send_fcc_done == 1'b1 )
+						begin
+							tx_send_fcc		<= 1'b0;
+						
+							state_tx		<= WAIT_FILL;
+						end					
+					end
 					
 			endcase				
 

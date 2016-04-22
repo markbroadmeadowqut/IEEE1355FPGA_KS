@@ -12,16 +12,17 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="15955000001fs"></ZoomEndTime>
-      <Cursor1Time time="5416946000fs"></Cursor1Time>
+      <ZoomEndTime time="16472000001fs"></ZoomEndTime>
+      <Cursor1Time time="15000000000fs"></Cursor1Time>
    </zoom_setting>
-   <WVObjectSize size="149" />
+   <WVObjectSize size="172" />
    <wave_markers>
       <marker time="5160000000" label="" />
    </wave_markers>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/error_count" type="array">
       <obj_property name="ElementShortName">error_count[31:0]</obj_property>
       <obj_property name="ObjectShortName">error_count[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/clk_100" type="logic">
       <obj_property name="ElementShortName">clk_100</obj_property>
@@ -119,10 +120,6 @@
       <obj_property name="ElementShortName">state_link[31:0]</obj_property>
       <obj_property name="ObjectShortName">state_link[31:0]</obj_property>
    </wvobject>
-   <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/state_data" type="array">
-      <obj_property name="ElementShortName">state_data[31:0]</obj_property>
-      <obj_property name="ObjectShortName">state_data[31:0]</obj_property>
-   </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/D_in_edge" type="logic">
       <obj_property name="ElementShortName">D_in_edge</obj_property>
       <obj_property name="ObjectShortName">D_in_edge</obj_property>
@@ -138,6 +135,10 @@
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/S_in_safe" type="logic">
       <obj_property name="ElementShortName">S_in_safe</obj_property>
       <obj_property name="ObjectShortName">S_in_safe</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/state_tx" type="array">
+      <obj_property name="ElementShortName">state_tx[31:0]</obj_property>
+      <obj_property name="ObjectShortName">state_tx[31:0]</obj_property>
    </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/tx_active" type="logic">
       <obj_property name="ElementShortName">tx_active</obj_property>
@@ -175,6 +176,14 @@
       <obj_property name="ElementShortName">tx_send_eop2</obj_property>
       <obj_property name="ObjectShortName">tx_send_eop2</obj_property>
    </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/tx_send_eop_done" type="logic">
+      <obj_property name="ElementShortName">tx_send_eop_done</obj_property>
+      <obj_property name="ObjectShortName">tx_send_eop_done</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/tx_send_fcc_done" type="logic">
+      <obj_property name="ElementShortName">tx_send_fcc_done</obj_property>
+      <obj_property name="ObjectShortName">tx_send_fcc_done</obj_property>
+   </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/tx_buffer" type="array">
       <obj_property name="ElementShortName">tx_buffer[9:0]</obj_property>
       <obj_property name="ObjectShortName">tx_buffer[9:0]</obj_property>
@@ -182,12 +191,10 @@
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/tx_buffer_length" type="array">
       <obj_property name="ElementShortName">tx_buffer_length[31:0]</obj_property>
       <obj_property name="ObjectShortName">tx_buffer_length[31:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/tx_bit_count" type="array">
       <obj_property name="ElementShortName">tx_bit_count[31:0]</obj_property>
       <obj_property name="ObjectShortName">tx_bit_count[31:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/tx_data" type="array">
       <obj_property name="ElementShortName">tx_data[7:0]</obj_property>
@@ -197,13 +204,17 @@
       <obj_property name="ElementShortName">tx_data_taken</obj_property>
       <obj_property name="ObjectShortName">tx_data_taken</obj_property>
    </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/tx_fill_level" type="array">
+      <obj_property name="ElementShortName">tx_fill_level[6:0]</obj_property>
+      <obj_property name="ObjectShortName">tx_fill_level[6:0]</obj_property>
+   </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/tx_fill_count" type="array">
       <obj_property name="ElementShortName">tx_fill_count[6:0]</obj_property>
       <obj_property name="ObjectShortName">tx_fill_count[6:0]</obj_property>
    </wvobject>
-   <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/tx_fill_level" type="array">
-      <obj_property name="ElementShortName">tx_fill_level[6:0]</obj_property>
-      <obj_property name="ObjectShortName">tx_fill_level[6:0]</obj_property>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/state_rx" type="array">
+      <obj_property name="ElementShortName">state_rx[31:0]</obj_property>
+      <obj_property name="ObjectShortName">state_rx[31:0]</obj_property>
    </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/D_out_last" type="logic">
       <obj_property name="ElementShortName">D_out_last</obj_property>
@@ -217,6 +228,34 @@
       <obj_property name="ElementShortName">rx_found_null</obj_property>
       <obj_property name="ObjectShortName">rx_found_null</obj_property>
    </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/rx_found_esc" type="logic">
+      <obj_property name="ElementShortName">rx_found_esc</obj_property>
+      <obj_property name="ObjectShortName">rx_found_esc</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/rx_found_fcc" type="logic">
+      <obj_property name="ElementShortName">rx_found_fcc</obj_property>
+      <obj_property name="ObjectShortName">rx_found_fcc</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/rx_found_eop_1" type="logic">
+      <obj_property name="ElementShortName">rx_found_eop_1</obj_property>
+      <obj_property name="ObjectShortName">rx_found_eop_1</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/rx_found_eop_2" type="logic">
+      <obj_property name="ElementShortName">rx_found_eop_2</obj_property>
+      <obj_property name="ObjectShortName">rx_found_eop_2</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/rx_found_data" type="logic">
+      <obj_property name="ElementShortName">rx_found_data</obj_property>
+      <obj_property name="ObjectShortName">rx_found_data</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/rx_char_error" type="logic">
+      <obj_property name="ElementShortName">rx_char_error</obj_property>
+      <obj_property name="ObjectShortName">rx_char_error</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/rx_parity_error" type="logic">
+      <obj_property name="ElementShortName">rx_parity_error</obj_property>
+      <obj_property name="ObjectShortName">rx_parity_error</obj_property>
+   </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/rx_null_aligned" type="logic">
       <obj_property name="ElementShortName">rx_null_aligned</obj_property>
       <obj_property name="ObjectShortName">rx_null_aligned</obj_property>
@@ -224,7 +263,10 @@
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/rx_bit_count" type="array">
       <obj_property name="ElementShortName">rx_bit_count[31:0]</obj_property>
       <obj_property name="ObjectShortName">rx_bit_count[31:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/reset_rx_bit_count" type="logic">
+      <obj_property name="ElementShortName">reset_rx_bit_count</obj_property>
+      <obj_property name="ObjectShortName">reset_rx_bit_count</obj_property>
    </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/rx_data" type="array">
       <obj_property name="ElementShortName">rx_data[7:0]</obj_property>
@@ -382,6 +424,10 @@
       <obj_property name="ElementShortName">S_out</obj_property>
       <obj_property name="ObjectShortName">S_out</obj_property>
    </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_1/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_1/clk_x4" type="logic">
       <obj_property name="ElementShortName">clk_x4</obj_property>
       <obj_property name="ObjectShortName">clk_x4</obj_property>
@@ -390,6 +436,10 @@
       <obj_property name="ElementShortName">state_link[31:0]</obj_property>
       <obj_property name="ObjectShortName">state_link[31:0]</obj_property>
    </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_1/state_tx" type="array">
+      <obj_property name="ElementShortName">state_tx[31:0]</obj_property>
+      <obj_property name="ObjectShortName">state_tx[31:0]</obj_property>
+   </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_1/D_in_edge" type="logic">
       <obj_property name="ElementShortName">D_in_edge</obj_property>
       <obj_property name="ObjectShortName">D_in_edge</obj_property>
@@ -397,6 +447,10 @@
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_1/S_in_edge" type="logic">
       <obj_property name="ElementShortName">S_in_edge</obj_property>
       <obj_property name="ObjectShortName">S_in_edge</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_1/D_in_safe" type="logic">
+      <obj_property name="ElementShortName">D_in_safe</obj_property>
+      <obj_property name="ObjectShortName">D_in_safe</obj_property>
    </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_1/S_in_safe" type="logic">
       <obj_property name="ElementShortName">S_in_safe</obj_property>
@@ -409,6 +463,10 @@
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_1/tx_parity" type="logic">
       <obj_property name="ElementShortName">tx_parity</obj_property>
       <obj_property name="ObjectShortName">tx_parity</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_1/tx_next_must_be_control" type="logic">
+      <obj_property name="ElementShortName">tx_next_must_be_control</obj_property>
+      <obj_property name="ObjectShortName">tx_next_must_be_control</obj_property>
    </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_1/tx_send_null_2" type="logic">
       <obj_property name="ElementShortName">tx_send_null_2</obj_property>
@@ -458,17 +516,17 @@
       <obj_property name="ElementShortName">tx_fill_level[6:0]</obj_property>
       <obj_property name="ObjectShortName">tx_fill_level[6:0]</obj_property>
    </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_1/tx_fill_count" type="array">
+      <obj_property name="ElementShortName">tx_fill_count[6:0]</obj_property>
+      <obj_property name="ObjectShortName">tx_fill_count[6:0]</obj_property>
+   </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_1/D_out_last" type="logic">
       <obj_property name="ElementShortName">D_out_last</obj_property>
       <obj_property name="ObjectShortName">D_out_last</obj_property>
    </wvobject>
-   <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_1/clk" type="logic">
-      <obj_property name="ElementShortName">clk</obj_property>
-      <obj_property name="ObjectShortName">clk</obj_property>
-   </wvobject>
-   <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_1/D_in_safe" type="logic">
-      <obj_property name="ElementShortName">D_in_safe</obj_property>
-      <obj_property name="ObjectShortName">D_in_safe</obj_property>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_1/state_rx" type="array">
+      <obj_property name="ElementShortName">state_rx[31:0]</obj_property>
+      <obj_property name="ObjectShortName">state_rx[31:0]</obj_property>
    </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_1/rx_buffer" type="array">
       <obj_property name="ElementShortName">rx_buffer[11:0]</obj_property>
@@ -478,6 +536,34 @@
       <obj_property name="ElementShortName">rx_found_null</obj_property>
       <obj_property name="ObjectShortName">rx_found_null</obj_property>
    </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_1/rx_found_esc" type="logic">
+      <obj_property name="ElementShortName">rx_found_esc</obj_property>
+      <obj_property name="ObjectShortName">rx_found_esc</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_1/rx_found_fcc" type="logic">
+      <obj_property name="ElementShortName">rx_found_fcc</obj_property>
+      <obj_property name="ObjectShortName">rx_found_fcc</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_1/rx_found_eop_1" type="logic">
+      <obj_property name="ElementShortName">rx_found_eop_1</obj_property>
+      <obj_property name="ObjectShortName">rx_found_eop_1</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_1/rx_found_eop_2" type="logic">
+      <obj_property name="ElementShortName">rx_found_eop_2</obj_property>
+      <obj_property name="ObjectShortName">rx_found_eop_2</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_1/rx_found_data" type="logic">
+      <obj_property name="ElementShortName">rx_found_data</obj_property>
+      <obj_property name="ObjectShortName">rx_found_data</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_1/rx_char_error" type="logic">
+      <obj_property name="ElementShortName">rx_char_error</obj_property>
+      <obj_property name="ObjectShortName">rx_char_error</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_1/rx_parity_error" type="logic">
+      <obj_property name="ElementShortName">rx_parity_error</obj_property>
+      <obj_property name="ObjectShortName">rx_parity_error</obj_property>
+   </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_1/rx_null_aligned" type="logic">
       <obj_property name="ElementShortName">rx_null_aligned</obj_property>
       <obj_property name="ObjectShortName">rx_null_aligned</obj_property>
@@ -486,6 +572,10 @@
       <obj_property name="ElementShortName">rx_bit_count[31:0]</obj_property>
       <obj_property name="ObjectShortName">rx_bit_count[31:0]</obj_property>
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_1/reset_rx_bit_count" type="logic">
+      <obj_property name="ElementShortName">reset_rx_bit_count</obj_property>
+      <obj_property name="ObjectShortName">reset_rx_bit_count</obj_property>
    </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_1/rx_data" type="array">
       <obj_property name="ElementShortName">rx_data[7:0]</obj_property>
@@ -498,6 +588,7 @@
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_1/rx_fill_level" type="array">
       <obj_property name="ElementShortName">rx_fill_level[6:0]</obj_property>
       <obj_property name="ObjectShortName">rx_fill_level[6:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_1/bit_freq_ns" type="array">
       <obj_property name="ElementShortName">bit_freq_ns[31:0]</obj_property>

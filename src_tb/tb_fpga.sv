@@ -23,6 +23,12 @@ module tb_fpga;
 	reg 	[3:0]	btn_1;
 	wire	[3:0]	led_1;
 	wire 	[3:0]	ledb_1;	
+	
+	function inc_error_count;
+	begin
+		error_count = error_count + 1;
+	end
+	endfunction
 
 //#################################################################################################	
 //FPGA
