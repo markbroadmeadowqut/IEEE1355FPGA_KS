@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_node_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_node" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0fs"></ZoomStartTime>
+      <ZoomEndTime time="346500001fs"></ZoomEndTime>
+      <Cursor1Time time="38500000fs"></Cursor1Time>
+   </zoom_setting>
+   <WVObjectSize size="44" />
+   <wvobject db_ref_id="1" fp_name="/tb_node/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/rst_n" type="logic">
+      <obj_property name="ElementShortName">rst_n</obj_property>
+      <obj_property name="ObjectShortName">rst_n</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/sw" type="array">
+      <obj_property name="ElementShortName">sw[3:0]</obj_property>
+      <obj_property name="ObjectShortName">sw[3:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/btn" type="array">
+      <obj_property name="ElementShortName">btn[3:0]</obj_property>
+      <obj_property name="ObjectShortName">btn[3:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/d_in" type="logic">
+      <obj_property name="ElementShortName">d_in</obj_property>
+      <obj_property name="ObjectShortName">d_in</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/s_in" type="logic">
+      <obj_property name="ElementShortName">s_in</obj_property>
+      <obj_property name="ObjectShortName">s_in</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/led" type="array">
+      <obj_property name="ElementShortName">led[3:0]</obj_property>
+      <obj_property name="ObjectShortName">led[3:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/ledb" type="array">
+      <obj_property name="ElementShortName">ledb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">ledb[3:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/d_out" type="logic">
+      <obj_property name="ElementShortName">d_out</obj_property>
+      <obj_property name="ObjectShortName">d_out</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/s_out" type="logic">
+      <obj_property name="ElementShortName">s_out</obj_property>
+      <obj_property name="ObjectShortName">s_out</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider422">
+      <obj_property name="label">TX pipeline</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider346">
+      <obj_property name="label">Packet</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_pipeline_nd/packet_tx_ins/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_pipeline_nd/packet_tx_ins/rst_n" type="logic">
+      <obj_property name="ElementShortName">rst_n</obj_property>
+      <obj_property name="ObjectShortName">rst_n</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_pipeline_nd/packet_tx_ins/sw" type="array">
+      <obj_property name="ElementShortName">sw[3:0]</obj_property>
+      <obj_property name="ObjectShortName">sw[3:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_pipeline_nd/packet_tx_ins/btn" type="array">
+      <obj_property name="ElementShortName">btn[3:0]</obj_property>
+      <obj_property name="ObjectShortName">btn[3:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_pipeline_nd/packet_tx_ins/req_pkt" type="logic">
+      <obj_property name="ElementShortName">req_pkt</obj_property>
+      <obj_property name="ObjectShortName">req_pkt</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_pipeline_nd/packet_tx_ins/char_pkt" type="array">
+      <obj_property name="ElementShortName">char_pkt[7:0]</obj_property>
+      <obj_property name="ObjectShortName">char_pkt[7:0]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_pipeline_nd/packet_tx_ins/data" type="array">
+      <obj_property name="ElementShortName">data[7:0]</obj_property>
+      <obj_property name="ObjectShortName">data[7:0]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider56">
+      <obj_property name="label">exchange</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_pipeline_nd/Exchange_tx/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_pipeline_nd/Exchange_tx/rst_n" type="logic">
+      <obj_property name="ElementShortName">rst_n</obj_property>
+      <obj_property name="ObjectShortName">rst_n</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_pipeline_nd/Exchange_tx/data_flag" type="logic">
+      <obj_property name="ElementShortName">data_flag</obj_property>
+      <obj_property name="ObjectShortName">data_flag</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_pipeline_nd/Exchange_tx/ld_txreg" type="logic">
+      <obj_property name="ElementShortName">ld_txreg</obj_property>
+      <obj_property name="ObjectShortName">ld_txreg</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_pipeline_nd/Exchange_tx/req_pkt" type="logic">
+      <obj_property name="ElementShortName">req_pkt</obj_property>
+      <obj_property name="ObjectShortName">req_pkt</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_pipeline_nd/Exchange_tx/cnt" type="other">
+      <obj_property name="ElementShortName">cnt</obj_property>
+      <obj_property name="ObjectShortName">cnt</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider347">
+      <obj_property name="label">char</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_pipeline_nd/char_tx_ins/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_pipeline_nd/char_tx_ins/rst_n" type="logic">
+      <obj_property name="ElementShortName">rst_n</obj_property>
+      <obj_property name="ObjectShortName">rst_n</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_pipeline_nd/char_tx_ins/char_in" type="array">
+      <obj_property name="ElementShortName">char_in[7:0]</obj_property>
+      <obj_property name="ObjectShortName">char_in[7:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_pipeline_nd/char_tx_ins/data_flag" type="logic">
+      <obj_property name="ElementShortName">data_flag</obj_property>
+      <obj_property name="ObjectShortName">data_flag</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_pipeline_nd/char_tx_ins/fcc_flag" type="logic">
+      <obj_property name="ElementShortName">fcc_flag</obj_property>
+      <obj_property name="ObjectShortName">fcc_flag</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_pipeline_nd/char_tx_ins/char_out" type="array">
+      <obj_property name="ElementShortName">char_out[9:0]</obj_property>
+      <obj_property name="ObjectShortName">char_out[9:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_pipeline_nd/char_tx_ins/fcc_sent" type="logic">
+      <obj_property name="ElementShortName">fcc_sent</obj_property>
+      <obj_property name="ObjectShortName">fcc_sent</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider348">
+      <obj_property name="label">signal</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_pipeline_nd/signal_tx_ins/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_pipeline_nd/signal_tx_ins/rst_n" type="logic">
+      <obj_property name="ElementShortName">rst_n</obj_property>
+      <obj_property name="ObjectShortName">rst_n</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_pipeline_nd/signal_tx_ins/char_in" type="array">
+      <obj_property name="ElementShortName">char_in[9:0]</obj_property>
+      <obj_property name="ObjectShortName">char_in[9:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_pipeline_nd/signal_tx_ins/ld_txreg" type="logic">
+      <obj_property name="ElementShortName">ld_txreg</obj_property>
+      <obj_property name="ObjectShortName">ld_txreg</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_pipeline_nd/signal_tx_ins/data" type="logic">
+      <obj_property name="ElementShortName">data</obj_property>
+      <obj_property name="ObjectShortName">data</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_pipeline_nd/signal_tx_ins/strobe" type="logic">
+      <obj_property name="ElementShortName">strobe</obj_property>
+      <obj_property name="ObjectShortName">strobe</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_pipeline_nd/signal_tx_ins/st_temp" type="logic">
+      <obj_property name="ElementShortName">st_temp</obj_property>
+      <obj_property name="ObjectShortName">st_temp</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_pipeline_nd/signal_tx_ins/data_temp" type="logic">
+      <obj_property name="ElementShortName">data_temp</obj_property>
+      <obj_property name="ObjectShortName">data_temp</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_pipeline_nd/signal_tx_ins/char" type="array">
+      <obj_property name="ElementShortName">char[9:0]</obj_property>
+      <obj_property name="ObjectShortName">char[9:0]</obj_property>
+   </wvobject>
+</wave_config>

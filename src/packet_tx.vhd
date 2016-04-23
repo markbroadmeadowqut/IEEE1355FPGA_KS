@@ -28,16 +28,13 @@ entity packet_tx is
         sw          : in std_logic_vector(3 downto 0);
         btn         : in std_logic_vector(3 downto 0);                          
         req_pkt     : in std_logic;                         -- packet request flag 
-
         char_pkt    : out std_logic_vector(7 downto 0)    -- out register    
     );
 end packet_tx;
 
 architecture Behavioral of packet_tx is
                                                             -- dummy packet for test
-    signal data     : std_logic_vector(7 downto 0);
    
-    
 begin
 
     process (clk,rst_n,req_pkt)
@@ -47,15 +44,8 @@ begin
                 char_pkt    <= "00000000";                  
              else
                 if rising_edge(clk) and (req_pkt = '1') then
-                    data(0)     <= btn(0);
-                    data(1)     <= btn(1);
-                    data(2)     <= btn(2);
-                    data(3)     <= btn(3);
-                    data(4)     <= sw(0);
-                    data(5)     <= sw(1);
-                    data(6)     <= sw(2);
-                    data(7)     <= sw(3);
-                    char_pkt    <= data;                   
+                   char_pkt(3 downto 0)    <= btn;
+                   char_pkt(7 downto 4)    <= sw;                 
                 end if;
             end if;       
         end process;

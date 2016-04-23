@@ -4,8 +4,8 @@ set_property CFGBVS VCCO [current_design]
 
 
 ##Clock signal
-set_property -dict {PACKAGE_PIN E3 IOSTANDARD LVCMOS33} [get_ports CLK100MHZ]
-create_clock -period 10.000 -name clk_pad -waveform {0.000 5.000} -add [get_ports CLK100MHZ]
+set_property -dict {PACKAGE_PIN E3 IOSTANDARD LVCMOS33} [get_ports clk_pad]
+create_clock -period 10.000 -name clk_pad -waveform {0.000 5.000} -add [get_ports clk_pad]
 
 ##Resets
 set_property -dict {PACKAGE_PIN C2 IOSTANDARD LVCMOS33} [get_ports rst_n]
@@ -35,9 +35,9 @@ set_property -dict { PACKAGE_PIN H4    IOSTANDARD LVCMOS33 } [get_ports { ledb[2
 set_property -dict { PACKAGE_PIN K2    IOSTANDARD LVCMOS33 } [get_ports { ledb[3] }] 
 
 ##Pmod Header JA
-set_property -dict { PACKAGE_PIN G13   IOSTANDARD LVCMOS33 } [get_ports { ja[0] }] 
-set_property -dict { PACKAGE_PIN B11   IOSTANDARD LVCMOS33 } [get_ports { ja[1] }]
+set_property -dict { PACKAGE_PIN G13   IOSTANDARD LVCMOS33 } [get_ports { d_out }] 
+set_property -dict { PACKAGE_PIN B11   IOSTANDARD LVCMOS33 } [get_ports { s_out }]
 
 ##Pmod Header JD
-set_property -dict { PACKAGE_PIN D4    IOSTANDARD LVCMOS33 } [get_ports { jd[0] }] 
-set_property -dict { PACKAGE_PIN D3    IOSTANDARD LVCMOS33 } [get_ports { jd[1] }]
+set_property -dict { PACKAGE_PIN D4    IOSTANDARD LVCMOS33 } [get_ports { d_in }] 
+set_property -dict { PACKAGE_PIN D3    IOSTANDARD LVCMOS33 } [get_ports { s_in }]

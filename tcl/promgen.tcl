@@ -1,0 +1,1 @@
+write_cfgmem -force -format MCS -interface SPIx1 -size 16 -loadbit "up 0x0 node.bit" fpga_arty_spi_flash 
