@@ -1,10 +1,8 @@
-/IEEE1355FPGA_KS.cache
-/IEEE1355FPGA_KS.hw
-/IEEE1355FPGA_KS.ip_user_files
-/IEEE1355FPGA_KS.runs
-/IEEE1355FPGA_KS.sim
-/IEEE1355FPGA_KS.srcs
-
+/IEEE1355FPGA_*.cache
+/IEEE1355FPGA_*.hw
+/IEEE1355FPGA_*.ip_user_files
+/IEEE1355FPGA_*.runs
+/IEEE1355FPGA_*.sim
 
 vivado*
 webtalk*

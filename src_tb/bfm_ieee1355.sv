@@ -111,12 +111,12 @@ end
 endfunction
 
 function check_rx_char_parity;
-	input [3:0]		bits_to_check;
+	input [2:0]		bits_to_check;
 	input			parity_should_be;
 begin
 	//Return a 1 if CORRECT
 
-	if ( ( bits_to_check[3] ^ bits_to_check[2] ^ bits_to_check[1] ^ bits_to_check[0] ) == parity_should_be )
+	if ( ^bits_to_check == ~parity_should_be )
 	begin	
 		check_rx_char_parity	= 1'b1;		//All good 
 	end
@@ -136,8 +136,7 @@ function check_rx_data_parity;
 begin
 	//Return a 1 if CORRECT
 
-	if ( ( bits_to_check[8] ^ bits_to_check[7] ^ bits_to_check[6] ^ bits_to_check[5] ^ bits_to_check[4] ^ 
-		   bits_to_check[3] ^ bits_to_check[2] ^ bits_to_check[1] ^ bits_to_check[0] ) == parity_should_be )
+	if ( ^bits_to_check == ~parity_should_be )
 	begin		   
 		check_rx_data_parity	= 1'b1;		//All good 
 	end
@@ -332,7 +331,7 @@ endfunction
 								//At this point we have a CONTROL Char in rx_buffer[3:0]
 								//Calculate that Parity bit in rx_buffer[4] is correct for next character
 								//Data for check is in rx_buffer[3:1] and rx_buffer[5]
-									rx_parity_error			= ~check_rx_char_parity( {rx_buffer[3:1],rx_buffer[5]}, rx_buffer[4] );
+									rx_parity_error			= ~check_rx_char_parity( {rx_buffer[3:2],rx_buffer[5]}, rx_buffer[4] );
 						
 							end
 							else 
@@ -376,7 +375,7 @@ endfunction
 								//At this point we have a CONTROL Char in rx_buffer[3:0]
 								//Calculate that Parity bit in rx_buffer[4] is correct for next character
 								//Data for check is in rx_buffer[3:1] and rx_buffer[5]
-									rx_parity_error			= ~check_rx_char_parity( {rx_buffer[3:1],rx_buffer[5]}, rx_buffer[4] );								
+									rx_parity_error			= ~check_rx_char_parity( {rx_buffer[3:2],rx_buffer[5]}, rx_buffer[4] );								
 								
 								//TBD FCC must be in rx_buffer[7:4]
 								

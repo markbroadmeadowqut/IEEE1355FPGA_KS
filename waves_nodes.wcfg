@@ -11,11 +11,11 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="487089638fs"></ZoomStartTime>
-      <ZoomEndTime time="1683635927fs"></ZoomEndTime>
-      <Cursor1Time time="150704000000fs"></Cursor1Time>
+      <ZoomStartTime time="524534686fs"></ZoomStartTime>
+      <ZoomEndTime time="2230603726fs"></ZoomEndTime>
+      <Cursor1Time time="10000000000fs"></Cursor1Time>
    </zoom_setting>
-   <WVObjectSize size="42" />
+   <WVObjectSize size="46" />
    <wvobject db_ref_id="1" fp_name="/tb_fpga/error_count" type="array">
       <obj_property name="ElementShortName">error_count[31:0]</obj_property>
       <obj_property name="ObjectShortName">error_count[31:0]</obj_property>
@@ -84,9 +84,9 @@
       <obj_property name="label">Node 0</obj_property>
       <obj_property name="DisplayName">label</obj_property>
    </wvobject>
-   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/CLK100MHZ" type="logic">
-      <obj_property name="ElementShortName">CLK100MHZ</obj_property>
-      <obj_property name="ObjectShortName">CLK100MHZ</obj_property>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/clk_pad" type="logic">
+      <obj_property name="ElementShortName">clk_pad</obj_property>
+      <obj_property name="ObjectShortName">clk_pad</obj_property>
    </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/rst_n" type="logic">
       <obj_property name="ElementShortName">rst_n</obj_property>
@@ -100,6 +100,14 @@
       <obj_property name="ElementShortName">btn[3:0]</obj_property>
       <obj_property name="ObjectShortName">btn[3:0]</obj_property>
    </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/d_in" type="logic">
+      <obj_property name="ElementShortName">d_in</obj_property>
+      <obj_property name="ObjectShortName">d_in</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/s_in" type="logic">
+      <obj_property name="ElementShortName">s_in</obj_property>
+      <obj_property name="ObjectShortName">s_in</obj_property>
+   </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/led" type="array">
       <obj_property name="ElementShortName">led[3:0]</obj_property>
       <obj_property name="ObjectShortName">led[3:0]</obj_property>
@@ -107,6 +115,14 @@
    <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/ledb" type="array">
       <obj_property name="ElementShortName">ledb[3:0]</obj_property>
       <obj_property name="ObjectShortName">ledb[3:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/d_out" type="logic">
+      <obj_property name="ElementShortName">d_out</obj_property>
+      <obj_property name="ObjectShortName">d_out</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/s_out" type="logic">
+      <obj_property name="ElementShortName">s_out</obj_property>
+      <obj_property name="ObjectShortName">s_out</obj_property>
    </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/clk_tx" type="logic">
       <obj_property name="ElementShortName">clk_tx</obj_property>
@@ -120,25 +136,17 @@
       <obj_property name="ElementShortName">display[7:0]</obj_property>
       <obj_property name="ObjectShortName">display[7:0]</obj_property>
    </wvobject>
-   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/data" type="logic">
-      <obj_property name="ElementShortName">data</obj_property>
-      <obj_property name="ObjectShortName">data</obj_property>
-   </wvobject>
-   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/strobe" type="logic">
-      <obj_property name="ElementShortName">strobe</obj_property>
-      <obj_property name="ObjectShortName">strobe</obj_property>
-   </wvobject>
-   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/data_flag" type="logic">
-      <obj_property name="ElementShortName">data_flag</obj_property>
-      <obj_property name="ObjectShortName">data_flag</obj_property>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/char_width" type="other">
+      <obj_property name="ElementShortName">char_width</obj_property>
+      <obj_property name="ObjectShortName">char_width</obj_property>
    </wvobject>
    <wvobject type="divider" fp_name="divider29">
       <obj_property name="label">Node 1 </obj_property>
       <obj_property name="DisplayName">label</obj_property>
    </wvobject>
-   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_1/CLK100MHZ" type="logic">
-      <obj_property name="ElementShortName">CLK100MHZ</obj_property>
-      <obj_property name="ObjectShortName">CLK100MHZ</obj_property>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_1/clk_pad" type="logic">
+      <obj_property name="ElementShortName">clk_pad</obj_property>
+      <obj_property name="ObjectShortName">clk_pad</obj_property>
    </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/node_1/rst_n" type="logic">
       <obj_property name="ElementShortName">rst_n</obj_property>
@@ -152,6 +160,14 @@
       <obj_property name="ElementShortName">btn[3:0]</obj_property>
       <obj_property name="ObjectShortName">btn[3:0]</obj_property>
    </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_1/d_in" type="logic">
+      <obj_property name="ElementShortName">d_in</obj_property>
+      <obj_property name="ObjectShortName">d_in</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_1/s_in" type="logic">
+      <obj_property name="ElementShortName">s_in</obj_property>
+      <obj_property name="ObjectShortName">s_in</obj_property>
+   </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/node_1/led" type="array">
       <obj_property name="ElementShortName">led[3:0]</obj_property>
       <obj_property name="ObjectShortName">led[3:0]</obj_property>
@@ -159,6 +175,14 @@
    <wvobject db_ref_id="1" fp_name="/tb_fpga/node_1/ledb" type="array">
       <obj_property name="ElementShortName">ledb[3:0]</obj_property>
       <obj_property name="ObjectShortName">ledb[3:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_1/d_out" type="logic">
+      <obj_property name="ElementShortName">d_out</obj_property>
+      <obj_property name="ObjectShortName">d_out</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_1/s_out" type="logic">
+      <obj_property name="ElementShortName">s_out</obj_property>
+      <obj_property name="ObjectShortName">s_out</obj_property>
    </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/node_1/clk_tx" type="logic">
       <obj_property name="ElementShortName">clk_tx</obj_property>
@@ -172,16 +196,8 @@
       <obj_property name="ElementShortName">display[7:0]</obj_property>
       <obj_property name="ObjectShortName">display[7:0]</obj_property>
    </wvobject>
-   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_1/data" type="logic">
-      <obj_property name="ElementShortName">data</obj_property>
-      <obj_property name="ObjectShortName">data</obj_property>
-   </wvobject>
-   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_1/strobe" type="logic">
-      <obj_property name="ElementShortName">strobe</obj_property>
-      <obj_property name="ObjectShortName">strobe</obj_property>
-   </wvobject>
-   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_1/data_flag" type="logic">
-      <obj_property name="ElementShortName">data_flag</obj_property>
-      <obj_property name="ObjectShortName">data_flag</obj_property>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_1/char_width" type="other">
+      <obj_property name="ElementShortName">char_width</obj_property>
+      <obj_property name="ObjectShortName">char_width</obj_property>
    </wvobject>
 </wave_config>

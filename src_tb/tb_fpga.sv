@@ -36,8 +36,14 @@ module tb_fpga;
 
     node #() node_0
 	(	   
-		.CLK100MHZ		( clk_100 ),
+		.clk_pad		( clk_100 ),
 		.rst_n			( rst_n_0 ),
+		
+		.d_in			( D_1 ),
+		.s_in			( S_1 ),
+		.d_out			(),
+		.s_out			(),
+		
 		.sw				( sw_0 ),		//: in 		std_logic_vector(3 downto 0);	-- 4 switches on FPGA board	
 		.btn            ( btn_0 ),		//: in      std_logic_vector(3 downto 0);	-- 4 buttons on FPGA board		  
 		.led			( led_0 ),		//: out		std_logic_vector(3 downto 0);	-- 4 LEDs on FPGA board		
@@ -46,8 +52,14 @@ module tb_fpga;
 
     node #() node_1
 	(	   
-		.CLK100MHZ		( clk_100 ),
+		.clk_pad		( clk_100 ),
 		.rst_n			( rst_n_1 ),
+		
+		.d_in			(),
+		.s_in			(),		
+		.d_out			(),
+		.s_out			(),	
+		
 		.sw				( sw_1 ),		//: in 		std_logic_vector(3 downto 0);	-- 4 switches on FPGA board	
 		.btn            ( btn_1 ),		//: in      std_logic_vector(3 downto 0);	-- 4 buttons on FPGA board		  
 		.led			( led_1 ),		//: out		std_logic_vector(3 downto 0);	-- 4 LEDs on FPGA board		
