@@ -11,13 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="16472000002fs"></ZoomEndTime>
-      <Cursor1Time time="15000000000fs"></Cursor1Time>
+      <ZoomStartTime time="4517446000fs"></ZoomStartTime>
+      <ZoomEndTime time="6277446001fs"></ZoomEndTime>
+      <Cursor1Time time="5656803000fs"></Cursor1Time>
    </zoom_setting>
-   <WVObjectSize size="172" />
+   <WVObjectSize size="173" />
    <wave_markers>
-      <marker time="5160000000" label="" />
+      <marker time="5664000000" label="" />
+      <marker time="11568000000" label="" />
+      <marker time="12024000000" label="" />
    </wave_markers>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/error_count" type="array">
       <obj_property name="ElementShortName">error_count[31:0]</obj_property>
@@ -144,6 +146,10 @@
       <obj_property name="ElementShortName">tx_active</obj_property>
       <obj_property name="ObjectShortName">tx_active</obj_property>
    </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/tx_parity_carry" type="logic">
+      <obj_property name="ElementShortName">tx_parity_carry</obj_property>
+      <obj_property name="ObjectShortName">tx_parity_carry</obj_property>
+   </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/tx_parity" type="logic">
       <obj_property name="ElementShortName">tx_parity</obj_property>
       <obj_property name="ObjectShortName">tx_parity</obj_property>
@@ -187,6 +193,7 @@
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/tx_buffer" type="array">
       <obj_property name="ElementShortName">tx_buffer[9:0]</obj_property>
       <obj_property name="ObjectShortName">tx_buffer[9:0]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
    </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/tx_buffer_length" type="array">
       <obj_property name="ElementShortName">tx_buffer_length[31:0]</obj_property>

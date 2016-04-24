@@ -5,13 +5,7 @@
 //
 //--------------------------------------------------------------------------------
 
-//					  MSB->LSB			
-`define C_CHAR_NULL_1 3'b111	//All CHARs will need an additional parity bit as LSB
-`define C_CHAR_NULL_2 3'b001
-`define C_CHAR_EOP_1  3'b101
-`define C_CHAR_EOP_2  3'b011
-`define C_CHAR_ESC    3'b111
-`define C_CHAR_FCC    3'b001
+
 
 
 module bfm_ieee1355
@@ -31,6 +25,16 @@ module bfm_ieee1355
 		output reg	S_out
     );
 	
+//					            MSB->LSB			
+	const reg	[2:0]	C_CHAR_NULL_1 = 3'b111;		//All CHARs will need an additional parity bit as LSB
+	const reg	[2:0]	C_CHAR_NULL_2 = 3'b001;
+	const reg	[2:0]	C_CHAR_EOP_1  = 3'b101;
+	const reg	[2:0]	C_CHAR_EOP_2  = 3'b011;
+	const reg	[2:0]	C_CHAR_ESC    = 3'b111;
+	const reg	[2:0]	C_CHAR_FCC    = 3'b001;	
+	
+	
+	
 	reg     		clk;
 	reg     		clk_x4;
 	
@@ -49,6 +53,7 @@ module bfm_ieee1355
 	
 	reg				tx_active;
 	reg				tx_parity;
+	reg				tx_parity_carry;
 	reg				tx_next_must_be_control;
 	reg				tx_send_null_2;
 	reg				tx_send_data;
@@ -90,25 +95,6 @@ module bfm_ieee1355
 	wire  [G_FIFO_ADDR_WIDTH_BITS:0]   rx_fill_level;
 	
 	
-function calc_tx_parity;
-	input [2:0]		current_character;
-	input			is_next_control;
-begin
-	//Ignore current_character[0] as this is the control character including in the previous parity calc
-	//XOR with the generic G_LINK_PARITY_IS_ODD to make the parity of the link ODD or EVEN
-	calc_tx_parity = G_LINK_PARITY_IS_ODD ^ current_character[2] ^ current_character[1] ^ is_next_control;
-	
-end	
-endfunction
-
-function calc_tx_parity_data;
-	input [7:0]		data;
-	input			is_next_control;
-begin
-	//XOR with the generic G_LINK_PARITY_IS_ODD to make the parity of the link ODD or EVEN
-	calc_tx_parity_data	= G_LINK_PARITY_IS_ODD ^ data[7] ^ data[6] ^ data[5] ^ data[4] ^ data[3] ^ data[2] ^ data[1] ^ data[0] ^ is_next_control;	
-end	
-endfunction
 
 function check_rx_char_parity;
 	input [2:0]		bits_to_check;
@@ -124,7 +110,7 @@ begin
 	begin
 		check_rx_char_parity	= 1'b0;		//ERROR	
 		
-		$display ( "%gns %m PARITY ERROR IN CHAR", $time );		
+		$display ( "%gns %m PARITY ERROR IN CHAR %b %b", $time, bits_to_check, ~parity_should_be );		
 		inc_error_count();
 	end
 end
@@ -144,7 +130,7 @@ begin
 	begin	
 		check_rx_data_parity	= 1'b0;		//ERROR	
 		
-		$display ( "%gns %m PARITY ERROR IN DATA", $time );
+		$display ( "%gns %m PARITY ERROR IN DATA %b %b", $time, bits_to_check, ~parity_should_be );
 		inc_error_count();
 	end
 end
@@ -495,6 +481,7 @@ endfunction
 		if ( rst_n==1'b0 ) 
 		begin		
 			tx_parity 				<= 1'b0;
+			tx_parity_carry			<= 1'b0;
 		
 			tx_next_must_be_control	<= 1'b0;
 		
@@ -537,80 +524,82 @@ endfunction
 					if ( tx_send_null_2 == 1'b1 ) 
 					begin					
 						//HIGHEST PRIORITY as we have just done a NULL_1 so must finish with a NULL_2						
-						tx_parity				 = calc_tx_parity(`C_CHAR_NULL_2, ~tx_send_data );
+						tx_parity				 = G_LINK_PARITY_IS_ODD ^ tx_parity_carry ^ C_CHAR_NULL_2[0];
 						
-						tx_buffer[3:1]			<= `C_CHAR_NULL_2;
+						tx_buffer[3:1]			<= C_CHAR_NULL_2;
 						tx_buffer[0]			<= tx_parity;
 						tx_buffer_length		<= 4;			
 						tx_send_null_2			<= 1'b0;				
 						tx_next_must_be_control	<= 1'b0;
+						
+						tx_parity_carry			<= C_CHAR_NULL_2[2] ^ C_CHAR_NULL_2[1];
 					end
 					else if ( tx_send_data==1'b1 && tx_next_must_be_control==1'b0 )
 					begin
-						if ( tx_fill_count==1 )
-						begin
-							//Sending last data now
-							//Make the next sent a control character and calculate parity according
-							tx_next_must_be_control	<= 1'b0;
-							
-							tx_parity			= calc_tx_parity_data( tx_data, 1'b1 );
-						end
-						else
-						begin						
-							tx_parity			= calc_tx_parity_data( tx_data, 1'b0 );
-						end
-					
-					
-						//TBD
+						tx_parity				= G_LINK_PARITY_IS_ODD ^ tx_parity_carry ^ 1'b0;	
+						
 						tx_buffer[9:2]			<= tx_data;
 						tx_buffer[1]			<= 1'b0;		//always 0 for data
 						tx_buffer[0]			<= tx_parity;
 						tx_buffer_length		<= 10;	
 
 						tx_data_taken			<= 1'b1;	
+						
+						tx_parity_carry			<= ^tx_data;
 					end
 					else if ( tx_send_fcc==1'b1 )
 					begin
-						tx_parity				 = calc_tx_parity(`C_CHAR_FCC, ~tx_send_data );												
-						tx_buffer[3:1]			<= `C_CHAR_FCC;
+						tx_parity				 = G_LINK_PARITY_IS_ODD ^ tx_parity_carry ^ C_CHAR_FCC[0];												
+						tx_buffer[3:1]			<= C_CHAR_FCC;
 						tx_buffer[0]			<= tx_parity;
 						tx_buffer_length		<= 4;		
 						tx_next_must_be_control	<= 1'b0;
 						tx_send_fcc_done		<= 1'b1;				
+						
+						tx_parity_carry			<= C_CHAR_FCC[2] ^ C_CHAR_FCC[1];
 					end			
 					else if ( tx_send_esc==1'b1 )
 					begin
-						tx_parity				 = calc_tx_parity(`C_CHAR_ESC, ~tx_send_data );												
-						tx_buffer[3:1]			<= `C_CHAR_ESC;
+						tx_parity				 = G_LINK_PARITY_IS_ODD ^ tx_parity_carry ^ C_CHAR_ESC[0];
+						tx_buffer[3:1]			<= C_CHAR_ESC;
 						tx_buffer[0]			<= tx_parity;
 						tx_buffer_length		<= 4;								
 						tx_next_must_be_control	<= 1'b0;
+						
+						tx_parity_carry			<= C_CHAR_ESC[2] ^ C_CHAR_ESC[1];
 					end					
 					else if ( tx_send_eop1==1'b1 )
 					begin
-						tx_parity				 = calc_tx_parity(`C_CHAR_EOP_1, ~tx_send_data );												
-						tx_buffer[3:1]			<= `C_CHAR_EOP_1;
+						tx_parity				 = G_LINK_PARITY_IS_ODD ^ tx_parity_carry ^ C_CHAR_EOP_1[0];
+						tx_buffer[3:1]			<= C_CHAR_EOP_1;
 						tx_buffer[0]			<= tx_parity;
 						tx_buffer_length		<= 4;
 						tx_next_must_be_control	<= 1'b0;						
 						tx_send_eop_done		<= 1'b1;
+						
+						tx_parity_carry			<= C_CHAR_EOP_1[2] ^ C_CHAR_EOP_1[1];
 					end					
 					else if ( tx_send_eop2==1'b1 )
 					begin
-						tx_parity				 = calc_tx_parity(`C_CHAR_EOP_2, ~tx_send_data );												
-						tx_buffer[3:1]			<= `C_CHAR_EOP_2;
+						tx_parity				 = G_LINK_PARITY_IS_ODD ^ tx_parity_carry ^ C_CHAR_EOP_2[0];
+						tx_buffer[3:1]			<= C_CHAR_EOP_2;
 						tx_buffer[0]			<= tx_parity;
 						tx_buffer_length		<= 4;	
 						tx_next_must_be_control	<= 1'b0;
+						
+						tx_parity_carry			<= C_CHAR_EOP_2[2] ^ C_CHAR_EOP_2[1];
 					end					
 					else
 					begin
-						//Default send first four bits of NULL
-						tx_buffer[9:2]			<= 8'h00;				//Not needed but looks better in sim window
-						tx_buffer[3:1]			<= `C_CHAR_NULL_1;
+						//Default send first four bits of NULL												
+						tx_parity				 = G_LINK_PARITY_IS_ODD ^ tx_parity_carry ^ C_CHAR_NULL_1[0];
+						
+						tx_buffer[3:1]			<= C_CHAR_NULL_1;
 						tx_buffer[0]			<= tx_parity;
 						tx_buffer_length		<= 4;			
 						tx_send_null_2			<= 1'b1;
+						
+						tx_parity_carry			<= C_CHAR_NULL_1[2] ^ C_CHAR_NULL_1[1];
 					end 
 				
 				end
