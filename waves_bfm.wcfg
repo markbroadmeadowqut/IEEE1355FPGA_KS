@@ -11,20 +11,24 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="4517446000fs"></ZoomStartTime>
-      <ZoomEndTime time="6277446001fs"></ZoomEndTime>
-      <Cursor1Time time="5656803000fs"></Cursor1Time>
+      <ZoomStartTime time="0fs"></ZoomStartTime>
+      <ZoomEndTime time="22750000001fs"></ZoomEndTime>
+      <Cursor1Time time="10862000000fs"></Cursor1Time>
    </zoom_setting>
-   <WVObjectSize size="173" />
-   <wave_markers>
-      <marker time="5664000000" label="" />
-      <marker time="11568000000" label="" />
-      <marker time="12024000000" label="" />
-   </wave_markers>
+   <WVObjectSize size="175" />
    <wvobject db_ref_id="1" fp_name="/tb_fpga/error_count" type="array">
       <obj_property name="ElementShortName">error_count[31:0]</obj_property>
       <obj_property name="ObjectShortName">error_count[31:0]</obj_property>
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/test_length" type="array">
+      <obj_property name="ElementShortName">test_length[31:0]</obj_property>
+      <obj_property name="ObjectShortName">test_length[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/test_array" type="array">
+      <obj_property name="ElementShortName">test_array[0:63][7:0]</obj_property>
+      <obj_property name="ObjectShortName">test_array[0:63][7:0]</obj_property>
    </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/clk_100" type="logic">
       <obj_property name="ElementShortName">clk_100</obj_property>
@@ -193,7 +197,6 @@
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/tx_buffer" type="array">
       <obj_property name="ElementShortName">tx_buffer[9:0]</obj_property>
       <obj_property name="ObjectShortName">tx_buffer[9:0]</obj_property>
-      <obj_property name="isExpanded"></obj_property>
    </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/tx_buffer_length" type="array">
       <obj_property name="ElementShortName">tx_buffer_length[31:0]</obj_property>
@@ -214,10 +217,12 @@
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/tx_fill_level" type="array">
       <obj_property name="ElementShortName">tx_fill_level[6:0]</obj_property>
       <obj_property name="ObjectShortName">tx_fill_level[6:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/tx_fill_count" type="array">
       <obj_property name="ElementShortName">tx_fill_count[6:0]</obj_property>
       <obj_property name="ObjectShortName">tx_fill_count[6:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/state_rx" type="array">
       <obj_property name="ElementShortName">state_rx[31:0]</obj_property>
@@ -402,6 +407,7 @@
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/fifo_tx/r_addr" type="array">
       <obj_property name="ElementShortName">r_addr[31:0]</obj_property>
       <obj_property name="ObjectShortName">r_addr[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_0/fifo_tx/G_DATA_WIDTH_BITS" type="array">
       <obj_property name="ElementShortName">G_DATA_WIDTH_BITS[31:0]</obj_property>
@@ -652,6 +658,7 @@
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_1/fifo_rx/fill_level" type="array">
       <obj_property name="ElementShortName">fill_level[6:0]</obj_property>
       <obj_property name="ObjectShortName">fill_level[6:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/bfm_ieee1355_1/fifo_rx/fifo_array" type="array">
       <obj_property name="ElementShortName">fifo_array[0:63][7:0]</obj_property>

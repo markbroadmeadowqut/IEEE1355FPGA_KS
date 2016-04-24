@@ -11,11 +11,11 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="524534686fs"></ZoomStartTime>
-      <ZoomEndTime time="2230603726fs"></ZoomEndTime>
-      <Cursor1Time time="10000000000fs"></Cursor1Time>
+      <ZoomStartTime time="707797486fs"></ZoomStartTime>
+      <ZoomEndTime time="991624190fs"></ZoomEndTime>
+      <Cursor1Time time="760000000fs"></Cursor1Time>
    </zoom_setting>
-   <WVObjectSize size="46" />
+   <WVObjectSize size="82" />
    <wvobject db_ref_id="1" fp_name="/tb_fpga/error_count" type="array">
       <obj_property name="ElementShortName">error_count[31:0]</obj_property>
       <obj_property name="ObjectShortName">error_count[31:0]</obj_property>
@@ -139,6 +139,150 @@
    <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/char_width" type="other">
       <obj_property name="ElementShortName">char_width</obj_property>
       <obj_property name="ObjectShortName">char_width</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider230">
+      <obj_property name="label">RX PIPELINE 0</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/rst_n" type="logic">
+      <obj_property name="ElementShortName">rst_n</obj_property>
+      <obj_property name="ObjectShortName">rst_n</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/data" type="logic">
+      <obj_property name="ElementShortName">data</obj_property>
+      <obj_property name="ObjectShortName">data</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/strobe" type="logic">
+      <obj_property name="ElementShortName">strobe</obj_property>
+      <obj_property name="ObjectShortName">strobe</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/display" type="array">
+      <obj_property name="ElementShortName">display[7:0]</obj_property>
+      <obj_property name="ObjectShortName">display[7:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/pc_char" type="array">
+      <obj_property name="ElementShortName">pc_char[9:0]</obj_property>
+      <obj_property name="ObjectShortName">pc_char[9:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/char_rx" type="array">
+      <obj_property name="ElementShortName">char_rx[7:0]</obj_property>
+      <obj_property name="ObjectShortName">char_rx[7:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/dtct_null" type="logic">
+      <obj_property name="ElementShortName">dtct_null</obj_property>
+      <obj_property name="ObjectShortName">dtct_null</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/eop_rcvd" type="logic">
+      <obj_property name="ElementShortName">eop_rcvd</obj_property>
+      <obj_property name="ObjectShortName">eop_rcvd</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/char_rec" type="logic">
+      <obj_property name="ElementShortName">char_rec</obj_property>
+      <obj_property name="ObjectShortName">char_rec</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/null_dtcd" type="logic">
+      <obj_property name="ElementShortName">null_dtcd</obj_property>
+      <obj_property name="ObjectShortName">null_dtcd</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/time_out" type="logic">
+      <obj_property name="ElementShortName">time_out</obj_property>
+      <obj_property name="ObjectShortName">time_out</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/rcvg_data" type="logic">
+      <obj_property name="ElementShortName">rcvg_data</obj_property>
+      <obj_property name="ObjectShortName">rcvg_data</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/char_save" type="logic">
+      <obj_property name="ElementShortName">char_save</obj_property>
+      <obj_property name="ObjectShortName">char_save</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider245">
+      <obj_property name="label">SIGNAL RX 0</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/signal_rx_inst/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/signal_rx_inst/rst_n" type="logic">
+      <obj_property name="ElementShortName">rst_n</obj_property>
+      <obj_property name="ObjectShortName">rst_n</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/signal_rx_inst/data_in" type="logic">
+      <obj_property name="ElementShortName">data_in</obj_property>
+      <obj_property name="ObjectShortName">data_in</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/signal_rx_inst/strobe_in" type="logic">
+      <obj_property name="ElementShortName">strobe_in</obj_property>
+      <obj_property name="ObjectShortName">strobe_in</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/signal_rx_inst/dtct_null" type="logic">
+      <obj_property name="ElementShortName">dtct_null</obj_property>
+      <obj_property name="ObjectShortName">dtct_null</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/signal_rx_inst/eop_rcvd" type="logic">
+      <obj_property name="ElementShortName">eop_rcvd</obj_property>
+      <obj_property name="ObjectShortName">eop_rcvd</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/signal_rx_inst/pc_char" type="array">
+      <obj_property name="ElementShortName">pc_char[9:0]</obj_property>
+      <obj_property name="ObjectShortName">pc_char[9:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/signal_rx_inst/char_rec" type="logic">
+      <obj_property name="ElementShortName">char_rec</obj_property>
+      <obj_property name="ObjectShortName">char_rec</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/signal_rx_inst/null_dtcd" type="logic">
+      <obj_property name="ElementShortName">null_dtcd</obj_property>
+      <obj_property name="ObjectShortName">null_dtcd</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/signal_rx_inst/time_out" type="logic">
+      <obj_property name="ElementShortName">time_out</obj_property>
+      <obj_property name="ObjectShortName">time_out</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/signal_rx_inst/rcvg_data" type="logic">
+      <obj_property name="ElementShortName">rcvg_data</obj_property>
+      <obj_property name="ObjectShortName">rcvg_data</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/signal_rx_inst/d_ff1" type="logic">
+      <obj_property name="ElementShortName">d_ff1</obj_property>
+      <obj_property name="ObjectShortName">d_ff1</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/signal_rx_inst/d_ff2" type="logic">
+      <obj_property name="ElementShortName">d_ff2</obj_property>
+      <obj_property name="ObjectShortName">d_ff2</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/signal_rx_inst/s_ff1" type="logic">
+      <obj_property name="ElementShortName">s_ff1</obj_property>
+      <obj_property name="ObjectShortName">s_ff1</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/signal_rx_inst/s_ff2" type="logic">
+      <obj_property name="ElementShortName">s_ff2</obj_property>
+      <obj_property name="ObjectShortName">s_ff2</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/signal_rx_inst/s_latch" type="logic">
+      <obj_property name="ElementShortName">s_latch</obj_property>
+      <obj_property name="ObjectShortName">s_latch</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/signal_rx_inst/data" type="array">
+      <obj_property name="ElementShortName">data[9:0]</obj_property>
+      <obj_property name="ObjectShortName">data[9:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/signal_rx_inst/enable" type="logic">
+      <obj_property name="ElementShortName">enable</obj_property>
+      <obj_property name="ObjectShortName">enable</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/signal_rx_inst/cnt" type="array">
+      <obj_property name="ElementShortName">cnt[3:0]</obj_property>
+      <obj_property name="ObjectShortName">cnt[3:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_pipeline_nd/signal_rx_inst/timer" type="array">
+      <obj_property name="ElementShortName">timer[9:0]</obj_property>
+      <obj_property name="ObjectShortName">timer[9:0]</obj_property>
    </wvobject>
    <wvobject type="divider" fp_name="divider29">
       <obj_property name="label">Node 1 </obj_property>

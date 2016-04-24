@@ -3,6 +3,9 @@
 
 module tb_fpga;
     integer         error_count = 0;
+	
+	reg [7:0]		test_array [0:63];
+	integer			test_length;
 
 	reg 			clk_100;
 	
@@ -29,6 +32,16 @@ module tb_fpga;
 		error_count = error_count + 1;
 	end
 	endfunction
+	
+	function randomise_test_data;
+	begin
+		for (integer i = 0; i < 64; i = i +1) begin 
+			test_array[i]	= $urandom_range(255,0);
+		end
+		
+		test_length			= $urandom_range(63,0);
+	end
+	endfunction	
 
 //#################################################################################################	
 //FPGA
@@ -140,38 +153,46 @@ module tb_fpga;
 //#################################################################################################	
 	initial
 	begin
-		//wire [7:0]	byte_array [0:63];
+
 	
 		$display("TEST STARTED");
 		
 		#5000;
-
-		bfm_ieee1355_0.insert_tx_data( 8'b11100110 );
-		bfm_ieee1355_0.insert_tx_data( 8'b00101110 );	//These are the NULL codes
-		bfm_ieee1355_0.insert_tx_data( 8'b00101110 );	//Make sure interpreted as DATA not NULLS
-		bfm_ieee1355_0.insert_tx_data( 8'b00111110 );	
-		bfm_ieee1355_0.insert_tx_data( 8'b00111110 );	
+		$display ( "%gns TB : Sending 5 bytes (DATA=NULL)", $time );
+		bfm_ieee1355_0.fifo_tx.insert_w_data	( 8'b11100110 );
+		bfm_ieee1355_0.fifo_tx.insert_w_data	( 8'b00101110 );	//These are the NULL codes
+		bfm_ieee1355_0.fifo_tx.insert_w_data	( 8'b00101110 );	//Make sure interpreted as DATA not NULLS
+		bfm_ieee1355_0.fifo_tx.insert_w_data	( 8'b00111110 );	
+		bfm_ieee1355_0.fifo_tx.insert_w_data	( 8'b00111110 );	
 		bfm_ieee1355_0.fifo_tx.update_fill_level( 5 );		
 		
 		bfm_ieee1355_1.fifo_rx.wait_fill_level(5);	
+		bfm_ieee1355_1.fifo_rx.check_data		( 8'b11100110 );
+		bfm_ieee1355_1.fifo_rx.check_data		( 8'b00101110 );
+		bfm_ieee1355_1.fifo_rx.check_data		( 8'b00101110 );
+		bfm_ieee1355_1.fifo_rx.check_data		( 8'b00111110 );
+		bfm_ieee1355_1.fifo_rx.check_data		( 8'b00111110 );
 		#5000;
 		
-		bfm_ieee1355_0.insert_tx_data( 8'h00 );
-		bfm_ieee1355_0.insert_tx_data( 8'h55 );
-		bfm_ieee1355_0.insert_tx_data( 8'hC3 );		
-		bfm_ieee1355_0.insert_tx_data( 8'h89 );
-		bfm_ieee1355_0.insert_tx_data( 8'h72 );
-		bfm_ieee1355_0.insert_tx_data( 8'hFF );
-		bfm_ieee1355_0.fifo_tx.update_fill_level( 6 );
-		bfm_ieee1355_0.insert_tx_data( 8'h01 );
-		bfm_ieee1355_0.insert_tx_data( 8'h02 );
-		bfm_ieee1355_0.insert_tx_data( 8'h03 );		
-		bfm_ieee1355_0.fifo_tx.update_fill_level( 3 );
-		
-		bfm_ieee1355_1.fifo_rx.wait_fill_level(9);	
-		#5000;		
-		
-		
+		//Randomise data but force length to be 16
+		$display ( "%gns TB : Sending 16 bytes", $time );
+		randomise_test_data();
+		test_length = 16;
+		bfm_ieee1355_0.fifo_tx.insert_w_data_array( test_length, test_array );
+		//Wait for data and check it
+		bfm_ieee1355_1.fifo_rx.wait_fill_level	( test_length );
+		bfm_ieee1355_1.fifo_rx.check_data_array	( test_length, test_array );		
+		#1000;
+
+		//Randomise data but force length to be 64
+		$display ( "%gns TB : Sending 64 bytes", $time );
+		randomise_test_data();
+		test_length = 64;
+		bfm_ieee1355_0.fifo_tx.insert_w_data_array( test_length, test_array );
+		//Wait for data and check it
+		bfm_ieee1355_1.fifo_rx.wait_fill_level	( test_length );
+		bfm_ieee1355_1.fifo_rx.check_data_array	( test_length, test_array );		
+		#1000;		
 		
 		if ( error_count==0 ) $display("TEST PASSED");
 		else                  $display("TEST FAILED : %d ERRORS", error_count );

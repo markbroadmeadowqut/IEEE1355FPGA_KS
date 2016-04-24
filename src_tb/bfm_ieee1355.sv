@@ -728,8 +728,16 @@ endfunction
 				READY : 
 					begin
  
-						if ( rx_found_null == 1'b1 )	state_link	<= NULL_RECEIVED;
-						else 							state_link	<= STARTED;
+						if ( rx_found_null == 1'b1 )
+						begin
+														state_link	<= NULL_RECEIVED;
+														$display ( "%gns %m LINK STATE => NULL_RECEIVED", $time );		
+						end
+						else
+						begin							
+														state_link	<= STARTED;
+														$display ( "%gns %m LINK STATE => STARTED", $time );		
+						end
  
 					end
 					
@@ -737,7 +745,10 @@ endfunction
 					begin
 						tx_active	<= 1'b1;
 					
-						if ( rx_found_null == 1'b1 )	state_link	<= RUN;
+						if ( rx_found_null == 1'b1 )
+						begin							state_link	<= RUN;
+														$display ( "%gns %m LINK STATE => RUN", $time );
+						end
 					
 					end
 					
@@ -768,14 +779,6 @@ endfunction
 // TASKS
 //#################################################################################################	
 
-task insert_tx_data;
-	input [7:0]  	new_data;
-begin
-	$display ("%gns insert_tx_data : %h Data", $time, new_data);
-	
-	fifo_tx.insert_fifo_data ( new_data );
- end
- endtask
 
 
 endmodule
