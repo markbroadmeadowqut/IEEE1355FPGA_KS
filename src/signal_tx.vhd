@@ -57,13 +57,13 @@ begin
                 strobe      <= '0';
                 st_temp     <= '0';
                 data_temp   <= '0';
-                char        <= "0000000000";
+                char        <= (others => '0');
             else  
                 if rising_edge(clk)then
                     data_temp   <=  char(9);
                     data        <= data_temp;
-                    st_temp   <=  st_temp xor (data_temp xnor char(9));
-                    strobe    <=  st_temp;                     
+                    st_temp     <=  st_temp xor (data_temp xnor char(9));
+                    strobe      <=  st_temp;                     
                  
                     if (ld_txreg = '1') then            
                         char <= char_in;                -- load new char

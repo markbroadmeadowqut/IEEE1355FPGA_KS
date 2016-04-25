@@ -25,7 +25,9 @@ use IEEE.NUMERIC_STD.ALL;
 use work.bus_pkg.all;
 
 entity RX_pipeline is
-
+    generic(
+        char_width  : integer
+        );
     Port ( 
         clk         : in std_logic;
         rst_n       : in std_logic;
@@ -48,13 +50,17 @@ architecture Behavioral of RX_pipeline is
     signal pc_char      : std_logic_vector(9 downto 0);         -- char from signal_rx layer
     signal char_rx      : std_logic_vector(7 downto 0);         -- char from char_rx layer 
 	-- flags
- 
+    signal rd_parity        : std_logic;
+    signal rd_char_parity   : std_logic;
     
 
 begin
 
 signal_rx_inst: entity work.signal_rx           -- Instantiate receiver controller.
-        
+
+    generic map(
+        char_width      => char_width
+        )          
     port map (
         clk             => clk,
         rst_n           => rst_n,
@@ -62,17 +68,24 @@ signal_rx_inst: entity work.signal_rx           -- Instantiate receiver controll
         strobe_in       => strobe,
         dtct_null       => dtct_null,
         null_char       => ctrl_chars.null_char,
-        ctrl_chars      => ctrl_chars,     
+        ctrl_chars      => ctrl_chars,
+        rd_parity       => rd_parity,
+        rd_char_parity  => rd_char_parity,     
         pc_char         => pc_char,
         SigRxEx         => SigRxEx          
         );
 	   
 char_rx_ins: entity work.char_rx                -- instantiate character layer upstream
-                       
+
+    generic map(
+        char_width      => char_width
+        )                         
     port map ( 
         clk             => clk,
         rst_n           => rst_n,
         char_rcvd       => char_rcvd,
+        rd_parity       => rd_parity,
+        rd_char_parity  => rd_char_parity,
         pc_char         => pc_char,
         ctrl_chars      => ctrl_chars,
         char_rx         => char_rx,
@@ -80,7 +93,10 @@ char_rx_ins: entity work.char_rx                -- instantiate character layer u
         );    	
 	
 packet_rx_ins: entity work.packet_rx            -- instantiate packet layer upstream
-         
+
+    generic map(
+        char_width      => char_width
+        )          
     port map ( 
         clk             => clk,
         rst_n           => rst_n,

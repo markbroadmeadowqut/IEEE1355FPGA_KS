@@ -26,10 +26,15 @@ use IEEE.NUMERIC_STD.ALL;
 use work.bus_pkg.all;
 
 entity char_rx is
+    generic(
+        char_width  : integer
+        );
     Port ( 
         clk             : in std_logic;  
         rst_n 	        : in std_logic;
         char_rcvd       : in std_logic;
+        rd_parity       : in std_logic;
+        rd_char_parity  : in std_logic;
         pc_char         : in std_logic_vector(9 downto 0);
         ctrl_chars      : in control_chars;
         char_rx         : out std_logic_vector(7 downto 0);
@@ -58,10 +63,10 @@ begin
     process(clk,rst_n,char_rcvd)
         begin
             if (rst_n = '0') then
-                char_rx         <= "00000000";
+                char_rx         <= (others => '0');
                 CharRxEx        <= CharRxEx_rst;
                 char_parity     <= '0';
-                total_parity    <= '0';
+                total_parity    <= '1';
                 
             else
                 if rising_edge(clk) and (char_rcvd = '1') then
@@ -77,28 +82,31 @@ begin
     
                         if ( pc_char(8 downto 6) = ctrl_chars.eop_2 ) then
                             CharRxEx.eop2_rcvd   <=  '1';
-                        end if;                                        
-    
-                        if ( pc_char(8 downto 6) = ctrl_chars.esc ) then
-                            CharRxEx.esc_rcvd   <=  '1';
-                        end if;
+                        end if; 
                         
-                        if ( pc_char(8 downto 2) = ctrl_chars.null_char) then
-                            CharRxEx.null_rcvd   <=  '1';
+                        if ( pc_char(8 downto 6) = ctrl_chars.esc ) then
+                            if ( pc_char(8 downto 2) = ctrl_chars.null_char) then
+                                CharRxEx.null_rcvd   <=  '1';                                                      
+                            else
+                                CharRxEx.esc_rcvd   <=  '1';
+                            end if;                            
                         end if;
                     else    
                         char_rx  <=  pc_char(7 downto 0);                        
-                    end if;
-                    
-                    char_parity <= pc_char(7) xor pc_char(6) xor pc_char(5) xor pc_char(4) xor pc_char(3) xor pc_char(2) xor pc_char(1) xor pc_char(0); 
-                    total_parity <= char_parity xor pc_char(8) xor pc_char(9);
-                    
-                    if (total_parity = '0') then
-                        CharRxEx.parity_error <= '1';
-                    end if;  
-                          
+                    end if;      
                 end if;
-        
+                
+                if (rd_char_parity = '1') then 
+                    char_parity <= ((pc_char(7) xor pc_char(6)) xor (pc_char(5) xor pc_char(4))) xor ((pc_char(3) xor pc_char(2)) xor (pc_char(1) xor pc_char(0))); 
+                end if;
+
+                if (rd_parity = '1') then 
+                    total_parity <= char_parity xor pc_char(8) xor pc_char(9); 
+                end if;
+                                
+                if (total_parity = '0') then
+                    CharRxEx.parity_error <= '1';
+                end if;                 
             end if;      
         end process;
 end Behavioral;                  

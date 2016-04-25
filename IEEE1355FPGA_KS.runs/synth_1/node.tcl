@@ -4,6 +4,8 @@
 
 set_msg_config -id {HDL 9-1061} -limit 100000
 set_msg_config -id {HDL 9-1654} -limit 100000
+set_msg_config -id {Synth 8-256} -limit 10000
+set_msg_config -id {Synth 8-638} -limit 10000
 create_project -in_memory -part xc7a35ticsg324-1L
 
 set_param project.compositeFile.enableAutoGeneration 0
@@ -16,12 +18,12 @@ set_property board_part digilentinc.com:arty:part0:1.1 [current_project]
 set_property vhdl_version vhdl_2k [current_fileset]
 read_vhdl -library xil_defaultlib {
   C:/Github/IEEE1355FPGA_KS/src/bus_pkg.vhd
-  C:/Github/IEEE1355FPGA_KS/src/char_tx.vhd
   C:/Github/IEEE1355FPGA_KS/src/signal_tx.vhd
   C:/Github/IEEE1355FPGA_KS/src/packet_tx.vhd
   C:/Github/IEEE1355FPGA_KS/src/packet_rx.vhd
-  C:/Github/IEEE1355FPGA_KS/src/char_rx.vhd
   C:/Github/IEEE1355FPGA_KS/src/signal_rx.vhd
+  C:/Github/IEEE1355FPGA_KS/src/char_tx.vhd
+  C:/Github/IEEE1355FPGA_KS/src/char_rx.vhd
   C:/Github/IEEE1355FPGA_KS/src/TX_pipeline.vhd
   C:/Github/IEEE1355FPGA_KS/src/exchange_tx.vhd
   C:/Github/IEEE1355FPGA_KS/src/clk_prescaler.vhd

@@ -131,7 +131,10 @@ TX1_pipeline_nd: entity work.TX_pipeline            -- instantiate transmission 
         ); 
 	   
 RX1_pipeline_nd: entity work.RX_pipeline            -- instantiate receiver pipeline
-        
+
+    generic map(
+        char_width      => char_width
+        )          
     port map ( 
         clk         => clk_pad,                      
         rst_n       => rst_n,

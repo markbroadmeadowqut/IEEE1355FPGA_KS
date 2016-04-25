@@ -53,6 +53,7 @@ package bus_pkg is
         eop2_sent   : std_logic;            -- send eop2 from char_tx
         esc_sent    : std_logic;            -- send data from char_tx
         data_sent   : std_logic;            -- send data from char_tx
+        cnt_max     : std_logic_vector(3 downto 0);            -- send length of character being sent
     end record;    
     
     -- RX signal record for flags indicating status of signal

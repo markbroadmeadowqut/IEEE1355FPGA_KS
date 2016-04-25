@@ -36,6 +36,7 @@ entity char_tx is
         ExTx        : in ExTx_reg;
         ctrl_chars  : in control_chars;
         CharTxEx    : out CharTxEx_reg;
+        cnt_max     : out std_logic;
         char_out    : inout std_logic_vector(9 downto 0)
         );
         
@@ -49,17 +50,20 @@ constant CharTxEx_rst: CharTxEx_reg := (
     eop1_sent   => '0',             -- don't send fcc from char Tx layer
     eop2_sent   => '0',             -- don't send eop1 from char Tx layer
     esc_sent    => '0',             -- don't send eop2 from char Tx layer
-    data_sent   => '0'              -- don't send escape from char Tx layer
+    data_sent   => '0',             -- don't send escape from char Tx layer
+    cnt_max     => "0000"          -- max countdown value of null_char
     );
     
     signal prev_data_parity     : std_logic;
-        
+    signal cnt_max_delay        : std_logic_vector(3 downto 0); 
+           
 begin
     process(clk, rst_n)
         begin 
             if (rst_n = '0') then                  -- set char out to 0 if reset
-                char_out    <= "0000000000";
+                char_out    <= (others => '0');
                 CharTxEx    <= CharTxEx_rst; 
+                cnt_max_delay <= "0111";
                    
             else 
                 if rising_edge(clk) then
@@ -71,35 +75,42 @@ begin
                     end if;
                     
                     if (ExTx.ld_txreg = '1') then 
-                        prev_data_parity <= char_out(7) xor char_out(6) xor char_out(5) xor char_out(4) xor char_out(3) xor char_out(2) xor char_out(1) xor char_out(0);
+                        prev_data_parity <= ((char_out(7) xor char_out(6)) xor (char_out(5) xor char_out(4))) xor ((char_out(3) xor char_out(2)) xor (char_out(1) xor char_out(0)));
                     end if;
                     
                     if (ExTx.fcc_flag = '1') then
                         char_out(8 downto 6)  <= ctrl_chars.fcc;
-                        CharTxEx.fcc_sent <= '1';                        
+                        CharTxEx.fcc_sent <= '1'; 
+                        cnt_max_delay   <= "0011";                       
                     else 
                         if (ExTx.eop1_flag = '1') then
                             char_out(8 downto 6)  <= ctrl_chars.eop_1;
-                            CharTxEx.eop1_sent <= '1';                                               
+                            CharTxEx.eop1_sent <= '1'; 
+                            cnt_max_delay   <= "0011";                                              
                         else 
                             if (ExTx.eop2_flag = '1') then
                                 char_out(8 downto 6)  <= ctrl_chars.eop_2;
-                                CharTxEx.eop2_sent <= '1';                        
+                                CharTxEx.eop2_sent <= '1';
+                                cnt_max_delay   <= "0011";                        
                             else 
                                 if (ExTx.esc_flag = '1') then
                                     char_out(8 downto 6)  <= ctrl_chars.esc;
-                                    CharTxEx.esc_sent <= '1';                                                       
+                                    CharTxEx.esc_sent <= '1';  
+                                    cnt_max_delay   <= "0011";                                                     
                                 else 
                                     if (ExTx.data_flag = '1') then           -- send data
                                         char_out(7 downto 0) <= char_in;
                                         char_out(8) <= '0'; 
-                                        CharTxEx.data_sent <= '1';                     
+                                        CharTxEx.data_sent <= '1'; 
+                                        cnt_max_delay   <= "1001";                    
                                     else   
                                         char_out(8 downto 2)  <=  ctrl_chars.null_char;
+                                       cnt_max_delay   <= "0111";
                                     end if;          
                                 end if;
                             end if;
-                        end if;
+                            CharTxEx.cnt_max    <=  cnt_max_delay;
+                        end if;                        
                     end if; 
                 end if;  
             end if;                                
