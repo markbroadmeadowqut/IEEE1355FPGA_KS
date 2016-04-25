@@ -38,7 +38,7 @@ module bfm_ieee1355
 	reg     		clk;
 	reg     		clk_x4;
 	
-	typedef enum { READY, STARTED, NULL_RECEIVED, RUN } 		enum_link_sm;
+	typedef enum { READY, STARTED, NULL_RECEIVED, RUN, WAIT_IN_STOP, WAIT_OUT_STOP, ERROR_SEEN, ERROR_RESET, ERROR_WAIT } 		enum_link_sm;
 	enum_link_sm	state_link;
 
 	reg				D_in_edge;
@@ -760,7 +760,32 @@ endfunction
 				RUN :
 					begin
 					
-					end					
+					end		
+				
+				WAIT_IN_STOP :
+					begin
+					
+					end		
+					
+				WAIT_OUT_STOP :
+					begin
+					
+					end		
+					
+				ERROR_SEEN :
+					begin
+					
+					end		
+					
+				ERROR_RESET  :
+					begin
+					
+					end		
+					
+				ERROR_WAIT :
+					begin
+					
+					end		
 			endcase		
 	
 		end

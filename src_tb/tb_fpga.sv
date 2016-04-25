@@ -18,6 +18,8 @@ module tb_fpga;
 	reg 			S_1	;	
 	reg 			D_2	;
 	reg 			S_2	;		
+	reg 			D_3	;
+	reg 			S_3	;	
 	
 	reg 	[3:0]	sw_0;
 	reg 	[3:0]	btn_0;
@@ -72,8 +74,8 @@ module tb_fpga;
 		
 		.d_inA			( D_2 ),
 		.s_inA			( S_2 ),		
-		.d_outA			(),
-		.s_outA			(),	
+		.d_outA			( D_3 ),
+		.s_outA			( S_3 ),	
 		
 		.sw				( sw_1 ),		//: in 		std_logic_vector(3 downto 0);	-- 4 switches on FPGA board	
 		.btn            ( btn_1 ),		//: in      std_logic_vector(3 downto 0);	-- 4 buttons on FPGA board		  
@@ -115,6 +117,22 @@ module tb_fpga;
 		
 		.D_out				( D_0 ),
 		.S_out				( S_0 )
+    );	
+	
+	bfm_ieee1355	
+	#(
+		.G_LINK_PARITY_IS_ODD	(1),
+		.G_MAX_BIT_RATE_Mbs		(100)
+	)	
+	bfm_ieee1355_2
+	(  
+		.rst_n				( rst_n_1 ),
+
+		.D_in				( D_3 ),
+		.S_in				( S_3 ),
+		
+		.D_out				( ),
+		.S_out				( )
     );	
 	
 	
