@@ -19,15 +19,18 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
-
+    
 
 entity packet_tx is
+    generic (
+        char_width  : in integer
+        );
     Port ( 
         clk         : in std_logic;                       -- transmission clock        
         rst_n 	    : in std_logic;
         sw          : in std_logic_vector(3 downto 0);
         btn         : in std_logic_vector(3 downto 0);                          
-        req_pkt     : in std_logic;                         -- packet request flag 
+        req_pkt     : in std_logic;                         
         char_pkt    : out std_logic_vector(7 downto 0)    -- out register    
     );
 end packet_tx;
@@ -43,9 +46,9 @@ begin
              if (rst_n = '0') then                          -- reset all 
                 char_pkt    <= "00000000";                  
              else
-                if rising_edge(clk) and (req_pkt = '1') then
-                   char_pkt(3 downto 0)    <= btn;
-                   char_pkt(7 downto 4)    <= sw;                 
+                if rising_edge(clk) then--and (req_pkt = '1') then
+                    char_pkt(3 downto 0)    <= btn;
+                    char_pkt(7 downto 4)    <= sw;                 
                 end if;
             end if;       
         end process;

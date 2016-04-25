@@ -27,7 +27,9 @@ use IEEE.std_logic_unsigned.all;
 
 
 entity signal_tx is
-
+    generic (
+        char_width  : in integer
+        );
     Port ( 
         clk         : in std_logic;
         rst_n 	    : in std_logic;
@@ -67,8 +69,7 @@ begin
                         char <= char_in;                -- load new char
                     else
                         char(9 downto 1)  <=  char(8 downto 0);                                    
-                    end if;                             -- shift char in
-                      
+                    end if;                             -- shift char in                    
                 end if;
             end if;          
     end process;       

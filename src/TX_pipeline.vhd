@@ -22,6 +22,7 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
+use work.bus_pkg.all;
 
 entity TX_pipeline is
    
@@ -33,75 +34,61 @@ entity TX_pipeline is
         rst_n       : in std_logic;
         sw          : in std_logic_vector(3 downto 0);
         btn         : in std_logic_vector(3 downto 0);
+        ExTx        : in ExTx_reg;
+        ctrl_chars  : in control_chars;
         data        : out std_logic;
-        strobe      : out std_logic
+        strobe      : out std_logic;
+        CharTxEx    : out CharTxEx_reg
         );
         
 end TX_pipeline;
 
 architecture Behavioral of TX_pipeline is
 
+
     -- data signals
 	signal char_pkt     : std_logic_vector(7 downto 0);         -- char from packet_tx layer 
-	signal parity       : std_logic;
     signal pc_char      : std_logic_vector(9 downto 0);         -- char from char_tx layer	   
-    -- flags
-    signal req_pkt      : std_logic;                            --  1 = request char from packet_tx
-    signal data_flag    : std_logic;
-    signal fcc_flag     : std_logic;                            --  1 = send fcc (flow control token)
-    signal fcc_sent     : std_logic;                            --  1 = used to toggle fcc_flag back to 0 
-    signal ld_txreg     : std_logic;
-
+    
 begin
 
 packet_tx_ins: entity work.packet_tx            -- instantiate packet layer TX
-     
+    generic map (
+        char_width      => char_width
+        ) 
     port map ( 
         clk             => clk,
         rst_n           => rst_n,
         sw              => sw,
         btn             => btn, 
-        req_pkt         => req_pkt,       
+        req_pkt         => ExTx.req_pkt,      
         char_pkt        => char_pkt
         );           
-                
-Exchange_tx: entity work.exchange_tx            -- instantiate Ckl prescaler
-        
-    port map ( 
-        clk             => clk,                    
-        rst_n           => rst_n,
-        --        null_dtcd       => null_dtcd,
-        --        time_out        => time_out,
-        --        rcvg_data       => rcvg_data,
-        --        eop_rcvd        => eop_rcvd,
-        --        fcc_sent        => fcc_sent,                    
-        --        dtct_null       => dtct_null,
-        data_flag       => data_flag, 
-        ld_txreg        => ld_txreg,
-        req_pkt         => req_pkt,
-        fcc_flag        => fcc_flag
-        --        fcc_flag        => fcc_flag
-        );   
+ 
         
 char_tx_ins: entity work.char_tx                -- instantiate character layer TX
-                       
+    generic map (
+        char_width      => char_width
+        )                          
     port map ( 
         clk             => clk,
         rst_n           => rst_n,
         char_in         => char_pkt,
-        char_out        => pc_char,  
-        data_flag       => data_flag,
-        fcc_flag        => fcc_flag, 
-        fcc_sent        => fcc_sent
+        ExTx            => ExTx,
+        ctrl_chars      => ctrl_chars,
+        CharTxEx        => CharTxEx,
+        char_out        => pc_char  
         );            
 
 signal_tx_ins: entity work.signal_tx            -- instantiate signal layer TX
-             
+    generic map (
+        char_width      => char_width
+        )       
     port map ( 
         clk             => clk,
         rst_n           => rst_n,
         char_in         => pc_char,
-        ld_txreg        => ld_txreg,
+        ld_txreg        => ExTx.ld_txreg,
         data            => data,
         strobe          => strobe
         );   

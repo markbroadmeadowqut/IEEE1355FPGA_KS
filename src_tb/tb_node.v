@@ -25,25 +25,25 @@ module tb_node;
     reg             rst_n;
     reg     [3:0]   sw;
     reg     [3:0]   btn;
-    reg             d_in;
-    reg             s_in;
+    reg             d_inA;
+    reg             s_inA;
       
     wire    [3:0]   led;
     wire    [3:0]   ledb;
-    wire            d_out;
-    wire            s_out;
+    wire            d_outA;
+    wire            s_outA;
     
     node dut  (
         .clk_pad        ( clk ),
         .rst_n          ( rst_n ),
         .sw             ( sw ),
         .btn            ( btn ),
-        .d_in           ( d_in),
-        .s_in           ( s_in),
+        .d_inA           ( d_inA),
+        .s_inA           ( s_inA),
 		.led		    ( led ),
         .ledb           ( ledb ),
-        .d_out          ( d_out ),
-        .s_out          ( s_out )
+        .d_outA          ( d_outA ),
+        .s_outA          ( s_outA )
     );
     
    initial
@@ -54,8 +54,8 @@ module tb_node;
         #0      clk      = 1'b0;
         #0      sw       = {4{1'b0}};   
         #0      btn      = {4{1'b0}};
-        #0      d_in     = 1'b0;
-        #0      s_in     = 1'b0;
+        #0      d_inA    = 1'b0;
+        #0      s_inA    = 1'b0;
         
         #1      rst_n   = 1'b0;       
         #2      rst_n   = 1'b1;        
@@ -64,31 +64,24 @@ module tb_node;
     always
     begin
         #5      clk = !clk;
-        #1      d_in = d_out;
-        #1      s_in = s_out;
+        #1      d_inA = d_outA;
+        #1      s_inA = s_outA;
     end
     
     initial
     begin
         $display("TEST STARTED");
             
-        #4;
-        btn     = 1;
-        btn[2]  = 1;
-        sw[0]   = 1;
-        sw[2]   = 1;
-        #10;
-        
-        #40;
-        btn[0]  = 0;
-        btn[2]  = 0;
-        sw[0]   = 0;
-        sw[2]   = 0;        
-        btn[1]  = 1;
-        btn[3]  = 1;
-        sw[1]   = 1;
-        sw[3]   = 1;
-        #40; 
+        #20
+        sw      <= 4'b1010;
+        btn     <= 4'b1010;        
+        #200
+        sw      <= 4'b1100;
+        btn     <= 4'b1100;        
+        #200
+        sw      <= 4'b1100;        
+        btn     <= 4'b1110;
+        #200     
         
             
         //if ( error_count==0 ) $display("TEST PASSED");
