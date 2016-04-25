@@ -25,22 +25,18 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity packet_rx is
     Port ( 
-    clk            : in  std_logic;         -- recovered clock
-    
-    rst_n 	       : in  std_logic;
-    
-    char_in        : in  std_logic_vector(7 downto 0);    -- character received              
-     
+    clk            : in  std_logic;         -- recovered clock    
+    rst_n 	       : in  std_logic;    
+    char_in        : in  std_logic_vector(7 downto 0);    -- character received
     char_save      : in  std_logic;
-    
     display        : out std_logic_vector(7 downto 0)             
 );
+
 end packet_rx;
 
 architecture behavioral of packet_rx is
     
-    signal data_sv      : std_logic_vector(7 downto 0);
-    
+    signal data_sv      : std_logic_vector(7 downto 0);    
     
 begin
 

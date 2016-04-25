@@ -23,57 +23,80 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use IEEE.std_logic_unsigned.all;
+use work.bus_pkg.all;
 
 entity exchange_tx is
+
+    generic(
+        char_width  : integer
+        );
     Port ( 
         clk         : in std_logic;             -- receiver clock
         rst_n       : in std_logic;             -- reset
---        null_dtcd   : in std_logic;             -- null character detected by signal_rx
---        time_out    : in std_logic;             -- connection has timed out.  
---        rcvg_data   : in std_logic;             -- receiving data at signal_rx
---        eop_rcvd    : in std_logic;             -- end of packet received at signal_rx
---        fcc_sent    : in std_logic;             -- used to toggle fcc_flag.
---        dtct_null   : out std_logic;          -- detect null character at signal_rx
-        data_flag   : out std_logic;            -- send data from char_tx
-        ld_txreg    : out std_logic;
-        req_pkt     : out std_logic;
-        fcc_flag    : out std_logic            -- send fcc call
+        CharTxExA   : in CharTxEx_reg;          -- flags from Character TX pipeline A
+        SigRxExA    : in SigRxEx_reg;           -- flags from Signal RX pipeline A
+        CharRxExA   : in CharRxEx_reg;          -- flags from Char RX pipeline A
+        dtct_nullA  : out std_logic;            -- flag to detect null on link establish
+        char_rcvdA  : out std_logic;            -- flag to indicate char received by sig layaer
+        char_saveA  : out std_logic;            -- flag to save data to rx register in pkt layer
+        ExTxA       : out ExTx_reg              -- flags sent to TX pipeline
+        
         );
 end exchange_tx;
 
 architecture Behavioral of exchange_tx is
+
+    -- TX pipeline register reset
+    constant ExTx_rst: ExTx_reg := (
+        req_pkt     => '0',             -- don't request char from packet layer
+        fcc_flag    => '0',             -- don't send fcc from char Tx layer
+        eop1_flag  => '0',             -- don't send eop1 from char Tx layer
+        eop2_flag  => '0',             -- don't send eop2 from char Tx layer
+        esc_flag    => '0',             -- don't send escape from char Tx layer
+        data_flag   => '0',             -- don't send data from char_tx from char Tx layer
+        ld_txreg    => '0'              -- don't load character into signal_tx out reg
+        );
+   
 --    type state_type is (s0_ready, s1_null_sent, s2_null_rcvd, s3_rcvg_data, s4_error);
 --    signal state : state_type;
 
-    signal cnt      : integer range 9 downto 0;
+    signal cnt1      : integer range 9 downto 0;
 begin
 
-    process (clk,rst_n)
+    process (clk,rst_n,SigRxExA)
         begin
             if (rst_n = '0') then                          -- reset all 
-                data_flag   <= '0'; 
-                req_pkt     <= '0';
-                ld_txreg    <= '0';
-                cnt         <= 0; 
-                fcc_flag    <= '0';                        
+                ExTXA       <= ExTx_rst;
+                cnt1        <= 5; 
+                dtct_nullA  <= '1';
+                char_rcvdA  <= '0';
+                char_saveA  <= '0';
+                                        
             else
+                char_rcvdA  <= SigRxExA.char_rcvd;
+                
                 if rising_edge(clk) then
-                    cnt <= cnt + 1;
-                    data_flag <= '1';
-                    if (cnt >= 9) then
-                         cnt <= 0;    
+                    cnt1 <= cnt1 + 1;
+                    
+                    if  (SigRxExA.null_dtcd = '1') then
+                        ExTxA.data_flag <= '1';
+                        dtct_nullA <= '0';
+                    end if;
+                    
+                    if (cnt1 >= 9) then
+                         cnt1 <= 0;    
                     end if;  
                     
-                    if (cnt = 7) then      -- request a char from pkt
-                        req_pkt <= '1';
+                    if (cnt1 = 6) then      -- request a char from pkt
+                        ExTxA.req_pkt <= '1';
                     else
-                        req_pkt <= '0';
+                        ExTxA.req_pkt <= '0';
                     end if; 
                     
-                    if (cnt = 8) then      -- request a char from pkt
-                        ld_txreg <= '1';
+                    if (cnt1 = 8) then      -- request a char from pkt
+                        ExTxA.ld_txreg <= '1';
                     else
-                        ld_txreg <= '0';
+                        ExTxA.ld_txreg <= '0';
                     end if; 
                                                                 
                 end if;
