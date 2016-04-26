@@ -44,7 +44,7 @@ begin
        
         begin
              if (rst_n = '0') then                          -- reset all 
-                char_pkt    <= "00000000";                  
+                char_pkt    <= (others => '0');                  
              else
                 if rising_edge(clk) then--and (req_pkt = '1') then
                     char_pkt(3 downto 0)    <= btn;

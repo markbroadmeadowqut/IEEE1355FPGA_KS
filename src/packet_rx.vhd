@@ -22,8 +22,10 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
-
 entity packet_rx is
+    generic(
+        char_width  : integer
+        );
     Port ( 
     clk            : in  std_logic;         -- recovered clock    
     rst_n 	       : in  std_logic;    
@@ -43,13 +45,13 @@ begin
 process(clk,rst_n)  
     begin
         if (rst_n = '0') then
-            display <= "00000000";
-            data_sv <= "00000000";
+            display <= (others => '0');
+            data_sv <= (others => '0');
         else
              if rising_edge(clk) and (char_save = '1') then                 
                 data_sv <= char_in;
              end if;
-             display <= data_sv;  
+             display <= char_in;  
         end if;           
     end process;              
 end behavioral;

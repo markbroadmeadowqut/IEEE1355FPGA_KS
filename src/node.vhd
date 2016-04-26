@@ -24,12 +24,7 @@ use work.bus_pkg.all;
 
 entity node is
     generic ( 
-        char_width  : integer := 8;                               -- character width
-        fcc         : std_logic_vector(2 downto 0):=  "100";        -- control characters
-        eop_1       : std_logic_vector(2 downto 0):=  "101";
-        eop_2       : std_logic_vector(2 downto 0):=  "110";
-        esc         : std_logic_vector(2 downto 0):=  "111";
-        null_char   : std_logic_vector(6 downto 0):=  "1110100"         
+        char_width  : integer := 8                               -- character width       
     );
 
 	port (
@@ -51,15 +46,6 @@ end node;
 
 architecture RTL of node is
 
-    -- ctrl chars and char width
-    constant ctrl_chars : control_chars := (
-        fcc         => fcc,            
-        eop_1       => eop_1,
-        eop_2       => eop_2,
-        esc         => esc,
-        null_char   => null_char
-    );
-   
     -- clocks
 	signal clk_tx       : std_logic;                            -- transmitter clock
 	signal clk_rx       : std_logic;                            -- receiver clock
@@ -67,7 +53,7 @@ architecture RTL of node is
     signal display      : std_logic_vector(7 downto 0);         -- output to led's
     --flags
     signal ExTxA        : ExTx_reg;
-    signal CharTxExA    :CharTxEx_REG;
+    signal CharTxExA    : CharTxEx_REG;
     signal SigRxExA     : SigRxEx_reg;
     signal CharRxExA    : CharRxEx_reg;
     signal dtct_nullA   : std_logic;
@@ -124,14 +110,16 @@ TX1_pipeline_nd: entity work.TX_pipeline            -- instantiate transmission 
         sw          => sw,
         btn         => btn,
         ExTx        => ExTxA,
-        ctrl_chars  => ctrl_chars,
         data        => d_outA,
         strobe      => s_outA,
         CharTxEx    => CharTxExA       
         ); 
 	   
 RX1_pipeline_nd: entity work.RX_pipeline            -- instantiate receiver pipeline
-        
+
+    generic map(
+        char_width      => char_width
+        )          
     port map ( 
         clk         => clk_pad,                      
         rst_n       => rst_n,
@@ -140,7 +128,6 @@ RX1_pipeline_nd: entity work.RX_pipeline            -- instantiate receiver pipe
         dtct_null   => dtct_nullA,
         char_rcvd   => char_rcvdA,
         char_save   => char_saveA,
-        ctrl_chars  => ctrl_chars,
         SigRxEx     => SigRxExA,
         CharRxEx    => CharRxExA,
         display     => display     

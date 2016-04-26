@@ -2,8 +2,8 @@
 # Vivado v2015.4 (64-bit)
 # SW Build 1412921 on Wed Nov 18 09:43:45 MST 2015
 # IP Build 1412160 on Tue Nov 17 13:47:24 MST 2015
-# Start of session at: Mon Apr 25 06:22:35 2016
-# Process ID: 12052
+# Start of session at: Tue Apr 26 12:48:02 2016
+# Process ID: 13576
 # Current directory: C:/Github/IEEE1355FPGA_KS/IEEE1355FPGA_KS.runs/synth_1
 # Command line: vivado.exe -log node.vds -mode batch -messageDb vivado.pb -notrace -source node.tcl
 # Log file: C:/Github/IEEE1355FPGA_KS/IEEE1355FPGA_KS.runs/synth_1/node.vds
@@ -15,50 +15,55 @@ Starting synth_design
 Attempting to get a license for feature 'Synthesis' and/or device 'xc7a35ti'
 INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a35ti'
 ---------------------------------------------------------------------------------
-Starting RTL Elaboration : Time (s): cpu = 00:00:10 ; elapsed = 00:00:12 . Memory (MB): peak = 264.828 ; gain = 93.570
+Starting RTL Elaboration : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 264.336 ; gain = 93.230
 ---------------------------------------------------------------------------------
-INFO: [Synth 8-638] synthesizing module 'node' [C:/Github/IEEE1355FPGA_KS/src/node.vhd:52]
+INFO: [Synth 8-638] synthesizing module 'node' [C:/Github/IEEE1355FPGA_KS/src/node.vhd:47]
 	Parameter char_width bound to: 8 - type: integer 
-	Parameter fcc bound to: 3'b100 
-	Parameter eop_1 bound to: 3'b101 
-	Parameter eop_2 bound to: 3'b110 
-	Parameter esc bound to: 3'b111 
-	Parameter null_char bound to: 7'b1110100 
 INFO: [Synth 8-638] synthesizing module 'clk_prescaler' [C:/Github/IEEE1355FPGA_KS/src/clk_prescaler.vhd:32]
 	Parameter PRESCALER bound to: 1 - type: integer 
 INFO: [Synth 8-256] done synthesizing module 'clk_prescaler' (1#1) [C:/Github/IEEE1355FPGA_KS/src/clk_prescaler.vhd:32]
 INFO: [Synth 8-638] synthesizing module 'exchange_tx' [C:/Github/IEEE1355FPGA_KS/src/exchange_tx.vhd:47]
 	Parameter char_width bound to: 8 - type: integer 
 INFO: [Synth 8-256] done synthesizing module 'exchange_tx' (2#1) [C:/Github/IEEE1355FPGA_KS/src/exchange_tx.vhd:47]
-INFO: [Synth 8-638] synthesizing module 'TX_pipeline' [C:/Github/IEEE1355FPGA_KS/src/TX_pipeline.vhd:46]
+INFO: [Synth 8-638] synthesizing module 'TX_pipeline' [C:/Github/IEEE1355FPGA_KS/src/TX_pipeline.vhd:45]
 	Parameter char_width bound to: 8 - type: integer 
 INFO: [Synth 8-638] synthesizing module 'packet_tx' [C:/Github/IEEE1355FPGA_KS/src/packet_tx.vhd:38]
 	Parameter char_width bound to: 8 - type: integer 
 INFO: [Synth 8-256] done synthesizing module 'packet_tx' (3#1) [C:/Github/IEEE1355FPGA_KS/src/packet_tx.vhd:38]
 INFO: [Synth 8-638] synthesizing module 'char_tx' [C:/Github/IEEE1355FPGA_KS/src/char_tx.vhd:44]
 	Parameter char_width bound to: 8 - type: integer 
+WARNING: [Synth 8-3848] Net cnt_max in module/entity char_tx does not have driver. [C:/Github/IEEE1355FPGA_KS/src/char_tx.vhd:38]
 INFO: [Synth 8-256] done synthesizing module 'char_tx' (4#1) [C:/Github/IEEE1355FPGA_KS/src/char_tx.vhd:44]
 INFO: [Synth 8-638] synthesizing module 'signal_tx' [C:/Github/IEEE1355FPGA_KS/src/signal_tx.vhd:44]
 	Parameter char_width bound to: 8 - type: integer 
 INFO: [Synth 8-256] done synthesizing module 'signal_tx' (5#1) [C:/Github/IEEE1355FPGA_KS/src/signal_tx.vhd:44]
-INFO: [Synth 8-256] done synthesizing module 'TX_pipeline' (6#1) [C:/Github/IEEE1355FPGA_KS/src/TX_pipeline.vhd:46]
-INFO: [Synth 8-638] synthesizing module 'RX_pipeline' [C:/Github/IEEE1355FPGA_KS/src/RX_pipeline.vhd:45]
-INFO: [Synth 8-638] synthesizing module 'signal_rx' [C:/Github/IEEE1355FPGA_KS/src/signal_rx.vhd:42]
-WARNING: [Synth 8-614] signal 'd_ff2' is read in the process but is not in the sensitivity list [C:/Github/IEEE1355FPGA_KS/src/signal_rx.vhd:63]
-WARNING: [Synth 8-614] signal 's_ff2' is read in the process but is not in the sensitivity list [C:/Github/IEEE1355FPGA_KS/src/signal_rx.vhd:63]
-WARNING: [Synth 8-614] signal 'data' is read in the process but is not in the sensitivity list [C:/Github/IEEE1355FPGA_KS/src/signal_rx.vhd:63]
-WARNING: [Synth 8-614] signal 's_latch' is read in the process but is not in the sensitivity list [C:/Github/IEEE1355FPGA_KS/src/signal_rx.vhd:63]
-INFO: [Synth 8-256] done synthesizing module 'signal_rx' (7#1) [C:/Github/IEEE1355FPGA_KS/src/signal_rx.vhd:42]
-INFO: [Synth 8-638] synthesizing module 'char_rx' [C:/Github/IEEE1355FPGA_KS/src/char_rx.vhd:42]
-INFO: [Synth 8-256] done synthesizing module 'char_rx' (8#1) [C:/Github/IEEE1355FPGA_KS/src/char_rx.vhd:42]
-INFO: [Synth 8-638] synthesizing module 'packet_rx' [C:/Github/IEEE1355FPGA_KS/src/packet_rx.vhd:37]
-WARNING: [Synth 8-614] signal 'char_save' is read in the process but is not in the sensitivity list [C:/Github/IEEE1355FPGA_KS/src/packet_rx.vhd:43]
-WARNING: [Synth 8-614] signal 'data_sv' is read in the process but is not in the sensitivity list [C:/Github/IEEE1355FPGA_KS/src/packet_rx.vhd:43]
-INFO: [Synth 8-256] done synthesizing module 'packet_rx' (9#1) [C:/Github/IEEE1355FPGA_KS/src/packet_rx.vhd:37]
-INFO: [Synth 8-256] done synthesizing module 'RX_pipeline' (10#1) [C:/Github/IEEE1355FPGA_KS/src/RX_pipeline.vhd:45]
-INFO: [Synth 8-256] done synthesizing module 'node' (11#1) [C:/Github/IEEE1355FPGA_KS/src/node.vhd:52]
+INFO: [Synth 8-256] done synthesizing module 'TX_pipeline' (6#1) [C:/Github/IEEE1355FPGA_KS/src/TX_pipeline.vhd:45]
+INFO: [Synth 8-638] synthesizing module 'RX_pipeline' [C:/Github/IEEE1355FPGA_KS/src/RX_pipeline.vhd:46]
+	Parameter char_width bound to: 8 - type: integer 
+INFO: [Synth 8-638] synthesizing module 'signal_rx' [C:/Github/IEEE1355FPGA_KS/src/signal_rx.vhd:44]
+	Parameter char_width bound to: 8 - type: integer 
+WARNING: [Synth 8-614] signal 'd_ff2' is read in the process but is not in the sensitivity list [C:/Github/IEEE1355FPGA_KS/src/signal_rx.vhd:65]
+WARNING: [Synth 8-614] signal 's_ff2' is read in the process but is not in the sensitivity list [C:/Github/IEEE1355FPGA_KS/src/signal_rx.vhd:65]
+WARNING: [Synth 8-614] signal 'data' is read in the process but is not in the sensitivity list [C:/Github/IEEE1355FPGA_KS/src/signal_rx.vhd:65]
+WARNING: [Synth 8-614] signal 's_latch' is read in the process but is not in the sensitivity list [C:/Github/IEEE1355FPGA_KS/src/signal_rx.vhd:65]
+INFO: [Synth 8-256] done synthesizing module 'signal_rx' (7#1) [C:/Github/IEEE1355FPGA_KS/src/signal_rx.vhd:44]
+INFO: [Synth 8-638] synthesizing module 'char_rx' [C:/Github/IEEE1355FPGA_KS/src/char_rx.vhd:46]
+	Parameter char_width bound to: 8 - type: integer 
+WARNING: [Synth 8-614] signal 'rd_char_parity' is read in the process but is not in the sensitivity list [C:/Github/IEEE1355FPGA_KS/src/char_rx.vhd:62]
+WARNING: [Synth 8-614] signal 'pc_char' is read in the process but is not in the sensitivity list [C:/Github/IEEE1355FPGA_KS/src/char_rx.vhd:62]
+WARNING: [Synth 8-614] signal 'rd_parity' is read in the process but is not in the sensitivity list [C:/Github/IEEE1355FPGA_KS/src/char_rx.vhd:62]
+WARNING: [Synth 8-614] signal 'char_parity' is read in the process but is not in the sensitivity list [C:/Github/IEEE1355FPGA_KS/src/char_rx.vhd:62]
+WARNING: [Synth 8-614] signal 'total_parity' is read in the process but is not in the sensitivity list [C:/Github/IEEE1355FPGA_KS/src/char_rx.vhd:62]
+INFO: [Synth 8-256] done synthesizing module 'char_rx' (8#1) [C:/Github/IEEE1355FPGA_KS/src/char_rx.vhd:46]
+INFO: [Synth 8-638] synthesizing module 'packet_rx' [C:/Github/IEEE1355FPGA_KS/src/packet_rx.vhd:39]
+	Parameter char_width bound to: 8 - type: integer 
+WARNING: [Synth 8-614] signal 'char_save' is read in the process but is not in the sensitivity list [C:/Github/IEEE1355FPGA_KS/src/packet_rx.vhd:45]
+WARNING: [Synth 8-614] signal 'char_in' is read in the process but is not in the sensitivity list [C:/Github/IEEE1355FPGA_KS/src/packet_rx.vhd:45]
+INFO: [Synth 8-256] done synthesizing module 'packet_rx' (9#1) [C:/Github/IEEE1355FPGA_KS/src/packet_rx.vhd:39]
+INFO: [Synth 8-256] done synthesizing module 'RX_pipeline' (10#1) [C:/Github/IEEE1355FPGA_KS/src/RX_pipeline.vhd:46]
+INFO: [Synth 8-256] done synthesizing module 'node' (11#1) [C:/Github/IEEE1355FPGA_KS/src/node.vhd:47]
 ---------------------------------------------------------------------------------
-Finished RTL Elaboration : Time (s): cpu = 00:00:12 ; elapsed = 00:00:14 . Memory (MB): peak = 301.238 ; gain = 129.980
+Finished RTL Elaboration : Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 301.719 ; gain = 130.613
 ---------------------------------------------------------------------------------
 
 Report Check Netlist: 
@@ -68,7 +73,7 @@ Report Check Netlist:
 |1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
 +------+------------------+-------+---------+-------+------------------+
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:12 ; elapsed = 00:00:14 . Memory (MB): peak = 301.238 ; gain = 129.980
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 301.719 ; gain = 130.613
 ---------------------------------------------------------------------------------
 INFO: [Device 21-403] Loading part xc7a35ticsg324-1L
 INFO: [Project 1-570] Preparing netlist for logic optimization
@@ -84,28 +89,35 @@ Completed Processing XDC Constraints
 INFO: [Project 1-111] Unisim Transformation Summary:
 No Unisim elements were transformed.
 
-Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.016 . Memory (MB): peak = 585.387 ; gain = 0.000
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 585.688 ; gain = 0.000
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:00:27 ; elapsed = 00:00:30 . Memory (MB): peak = 585.387 ; gain = 414.129
+Finished Constraint Validation : Time (s): cpu = 00:00:12 ; elapsed = 00:00:12 . Memory (MB): peak = 585.688 ; gain = 414.582
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
 ---------------------------------------------------------------------------------
 Loading part: xc7a35ticsg324-1L
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:00:27 ; elapsed = 00:00:30 . Memory (MB): peak = 585.387 ; gain = 414.129
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:12 ; elapsed = 00:00:12 . Memory (MB): peak = 585.688 ; gain = 414.582
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Applying 'set_property' XDC Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:27 ; elapsed = 00:00:30 . Memory (MB): peak = 585.387 ; gain = 414.129
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:12 ; elapsed = 00:00:12 . Memory (MB): peak = 585.688 ; gain = 414.582
 ---------------------------------------------------------------------------------
-INFO: [Synth 8-5544] ROM "ExTxA[req_pkt]" won't be mapped to Block RAM because address size (4) smaller than threshold (5)
-INFO: [Synth 8-5544] ROM "ExTxA[ld_txreg]" won't be mapped to Block RAM because address size (4) smaller than threshold (5)
-WARNING: [Synth 8-327] inferring latch for variable 'ExTxA_reg[fcc_flag]' [C:/Github/IEEE1355FPGA_KS/src/exchange_tx.vhd:69]
+INFO: [Synth 8-5544] ROM "cnt_max_delay" won't be mapped to Block RAM because address size (1) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "CharRxEx[fcc_rcvd]" won't be mapped to Block RAM because address size (3) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "CharRxEx[eop1_rcvd]" won't be mapped to Block RAM because address size (3) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "CharRxEx[eop2_rcvd]" won't be mapped to Block RAM because address size (3) smaller than threshold (5)
+INFO: [Synth 8-5546] ROM "CharRxEx[esc_rcvd]" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "CharRxEx[null_rcvd]" won't be mapped to RAM because it is too sparse
+WARNING: [Synth 8-327] inferring latch for variable 'ExTxA_reg[fcc_flag]' [C:/Github/IEEE1355FPGA_KS/src/exchange_tx.vhd:70]
+WARNING: [Synth 8-327] inferring latch for variable 'CharRxEx_reg[parity_error]' [C:/Github/IEEE1355FPGA_KS/src/char_rx.vhd:66]
+WARNING: [Synth 8-327] inferring latch for variable 'total_parity_reg' [C:/Github/IEEE1355FPGA_KS/src/char_rx.vhd:68]
+WARNING: [Synth 8-327] inferring latch for variable 'char_parity_reg' [C:/Github/IEEE1355FPGA_KS/src/char_rx.vhd:67]
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:28 ; elapsed = 00:00:30 . Memory (MB): peak = 585.387 ; gain = 414.129
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:12 ; elapsed = 00:00:12 . Memory (MB): peak = 585.688 ; gain = 414.582
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -127,16 +139,19 @@ Detailed RTL Component Info :
 	   3 Input      1 Bit         XORs := 1     
 +---Registers : 
 	               10 Bit    Registers := 5     
-	                8 Bit    Registers := 3     
-	                4 Bit    Registers := 2     
-	                1 Bit    Registers := 31    
+	                8 Bit    Registers := 2     
+	                4 Bit    Registers := 4     
+	                1 Bit    Registers := 30    
 +---Muxes : 
-	   6 Input     10 Bit        Muxes := 2     
-	   2 Input     10 Bit        Muxes := 2     
+	   6 Input     10 Bit        Muxes := 1     
+	   2 Input     10 Bit        Muxes := 6     
+	   5 Input     10 Bit        Muxes := 1     
 	   2 Input      8 Bit        Muxes := 1     
-	   2 Input      4 Bit        Muxes := 4     
-	   3 Input      2 Bit        Muxes := 1     
-	   2 Input      1 Bit        Muxes := 2     
+	   2 Input      4 Bit        Muxes := 5     
+	   5 Input      4 Bit        Muxes := 1     
+	   3 Input      3 Bit        Muxes := 1     
+	   2 Input      1 Bit        Muxes := 3     
+	   3 Input      1 Bit        Muxes := 2     
 ---------------------------------------------------------------------------------
 Finished RTL Component Statistics 
 ---------------------------------------------------------------------------------
@@ -157,7 +172,6 @@ Detailed RTL Component Info :
 	                1 Bit    Registers := 4     
 +---Muxes : 
 	   2 Input      4 Bit        Muxes := 1     
-	   2 Input      1 Bit        Muxes := 2     
 Module packet_tx 
 Detailed RTL Component Info : 
 +---Registers : 
@@ -169,9 +183,12 @@ Detailed RTL Component Info :
 	   2 Input      1 Bit         XORs := 1     
 +---Registers : 
 	               10 Bit    Registers := 1     
+	                4 Bit    Registers := 2     
 	                1 Bit    Registers := 6     
 +---Muxes : 
 	   6 Input     10 Bit        Muxes := 1     
+	   2 Input      4 Bit        Muxes := 1     
+	   5 Input      4 Bit        Muxes := 1     
 Module signal_tx 
 Detailed RTL Component Info : 
 +---XORs : 
@@ -191,24 +208,25 @@ Detailed RTL Component Info :
 +---Registers : 
 	               10 Bit    Registers := 3     
 	                4 Bit    Registers := 1     
-	                1 Bit    Registers := 8     
+	                1 Bit    Registers := 10    
 +---Muxes : 
-	   6 Input     10 Bit        Muxes := 1     
-	   2 Input     10 Bit        Muxes := 1     
+	   2 Input     10 Bit        Muxes := 5     
+	   5 Input     10 Bit        Muxes := 1     
 	   2 Input      4 Bit        Muxes := 3     
-	   3 Input      2 Bit        Muxes := 1     
+	   3 Input      3 Bit        Muxes := 1     
 Module char_rx 
 Detailed RTL Component Info : 
 +---XORs : 
-	   8 Input      1 Bit         XORs := 1     
 	   3 Input      1 Bit         XORs := 1     
+	   8 Input      1 Bit         XORs := 1     
 +---Registers : 
 	                8 Bit    Registers := 1     
-	                1 Bit    Registers := 8     
+	                1 Bit    Registers := 5     
++---Muxes : 
+	   2 Input      1 Bit        Muxes := 3     
+	   3 Input      1 Bit        Muxes := 2     
 Module packet_rx 
 Detailed RTL Component Info : 
-+---Registers : 
-	                8 Bit    Registers := 1     
 +---Muxes : 
 	   2 Input      8 Bit        Muxes := 1     
 ---------------------------------------------------------------------------------
@@ -223,14 +241,14 @@ BRAMs: 100 (col length: RAMB18 60 RAMB36 30)
 ---------------------------------------------------------------------------------
 Finished Part Resource Summary
 ---------------------------------------------------------------------------------
-Start Parallel Synthesis Optimization  : Time (s): cpu = 00:00:28 ; elapsed = 00:00:31 . Memory (MB): peak = 585.387 ; gain = 414.129
+Start Parallel Synthesis Optimization  : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 585.688 ; gain = 414.582
 ---------------------------------------------------------------------------------
 Start Cross Boundary Optimization
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Cross Boundary Optimization : Time (s): cpu = 00:00:29 ; elapsed = 00:00:31 . Memory (MB): peak = 585.387 ; gain = 414.129
+Finished Cross Boundary Optimization : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 585.688 ; gain = 414.582
 ---------------------------------------------------------------------------------
-Finished Parallel Reinference  : Time (s): cpu = 00:00:29 ; elapsed = 00:00:31 . Memory (MB): peak = 585.387 ; gain = 414.129
+Finished Parallel Reinference  : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 585.688 ; gain = 414.582
 
 Report RTL Partitions: 
 +-+--------------+------------+----------+
@@ -240,9 +258,17 @@ Report RTL Partitions:
 ---------------------------------------------------------------------------------
 Start Area Optimization
 ---------------------------------------------------------------------------------
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\TX1_pipeline_nd/char_tx_ins/cnt_max_delay_reg[0] )
+WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/char_rx_ins/CharRxEx_reg[parity_error] ) is unused and will be removed from module node.
+WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/char_rx_ins/total_parity_reg ) is unused and will be removed from module node.
+WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/char_rx_ins/char_parity_reg ) is unused and will be removed from module node.
+WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/signal_rx_inst/data_reg[9] ) is unused and will be removed from module node.
+WARNING: [Synth 8-3332] Sequential element (\TX1_pipeline_nd/char_tx_ins/cnt_max_delay_reg[0] ) is unused and will be removed from module node.
 WARNING: [Synth 8-3332] Sequential element (\TX1_pipeline_nd/char_tx_ins/CharTxEx_reg[eop2_sent] ) is unused and will be removed from module node.
 WARNING: [Synth 8-3332] Sequential element (\TX1_pipeline_nd/char_tx_ins/CharTxEx_reg[esc_sent] ) is unused and will be removed from module node.
 WARNING: [Synth 8-3332] Sequential element (\TX1_pipeline_nd/char_tx_ins/CharTxEx_reg[data_sent] ) is unused and will be removed from module node.
+WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/signal_rx_inst/rd_parity_reg ) is unused and will be removed from module node.
+WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/signal_rx_inst/rd_char_parity_reg ) is unused and will be removed from module node.
 WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/signal_rx_inst/pc_char_reg[9] ) is unused and will be removed from module node.
 WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/signal_rx_inst/timer_reg[9] ) is unused and will be removed from module node.
 WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/signal_rx_inst/timer_reg[8] ) is unused and will be removed from module node.
@@ -254,52 +280,14 @@ WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/signal_rx_inst/time
 WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/signal_rx_inst/timer_reg[2] ) is unused and will be removed from module node.
 WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/signal_rx_inst/timer_reg[1] ) is unused and will be removed from module node.
 WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/signal_rx_inst/timer_reg[0] ) is unused and will be removed from module node.
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/char_rx_ins/char_parity_reg ) is unused and will be removed from module node.
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/char_rx_ins/total_parity_reg ) is unused and will be removed from module node.
-INFO: [Synth 8-3333] propagating constant 0 across sequential element (\RX1_pipeline_nd/packet_rx_ins/data_sv_reg[0] )
-INFO: [Synth 8-3333] propagating constant 0 across sequential element (\RX1_pipeline_nd/packet_rx_ins/data_sv_reg[1] )
-INFO: [Synth 8-3333] propagating constant 0 across sequential element (\RX1_pipeline_nd/packet_rx_ins/data_sv_reg[2] )
-INFO: [Synth 8-3333] propagating constant 0 across sequential element (\RX1_pipeline_nd/packet_rx_ins/data_sv_reg[3] )
-INFO: [Synth 8-3333] propagating constant 0 across sequential element (\RX1_pipeline_nd/packet_rx_ins/data_sv_reg[4] )
-INFO: [Synth 8-3333] propagating constant 0 across sequential element (\RX1_pipeline_nd/packet_rx_ins/data_sv_reg[5] )
-INFO: [Synth 8-3333] propagating constant 0 across sequential element (\RX1_pipeline_nd/packet_rx_ins/data_sv_reg[6] )
-INFO: [Synth 8-3333] propagating constant 0 across sequential element (\RX1_pipeline_nd/packet_rx_ins/data_sv_reg[7] )
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/signal_rx_inst/data_reg[9] ) is unused and will be removed from module node.
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/signal_rx_inst/data_reg[8] ) is unused and will be removed from module node.
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/signal_rx_inst/cnt_reg[3] ) is unused and will be removed from module node.
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/signal_rx_inst/cnt_reg[2] ) is unused and will be removed from module node.
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/signal_rx_inst/cnt_reg[1] ) is unused and will be removed from module node.
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/signal_rx_inst/cnt_reg[0] ) is unused and will be removed from module node.
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/signal_rx_inst/pc_char_reg[8] ) is unused and will be removed from module node.
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/signal_rx_inst/pc_char_reg[7] ) is unused and will be removed from module node.
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/signal_rx_inst/pc_char_reg[6] ) is unused and will be removed from module node.
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/signal_rx_inst/pc_char_reg[5] ) is unused and will be removed from module node.
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/signal_rx_inst/pc_char_reg[4] ) is unused and will be removed from module node.
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/signal_rx_inst/pc_char_reg[3] ) is unused and will be removed from module node.
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/signal_rx_inst/pc_char_reg[2] ) is unused and will be removed from module node.
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/signal_rx_inst/pc_char_reg[1] ) is unused and will be removed from module node.
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/signal_rx_inst/pc_char_reg[0] ) is unused and will be removed from module node.
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/signal_rx_inst/SigRxEx_reg[char_rcvd] ) is unused and will be removed from module node.
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/char_rx_ins/char_rx_reg[7] ) is unused and will be removed from module node.
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/char_rx_ins/char_rx_reg[6] ) is unused and will be removed from module node.
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/char_rx_ins/char_rx_reg[5] ) is unused and will be removed from module node.
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/char_rx_ins/char_rx_reg[4] ) is unused and will be removed from module node.
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/char_rx_ins/char_rx_reg[3] ) is unused and will be removed from module node.
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/char_rx_ins/char_rx_reg[2] ) is unused and will be removed from module node.
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/char_rx_ins/char_rx_reg[1] ) is unused and will be removed from module node.
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/char_rx_ins/char_rx_reg[0] ) is unused and will be removed from module node.
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/packet_rx_ins/data_sv_reg[7] ) is unused and will be removed from module node.
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/packet_rx_ins/data_sv_reg[6] ) is unused and will be removed from module node.
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/packet_rx_ins/data_sv_reg[5] ) is unused and will be removed from module node.
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/packet_rx_ins/data_sv_reg[4] ) is unused and will be removed from module node.
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/packet_rx_ins/data_sv_reg[3] ) is unused and will be removed from module node.
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/packet_rx_ins/data_sv_reg[2] ) is unused and will be removed from module node.
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/packet_rx_ins/data_sv_reg[1] ) is unused and will be removed from module node.
-WARNING: [Synth 8-3332] Sequential element (\RX1_pipeline_nd/packet_rx_ins/data_sv_reg[0] ) is unused and will be removed from module node.
+INFO: [Synth 8-3886] merging instance '\TX1_pipeline_nd/char_tx_ins/cnt_max_delay_reg[2] ' (FDP) to '\TX1_pipeline_nd/char_tx_ins/cnt_max_delay_reg[1] '
+INFO: [Synth 8-3886] merging instance '\TX1_pipeline_nd/char_tx_ins/CharTxEx_reg[cnt_max][2] ' (FDCE) to '\TX1_pipeline_nd/char_tx_ins/CharTxEx_reg[cnt_max][1] '
+WARNING: [Synth 8-3332] Sequential element (\TX1_pipeline_nd/char_tx_ins/cnt_max_delay_reg[2] ) is unused and will be removed from module node.
+WARNING: [Synth 8-3332] Sequential element (\TX1_pipeline_nd/char_tx_ins/CharTxEx_reg[cnt_max][2] ) is unused and will be removed from module node.
 ---------------------------------------------------------------------------------
-Finished Area Optimization : Time (s): cpu = 00:00:29 ; elapsed = 00:00:32 . Memory (MB): peak = 585.387 ; gain = 414.129
+Finished Area Optimization : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 585.688 ; gain = 414.582
 ---------------------------------------------------------------------------------
-Finished Parallel Area Optimization  : Time (s): cpu = 00:00:29 ; elapsed = 00:00:32 . Memory (MB): peak = 585.387 ; gain = 414.129
+Finished Parallel Area Optimization  : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 585.688 ; gain = 414.582
 
 Report RTL Partitions: 
 +-+--------------+------------+----------+
@@ -313,10 +301,10 @@ Start Timing Optimization
 Start Applying XDC Timing Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:52 ; elapsed = 00:00:54 . Memory (MB): peak = 585.387 ; gain = 414.129
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:21 ; elapsed = 00:00:22 . Memory (MB): peak = 585.688 ; gain = 414.582
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:00:52 ; elapsed = 00:00:54 . Memory (MB): peak = 585.387 ; gain = 414.129
+Finished Timing Optimization : Time (s): cpu = 00:00:21 ; elapsed = 00:00:22 . Memory (MB): peak = 585.688 ; gain = 414.582
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -328,16 +316,16 @@ Report RTL Partitions:
 Start Technology Mapping
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:00:52 ; elapsed = 00:00:54 . Memory (MB): peak = 585.387 ; gain = 414.129
+Finished Technology Mapping : Time (s): cpu = 00:00:21 ; elapsed = 00:00:22 . Memory (MB): peak = 585.688 ; gain = 414.582
 ---------------------------------------------------------------------------------
-Finished Parallel Technology Mapping Optimization  : Time (s): cpu = 00:00:52 ; elapsed = 00:00:54 . Memory (MB): peak = 585.387 ; gain = 414.129
+Finished Parallel Technology Mapping Optimization  : Time (s): cpu = 00:00:21 ; elapsed = 00:00:22 . Memory (MB): peak = 585.688 ; gain = 414.582
 
 Report RTL Partitions: 
 +-+--------------+------------+----------+
 | |RTL Partition |Replication |Instances |
 +-+--------------+------------+----------+
 +-+--------------+------------+----------+
-Finished Parallel Synthesis Optimization  : Time (s): cpu = 00:00:52 ; elapsed = 00:00:54 . Memory (MB): peak = 585.387 ; gain = 414.129
+Finished Parallel Synthesis Optimization  : Time (s): cpu = 00:00:21 ; elapsed = 00:00:22 . Memory (MB): peak = 585.688 ; gain = 414.582
 ---------------------------------------------------------------------------------
 Start IO Insertion
 ---------------------------------------------------------------------------------
@@ -354,7 +342,7 @@ Start Final Netlist Cleanup
 Finished Final Netlist Cleanup
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:00:53 ; elapsed = 00:00:56 . Memory (MB): peak = 585.387 ; gain = 414.129
+Finished IO Insertion : Time (s): cpu = 00:00:22 ; elapsed = 00:00:23 . Memory (MB): peak = 585.688 ; gain = 414.582
 ---------------------------------------------------------------------------------
 
 Report Check Netlist: 
@@ -367,7 +355,7 @@ Report Check Netlist:
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:00:53 ; elapsed = 00:00:56 . Memory (MB): peak = 585.387 ; gain = 414.129
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:22 ; elapsed = 00:00:23 . Memory (MB): peak = 585.688 ; gain = 414.582
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -379,25 +367,25 @@ Report RTL Partitions:
 Start Rebuilding User Hierarchy
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:53 ; elapsed = 00:00:56 . Memory (MB): peak = 585.387 ; gain = 414.129
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:22 ; elapsed = 00:00:23 . Memory (MB): peak = 585.688 ; gain = 414.582
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Ports
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Ports : Time (s): cpu = 00:00:53 ; elapsed = 00:00:56 . Memory (MB): peak = 585.387 ; gain = 414.129
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:22 ; elapsed = 00:00:23 . Memory (MB): peak = 585.688 ; gain = 414.582
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:53 ; elapsed = 00:00:56 . Memory (MB): peak = 585.387 ; gain = 414.129
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:22 ; elapsed = 00:00:23 . Memory (MB): peak = 585.688 ; gain = 414.582
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Nets
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Nets : Time (s): cpu = 00:00:53 ; elapsed = 00:00:56 . Memory (MB): peak = 585.387 ; gain = 414.129
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:22 ; elapsed = 00:00:23 . Memory (MB): peak = 585.688 ; gain = 414.582
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Writing Synthesis Report
@@ -415,37 +403,39 @@ Report Cell Usage:
 +------+-----+------+
 |1     |BUFG |     2|
 |2     |LUT1 |     3|
-|3     |LUT2 |     9|
+|3     |LUT2 |    18|
 |4     |LUT3 |    15|
-|5     |LUT4 |     7|
-|6     |LUT5 |     3|
-|7     |FDCE |    51|
-|8     |FDPE |     3|
-|9     |FDRE |     1|
-|10    |IBUF |    12|
-|11    |OBUF |    10|
+|5     |LUT4 |    11|
+|6     |LUT5 |    11|
+|7     |LUT6 |     5|
+|8     |FDCE |    79|
+|9     |FDPE |     3|
+|10    |FDRE |     1|
+|11    |IBUF |    12|
+|12    |OBUF |    10|
 +------+-----+------+
 
 Report Instance Areas: 
 +------+-------------------+--------------+------+
 |      |Instance           |Module        |Cells |
 +------+-------------------+--------------+------+
-|1     |top                |              |   116|
+|1     |top                |              |   170|
 |2     |  Exchange_tx      |exchange_tx   |    13|
-|3     |  RX1_pipeline_nd  |RX_pipeline   |    20|
-|4     |    signal_rx_inst |signal_rx     |    20|
-|5     |  TX1_pipeline_nd  |TX_pipeline   |    57|
-|6     |    char_tx_ins    |char_tx       |    26|
-|7     |    packet_tx_ins  |packet_tx     |    14|
-|8     |    signal_tx_ins  |signal_tx     |    17|
-|9     |  TX_clock         |clk_prescaler |     2|
+|3     |  RX1_pipeline_nd  |RX_pipeline   |    70|
+|4     |    char_rx_ins    |char_rx       |    16|
+|5     |    signal_rx_inst |signal_rx     |    54|
+|6     |  TX1_pipeline_nd  |TX_pipeline   |    61|
+|7     |    char_tx_ins    |char_tx       |    31|
+|8     |    packet_tx_ins  |packet_tx     |    14|
+|9     |    signal_tx_ins  |signal_tx     |    16|
+|10    |  TX_clock         |clk_prescaler |     2|
 +------+-------------------+--------------+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:00:53 ; elapsed = 00:00:56 . Memory (MB): peak = 585.387 ; gain = 414.129
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:22 ; elapsed = 00:00:23 . Memory (MB): peak = 585.688 ; gain = 414.582
 ---------------------------------------------------------------------------------
-Synthesis finished with 0 errors, 0 critical warnings and 49 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:00:32 ; elapsed = 00:00:42 . Memory (MB): peak = 585.387 ; gain = 109.461
-Synthesis Optimization Complete : Time (s): cpu = 00:00:53 ; elapsed = 00:00:56 . Memory (MB): peak = 585.387 ; gain = 414.129
+Synthesis finished with 0 errors, 0 critical warnings and 27 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:13 ; elapsed = 00:00:17 . Memory (MB): peak = 585.688 ; gain = 110.461
+Synthesis Optimization Complete : Time (s): cpu = 00:00:22 ; elapsed = 00:00:23 . Memory (MB): peak = 585.688 ; gain = 414.582
 INFO: [Project 1-571] Translating synthesized netlist
 INFO: [Netlist 29-17] Analyzing 12 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
@@ -455,8 +445,8 @@ INFO: [Project 1-111] Unisim Transformation Summary:
 No Unisim elements were transformed.
 
 INFO: [Common 17-83] Releasing license: Synthesis
-44 Infos, 55 Warnings, 0 Critical Warnings and 0 Errors encountered.
+43 Infos, 39 Warnings, 0 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:00:51 ; elapsed = 00:00:53 . Memory (MB): peak = 585.387 ; gain = 398.285
-report_utilization: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.031 . Memory (MB): peak = 585.387 ; gain = 0.000
-INFO: [Common 17-206] Exiting Vivado at Mon Apr 25 06:23:34 2016...
+synth_design: Time (s): cpu = 00:00:21 ; elapsed = 00:00:22 . Memory (MB): peak = 585.688 ; gain = 398.711
+report_utilization: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.016 . Memory (MB): peak = 585.688 ; gain = 0.000
+INFO: [Common 17-206] Exiting Vivado at Tue Apr 26 12:48:26 2016...

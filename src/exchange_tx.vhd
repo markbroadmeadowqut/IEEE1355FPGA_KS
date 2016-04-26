@@ -50,8 +50,8 @@ architecture Behavioral of exchange_tx is
     constant ExTx_rst: ExTx_reg := (
         req_pkt     => '0',             -- don't request char from packet layer
         fcc_flag    => '0',             -- don't send fcc from char Tx layer
-        eop1_flag  => '0',             -- don't send eop1 from char Tx layer
-        eop2_flag  => '0',             -- don't send eop2 from char Tx layer
+        eop1_flag   => '0',             -- don't send eop1 from char Tx layer
+        eop2_flag   => '0',             -- don't send eop2 from char Tx layer
         esc_flag    => '0',             -- don't send escape from char Tx layer
         data_flag   => '0',             -- don't send data from char_tx from char Tx layer
         ld_txreg    => '0'              -- don't load character into signal_tx out reg
@@ -60,40 +60,41 @@ architecture Behavioral of exchange_tx is
 --    type state_type is (s0_ready, s1_null_sent, s2_null_rcvd, s3_rcvg_data, s4_error);
 --    signal state : state_type;
 
-    signal cnt1      : integer range 9 downto 0;
+    signal cnt1         : std_logic_vector(3 downto 0);
+    
 begin
 
     process (clk,rst_n,SigRxExA)
         begin
             if (rst_n = '0') then                          -- reset all 
                 ExTXA       <= ExTx_rst;
-                cnt1        <= 5; 
+                cnt1        <= "0100"; 
                 dtct_nullA  <= '1';
                 char_rcvdA  <= '0';
                 char_saveA  <= '0';
-                                        
+                
             else
                 char_rcvdA  <= SigRxExA.char_rcvd;
                 
                 if rising_edge(clk) then
-                    cnt1 <= cnt1 + 1;
+                    cnt1 <= cnt1 - '1';
                     
                     if  (SigRxExA.null_dtcd = '1') then
                         ExTxA.data_flag <= '1';
                         dtct_nullA <= '0';
                     end if;
                     
-                    if (cnt1 >= 9) then
-                         cnt1 <= 0;    
+                    if (cnt1 = 0) then
+                         cnt1 <= CharTxExA.cnt_max ;    
                     end if;  
                     
-                    if (cnt1 = 6) then      -- request a char from pkt
+                    if (cnt1 = 3) then      -- request a char from pkt
                         ExTxA.req_pkt <= '1';
                     else
                         ExTxA.req_pkt <= '0';
                     end if; 
                     
-                    if (cnt1 = 8) then      -- request a char from pkt
+                    if (cnt1 = 1) then      -- request a char from pkt
                         ExTxA.ld_txreg <= '1';
                     else
                         ExTxA.ld_txreg <= '0';

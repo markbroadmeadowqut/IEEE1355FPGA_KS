@@ -72,18 +72,22 @@ module tb_node;
     begin
         $display("TEST STARTED");
             
-        #20
+        #400
         sw      <= 4'b1010;
         btn     <= 4'b1010;        
-        #200
+        #300
         sw      <= 4'b1100;
         btn     <= 4'b1100;        
-        #200
-        sw      <= 4'b1100;        
+        #300
+        sw      <= 4'b1110;        
         btn     <= 4'b1110;
-        #200     
-        
-            
+        #300     
+        sw      <= 4'b0011;        
+        btn     <= 4'b0011;
+        #300        
+        sw      <= 4'b0101;        
+        btn     <= 4'b0101;
+        #300           
         //if ( error_count==0 ) $display("TEST PASSED");
         //else                  $display("TEST FAILED : %d ERRORS", error_count );
           
