@@ -51,7 +51,7 @@ process(clk,rst_n)
              if rising_edge(clk) and (char_save = '1') then                 
                 data_sv <= char_in;
              end if;
-             display <= data_sv;  
+             display <= char_in;  
         end if;           
     end process;              
 end behavioral;
