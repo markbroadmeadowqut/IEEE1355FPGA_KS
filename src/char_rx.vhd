@@ -56,7 +56,8 @@ architecture Behavioral of char_rx is
         );
         
     signal char_parity      : std_logic; 
-    signal total_parity     : std_logic;     
+    signal total_parity     : std_logic; 
+    signal half_null_dtcd   : std_logic;    
     
 begin
     process(clk,rst_n,char_rcvd)
@@ -72,26 +73,32 @@ begin
                     if (pc_char(8) = '1') then
                     
                         if ( pc_char(8 downto 6) = C_CHAR_FCC ) then
-                            CharRxEx.fcc_rcvd   <=  '1';  
-                        end if;
-                            
-                        if ( pc_char(8 downto 6) = C_CHAR_EOP1 ) then
-                            CharRxEx.eop1_rcvd   <=  '1'; 
-                        end if;
-    
-                        if ( pc_char(8 downto 6) = C_CHAR_EOP2 ) then
-                            CharRxEx.eop2_rcvd   <=  '1';
-                        end if; 
-                        
-                        if ( pc_char(8 downto 6) = C_CHAR_ESC ) then
-                            if ( pc_char(8 downto 2) = C_CHAR_NULL) then
-                                CharRxEx.null_rcvd   <=  '1';                                                      
+                            if ( half_null_dtcd = '1') then
+                                CharRxEx.null_rcvd   <=  '1'; 
+                                half_null_dtcd      <= '0';                                                     
                             else
-                                CharRxEx.esc_rcvd   <=  '1';
-                            end if;                            
-                        end if;
+                                CharRxEx.fcc_rcvd   <=  '1'; 
+                            end if;   
+                        else
+                            if ( pc_char(8 downto 6) = C_CHAR_ESC ) then
+                                half_null_dtcd  <=  '1';                         
+                            else
+                                if ( pc_char(8 downto 6) = C_CHAR_EOP1 ) then
+                                    CharRxEx.eop1_rcvd   <=  '1'; 
+                                end if;
+        
+                                if ( pc_char(8 downto 6) = C_CHAR_EOP2 ) then
+                                    CharRxEx.eop2_rcvd   <=  '1';
+                                end if; 
+                            
+                                if (half_null_dtcd = '1') then 
+                                     CharRxEx.esc_rcvd   <=  '1';
+                                     half_null_dtcd      <=  '0';
+                                end if;
+                            end if;       
+                        end if;    
                     else    
-                        char_rx  <=  pc_char(7 downto 0);                        
+                        char_rx  <=  pc_char(0)& pc_char(1)& pc_char(2)& pc_char(3)& pc_char(4)& pc_char(5)& pc_char(6)& pc_char(7);                  
                     end if;      
                 end if;
                 
