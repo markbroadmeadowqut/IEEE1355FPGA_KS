@@ -34,8 +34,6 @@ entity signal_rx is
         data_in         : in  std_logic;         -- data vit in               
         strobe_in       : in  std_logic;         -- strobe in on upstream connection.        
         dtct_null       : in  std_logic;          -- implement detection of a null character on in stream 
-        null_char       : in  std_logic_vector(6 downto 0); 
-        ctrl_chars      : in  control_chars;  
         rd_parity       : out std_logic;
         rd_char_parity  : out std_logic;  
         pc_char         : out std_logic_vector(9 downto 0);    -- 10 bit rx character          
@@ -93,27 +91,22 @@ begin
                         data(0)    <=  d_ff2;
                         data(9 downto 1) <= data(8 downto 0);
                         s_latch <=  s_ff2;
-                        cnt <= cnt + 1;
+                       -- cnt <= cnt + 1;
                         timer <= (others => '0');
                         
                         if (dtct_null = '1') then
-                            if (data(7 downto 1) = null_char) then
-                                cnt <= "1001";
+                            if (data(8 downto 2) = C_CHAR_NULL) then
+                                cnt <= "0110";
                                 SigRxEx.null_dtcd <= '1';
-                                pc_char(9)  <= '1';                               
+                                pc_char(9)  <= '0';                               
                             end if;     
                         else
+                            cnt <= cnt + 1;
                             if (cnt = 9) then                      
                                 if (data(8) = '1') then                                 -- detect control char
-                                    if (data(8 downto 2) = ctrl_chars.null_char) then   -- detect null char
-                                        pc_char(9 downto 2) <= data(9 downto 2);
-                                        SigRxEx.char_rcvd <= '1';
-                                        cnt <= "0010";
-                                    else
-                                        pc_char(9 downto 6) <= data(9 downto 6);        --detect all other control chars
-                                        SigRxEx.char_rcvd <= '1';
-                                        cnt <= "0101";
-                                    end if;
+                                    pc_char(9 downto 6) <= data(9 downto 6);        
+                                    SigRxEx.char_rcvd <= '1';
+                                    cnt <= "0110";
                                 else
                                     pc_char <= data;                                    -- detect data char
                                     SigRxEx.char_rcvd <= '1';
@@ -132,7 +125,8 @@ begin
                                 rd_char_parity <='1';    
                             else    
                                 rd_char_parity <='0';
-                            end if;                        end if; 
+                            end if;                        
+                        end if; 
                     else
                         timer <= timer+1;
                         if (timer >= "1111111100") then

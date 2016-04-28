@@ -35,7 +35,6 @@ entity TX_pipeline is
         sw          : in std_logic_vector(3 downto 0);
         btn         : in std_logic_vector(3 downto 0);
         ExTx        : in ExTx_reg;
-        ctrl_chars  : in control_chars;
         data        : out std_logic;
         strobe      : out std_logic;
         CharTxEx    : out CharTxEx_reg
@@ -75,7 +74,6 @@ char_tx_ins: entity work.char_tx                -- instantiate character layer T
         rst_n           => rst_n,
         char_in         => char_pkt,
         ExTx            => ExTx,
-        ctrl_chars      => ctrl_chars,
         CharTxEx        => CharTxEx,
         char_out        => pc_char  
         );            

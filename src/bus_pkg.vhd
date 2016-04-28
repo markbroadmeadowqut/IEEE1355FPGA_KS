@@ -25,15 +25,11 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 package bus_pkg is
 
-    -- Control character format for comparrison of incoming signals and establishing control signals
-    type control_chars is record
-        fcc            : std_logic_vector(2 downto 0);
-        eop_1          : std_logic_vector(2 downto 0);
-        eop_2          : std_logic_vector(2 downto 0);
-        esc            : std_logic_vector(2 downto 0);
-        null_char      : std_logic_vector(6 downto 0);
-    end record;    
-    
+    constant C_CHAR_FCC     : std_logic_vector(2 downto 0) := "100";
+    constant C_CHAR_EOP1    : std_logic_vector(2 downto 0) := "101";
+    constant C_CHAR_EOP2    : std_logic_vector(2 downto 0) := "110";
+    constant C_CHAR_ESC     : std_logic_vector(2 downto 0) := "111";
+    constant C_CHAR_NULL    : std_logic_vector(6 downto 0) := "1110100";
 
     -- Exchange layer record for flags to control TX pipeline
     type ExTx_reg is record
