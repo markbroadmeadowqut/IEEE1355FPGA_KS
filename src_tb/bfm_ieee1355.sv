@@ -40,6 +40,9 @@ module bfm_ieee1355
 	
 	typedef enum { READY, STARTED, NULL_RECEIVED, RUN, WAIT_IN_STOP, WAIT_OUT_STOP, ERROR_SEEN, ERROR_RESET, ERROR_WAIT } 		enum_link_sm;
 	enum_link_sm	state_link;
+	
+	reg 			go_link_STARTED;
+	reg 			go_link_RUN;
 
 	reg				D_in_edge;
 	reg				S_in_edge;
@@ -63,6 +66,9 @@ module bfm_ieee1355
 	reg				tx_send_eop2;	
 	reg				tx_send_eop_done;
 	reg				tx_send_fcc_done;
+	
+	reg				tx_inject_parity_error_control;
+	reg				tx_inject_parity_error_data;
 
 	reg 	[9:0]	tx_buffer;
 	integer 		tx_buffer_length;
@@ -94,6 +100,9 @@ module bfm_ieee1355
 	reg 	    	rx_data_valid;
 	wire  [G_FIFO_ADDR_WIDTH_BITS:0]   rx_fill_level;
 	
+	
+	integer			timer;
+	reg				reset_timer;
 	
 
 function check_rx_char_parity;
@@ -142,8 +151,8 @@ endfunction
 // Need a clock more than 2.5 times the bit rate, in this case 4 times
 // Need a clock at the bit rate for transmit
 //#################################################################################################
-    integer         bit_freq_ns   		= (1000/G_MAX_BIT_RATE_Mbs);
-	integer         bit_freq_sample_ns  = bit_freq_ns/4;
+    real            bit_freq_ns   		= (1000/G_MAX_BIT_RATE_Mbs);
+	real            bit_freq_sample_ns  = bit_freq_ns/4;
 
 	initial
 	begin
@@ -176,8 +185,10 @@ endfunction
 				count	= 0;
 				clk 	= !clk;
 			end 
-			
-			count 		= count + 1;
+			else
+			begin
+				count	= count + 1;
+			end
 		end		
 	end
 
@@ -322,15 +333,19 @@ endfunction
 							end
 							else 
 							begin
-								rx_data        			<= rx_buffer[9:2];
-								rx_data_valid  			<= 1'b1;						
-								reset_rx_bit_count 		= 1'b1;
-
 								//Check DATA parity
 								//At this point we have a byte of data in rx_buffer[9:2]
 								//Calculate that Parity bit in rx_buffer[10] is correct for next character
 								//Data for check is in rx_buffer[9:2] and rx_buffer[11]								
-								rx_parity_error			= ~check_rx_data_parity( {rx_buffer[9:2],rx_buffer[11]}, rx_buffer[10] );
+								rx_parity_error			= ~check_rx_data_parity( {rx_buffer[9:2],rx_buffer[11]}, rx_buffer[10] );							
+
+								if (rx_parity_error == 1'b0 )
+								begin
+									rx_data        		<= rx_buffer[9:2];
+									rx_data_valid  		<= 1'b1;															
+								end
+								
+								reset_rx_bit_count		= 1'b1;
 								
 								state_rx				<= RX_DATA;
 							end
@@ -498,6 +513,9 @@ endfunction
 			tx_buffer_length		<= 4;
 			
 			tx_data_taken			<= 1'b0;
+			
+			tx_inject_parity_error_control	<= 1'b0;
+			tx_inject_parity_error_data		<= 1'b0;
 		end
 
 		else if ( clk==1'b1 )
@@ -524,7 +542,7 @@ endfunction
 					if ( tx_send_null_2 == 1'b1 ) 
 					begin					
 						//HIGHEST PRIORITY as we have just done a NULL_1 so must finish with a NULL_2						
-						tx_parity				 = G_LINK_PARITY_IS_ODD ^ tx_parity_carry ^ C_CHAR_NULL_2[0];
+						tx_parity				 = G_LINK_PARITY_IS_ODD ^ tx_parity_carry ^ C_CHAR_NULL_2[0] ^ tx_inject_parity_error_control;
 						
 						tx_buffer[3:1]			<= C_CHAR_NULL_2;
 						tx_buffer[0]			<= tx_parity;
@@ -536,7 +554,7 @@ endfunction
 					end
 					else if ( tx_send_data==1'b1 && tx_next_must_be_control==1'b0 )
 					begin
-						tx_parity				= G_LINK_PARITY_IS_ODD ^ tx_parity_carry ^ 1'b0;	
+						tx_parity				= G_LINK_PARITY_IS_ODD ^ tx_parity_carry ^ 1'b0 ^ tx_inject_parity_error_data;	
 						
 						tx_buffer[9:2]			<= tx_data;
 						tx_buffer[1]			<= 1'b0;		//always 0 for data
@@ -549,7 +567,7 @@ endfunction
 					end
 					else if ( tx_send_fcc==1'b1 )
 					begin
-						tx_parity				 = G_LINK_PARITY_IS_ODD ^ tx_parity_carry ^ C_CHAR_FCC[0];												
+						tx_parity				 = G_LINK_PARITY_IS_ODD ^ tx_parity_carry ^ C_CHAR_FCC[0] ^ tx_inject_parity_error_control;												
 						tx_buffer[3:1]			<= C_CHAR_FCC;
 						tx_buffer[0]			<= tx_parity;
 						tx_buffer_length		<= 4;		
@@ -560,7 +578,7 @@ endfunction
 					end			
 					else if ( tx_send_esc==1'b1 )
 					begin
-						tx_parity				 = G_LINK_PARITY_IS_ODD ^ tx_parity_carry ^ C_CHAR_ESC[0];
+						tx_parity				 = G_LINK_PARITY_IS_ODD ^ tx_parity_carry ^ C_CHAR_ESC[0] ^ tx_inject_parity_error_control;
 						tx_buffer[3:1]			<= C_CHAR_ESC;
 						tx_buffer[0]			<= tx_parity;
 						tx_buffer_length		<= 4;								
@@ -570,7 +588,7 @@ endfunction
 					end					
 					else if ( tx_send_eop1==1'b1 )
 					begin
-						tx_parity				 = G_LINK_PARITY_IS_ODD ^ tx_parity_carry ^ C_CHAR_EOP_1[0];
+						tx_parity				 = G_LINK_PARITY_IS_ODD ^ tx_parity_carry ^ C_CHAR_EOP_1[0] ^ tx_inject_parity_error_control;
 						tx_buffer[3:1]			<= C_CHAR_EOP_1;
 						tx_buffer[0]			<= tx_parity;
 						tx_buffer_length		<= 4;
@@ -581,7 +599,7 @@ endfunction
 					end					
 					else if ( tx_send_eop2==1'b1 )
 					begin
-						tx_parity				 = G_LINK_PARITY_IS_ODD ^ tx_parity_carry ^ C_CHAR_EOP_2[0];
+						tx_parity				 = G_LINK_PARITY_IS_ODD ^ tx_parity_carry ^ C_CHAR_EOP_2[0] ^ tx_inject_parity_error_control;
 						tx_buffer[3:1]			<= C_CHAR_EOP_2;
 						tx_buffer[0]			<= tx_parity;
 						tx_buffer_length		<= 4;	
@@ -592,7 +610,7 @@ endfunction
 					else
 					begin
 						//Default send first four bits of NULL												
-						tx_parity				 = G_LINK_PARITY_IS_ODD ^ tx_parity_carry ^ C_CHAR_NULL_1[0];
+						tx_parity				 = G_LINK_PARITY_IS_ODD ^ tx_parity_carry ^ C_CHAR_NULL_1[0] ^ tx_inject_parity_error_control;
 						
 						tx_buffer[3:1]			<= C_CHAR_NULL_1;
 						tx_buffer[0]			<= tx_parity;
@@ -706,7 +724,29 @@ endfunction
 		.fill_level ( tx_fill_level )
     );		
 	
-	
+//#################################################################################################	
+// TIMERS
+//#################################################################################################	
+
+	always @( negedge rst_n or posedge clk )		
+	begin		
+		if ( rst_n==1'b0 ) 
+		begin			
+			timer			= 0;
+		end
+		
+		else if ( clk==1'b1 )
+		begin
+			if ( reset_timer==1'b1 )
+			begin
+				timer		= 0;
+			end
+			else
+			begin
+				timer		= timer + 1;
+			end		
+		end
+	end	
 
 //#################################################################################################	
 // LINK STATE MACHINE
@@ -717,12 +757,19 @@ endfunction
 		if ( rst_n==1'b0 ) 
 		begin			
 			state_link		<= READY;
+			
+			reset_timer 	<= 1'b0;
+		
+			go_link_STARTED	<= 1'b0;
+			go_link_RUN  	<= 1'b0;
 		
 			tx_active		<= 1'b0;
 		end
 	
 		else if ( clk==1'b1 )
 		begin
+			reset_timer		<= 1'b0;
+		
 
 			case( state_link )
 				READY : 
@@ -731,12 +778,12 @@ endfunction
 						if ( rx_found_null == 1'b1 )
 						begin
 														state_link	<= NULL_RECEIVED;
-														$display ( "%gns %m LINK STATE => NULL_RECEIVED", $time );		
+														$display ( "%gns %m LINK STATE READY => NULL_RECEIVED", $time );		
 						end
-						else
+						else if ( go_link_STARTED==1'b1 )
 						begin							
 														state_link	<= STARTED;
-														$display ( "%gns %m LINK STATE => STARTED", $time );		
+														$display ( "%gns %m LINK STATE READY => STARTED", $time );		
 						end
  
 					end
@@ -747,29 +794,43 @@ endfunction
 					
 						if ( rx_found_null == 1'b1 )
 						begin							state_link	<= RUN;
-														$display ( "%gns %m LINK STATE => RUN", $time );
+														$display ( "%gns %m LINK STATE STARTED => RUN", $time );
 						end
 					
 					end
 					
 				NULL_RECEIVED :
 					begin
-					
+						if ( go_link_RUN==1'b1 )
+						begin							state_link	<= RUN;
+														$display ( "%gns %m LINK STATE NULL_RECEIVED => RUN", $time );
+						end						
 					end
 
 				RUN :
 					begin
-					
+						tx_active	<= 1'b1;
+						
+						if ( rx_parity_error == 1'b1 )
+						begin							state_link	<= WAIT_IN_STOP;
+														reset_timer <= 1'b1;
+														$display ( "%gns %m LINK STATE RUN => WAIT_IN_STOP due to parity error", $time );
+						end						
 					end		
 				
 				WAIT_IN_STOP :
 					begin
-					
+						tx_active	<= 1'b0;
+
+						if ( 2*timer*bit_freq_ns > 6400 ) 
+						begin							state_link	<= WAIT_OUT_STOP;
+														$display ( "%gns %m LINK STATE WAIT_IN_STOP => WAIT_OUT_STOP due to disconnect", $time );						
+						end											
 					end		
 					
 				WAIT_OUT_STOP :
-					begin
-					
+					begin								
+
 					end		
 					
 				ERROR_SEEN :
@@ -801,10 +862,68 @@ endfunction
 	
 	
 //#################################################################################################	
-// TASKS
+// TASKS to enable state changes etc
 //#################################################################################################	
 
+task link_READY_to_STARTED;
 
+begin
+	wait ( state_link == READY )
+		go_link_STARTED	<= 1'b1;
+
+	wait ( state_link == STARTED )
+		go_link_STARTED	<= 1'b0;
+
+end
+endtask	
+
+task link_NULL_RECEIVED_to_RUN;
+
+begin
+	wait ( state_link == NULL_RECEIVED )
+		go_link_RUN		<= 1'b1;
+
+	wait ( state_link == RUN )
+		go_link_RUN		<= 1'b0;
+
+end
+endtask	
+
+//#################################################################################################	
+// TASKS to wait for events
+//#################################################################################################
+task wait_link_RUN;
+begin
+	wait ( state_link == RUN );
+end
+endtask
+
+task wait_link_WAIT_IN_STOP;
+begin
+	$display ( "%gns %m wait_link_WAIT_IN_STOP", $time );
+	wait ( state_link == WAIT_IN_STOP )begin
+		@(posedge clk);
+	end		
+	$display ( "%gns %m wait_link_WAIT_IN_STOP..done", $time );
+end
+endtask
+
+//#################################################################################################	
+// TASKS to inject errors
+//#################################################################################################
+task inject_TX_PARITY_ERROR_control;
+	input new_setting;
+begin
+	tx_inject_parity_error_control	 = new_setting;
+end
+endtask
+
+task inject_TX_PARITY_ERROR_data;
+	input new_setting;
+begin
+	tx_inject_parity_error_data	 	= new_setting;
+end
+endtask
 
 endmodule
 

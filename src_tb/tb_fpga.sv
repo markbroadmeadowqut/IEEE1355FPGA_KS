@@ -177,6 +177,16 @@ module tb_fpga;
 	
 		$display("TEST STARTED");
 		
+		#2000;
+		bfm_ieee1355_0.link_READY_to_STARTED();
+		#2000;
+		bfm_ieee1355_1.link_NULL_RECEIVED_to_RUN();		
+		
+		#2000;
+		bfm_ieee1355_0.wait_link_RUN();
+		bfm_ieee1355_1.wait_link_RUN();
+		
+		
 		#5000;
 		$display ( "%gns TB : Sending 5 bytes (DATA=NULL)", $time );
 		bfm_ieee1355_0.fifo_tx.insert_w_data	( 8'b11100110 );
@@ -213,6 +223,17 @@ module tb_fpga;
 		bfm_ieee1355_1.fifo_rx.wait_fill_level	( test_length );
 		bfm_ieee1355_1.fifo_rx.check_data_array	( test_length, test_array );		
 		#1000;		
+		
+		
+		//Inject a parity error in TX side
+		$display ( "%gns TB : Inject Parity Error", $time );
+		bfm_ieee1355_0.inject_TX_PARITY_ERROR_control(1'b1);
+		bfm_ieee1355_1.wait_link_WAIT_IN_STOP();
+		bfm_ieee1355_0.inject_TX_PARITY_ERROR_control(1'b0);
+		
+		
+		
+		#10000;
 		
 		if ( error_count==0 ) $display("TEST PASSED");
 		else                  $display("TEST FAILED : %d ERRORS", error_count );

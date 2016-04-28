@@ -3,7 +3,7 @@
 <!--                                                         -->
 <!-- Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.   -->
 
-<Project Version="7" Minor="10" Path="C:/Github/IEEE1355FPGA_KS/IEEE1355FPGA_SB.xpr">
+<Project Version="7" Minor="10" Path="C:/GitHub/IEEE1355FPGA_KS/IEEE1355FPGA_SB.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
     <Option Name="Id" Val="2f8c562317a54f31b8a99a1d71896251"/>
