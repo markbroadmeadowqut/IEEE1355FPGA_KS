@@ -68,7 +68,8 @@ begin
                     if (ld_txreg = '1') then            
                         char <= char_in;                -- load new char
                     else
-                        char(9 downto 1)  <=  char(8 downto 0);                                    
+                        char(9 downto 1)  <=  char(8 downto 0); 
+                        char(0) <= '0';                                   
                     end if;                             -- shift char in                    
                 end if;
             end if;          
