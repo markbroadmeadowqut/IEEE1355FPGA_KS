@@ -49,6 +49,7 @@ architecture RTL of node is
     -- clocks
 	signal clk_tx       : std_logic;                            -- transmitter clock
 	signal clk_rx       : std_logic;                            -- receiver clock
+	signal locked       : std_logic;                            -- if '1' clocks stable and usable
     -- data signals	
     signal display      : std_logic_vector(7 downto 0);         -- output to led's
     --flags
@@ -59,18 +60,40 @@ architecture RTL of node is
     signal dtct_nullA   : std_logic;
     signal char_rcvdA   : std_logic;
     signal char_saveA   : std_logic;
-    
+    signal rst          : std_logic;
+    signal rst_sw       : std_logic;
+    signal rst_rev      : std_logic;
 begin
 
-TX_clock: entity work.clk_prescaler             -- instantiate Ckl prescaler
-    generic map (                                       
-        PRESCALER 				=> 1            
-        )
-    port map ( 
-        clkin           => clk_pad,
-        clkout          => clk_tx,                      
-        rst_n           => rst_n
-        ); 
+rst_rev <= rst xor '1';
+
+RST_man: entity work.RST_manager                -- instantiate reset manager
+    port map (
+        rst_n       => rst_n,
+        rst_sw      => rst_sw,
+        rst         => rst
+    );
+        
+
+TXRX_clock: entity work.clk_wiz_0
+
+    port map (
+        clk_in1     => clk_pad,
+        clk_tx      => clk_tx,
+        clk_rx      => clk_rx,
+        reset       => rst_rev,
+        locked      => locked
+        );
+
+--TX_clock: entity work.clk_prescaler             -- instantiate Ckl prescaler
+--    generic map (                                       
+--        PRESCALER 				=> 2            
+--        )
+--    port map ( 
+--        clkin           => clk_pad,
+--        clkout          => clk_tx,                      
+--        rst             => rst
+--        );    
 
 --RX_clock: entity work.clk_prescaler             -- instantiate Ckl prescaler
 --    generic map (                                       
@@ -79,8 +102,10 @@ TX_clock: entity work.clk_prescaler             -- instantiate Ckl prescaler
 --    port map ( 
 --        clkin           => clk_pad,
 --        clkout          => clk_rx,                       
---        rst_n           => rst_n
+--       rst             => rst
 --        ); 
+        
+        
         
                 
 Exchange_tx: entity work.exchange_tx            -- instantiate Ckl prescaler
@@ -89,31 +114,17 @@ Exchange_tx: entity work.exchange_tx            -- instantiate Ckl prescaler
         )  
     port map ( 
         clk             => clk_tx,                    
-        rst_n           => rst_n,
+        rst             => rst,
         CharTxExA       => CharTxExA,
         SigRxExA        => SigRxExA,
         CharRxExA       => CharRxExA,
         dtct_nullA      => dtct_nullA,
         char_rcvdA      => char_rcvdA,
         char_saveA      => char_saveA,
-        ExTxA           => ExTxA
-                
+        rst_sw          => rst_sw,
+        ExTxA           => ExTxA                
         );  
 
-TX1_pipeline_nd: entity work.TX_pipeline            -- instantiate transmission pipeline
-    generic map(
-        char_width      => char_width
-        )  
-    port map ( 
-        clk         => clk_tx,                      
-        rst_n       => rst_n,
-        sw          => sw,
-        btn         => btn,
-        ExTx        => ExTxA,
-        data        => d_outA,
-        strobe      => s_outA,
-        CharTxEx    => CharTxExA       
-        ); 
 	   
 RX1_pipeline_nd: entity work.RX_pipeline            -- instantiate receiver pipeline
 
@@ -121,8 +132,8 @@ RX1_pipeline_nd: entity work.RX_pipeline            -- instantiate receiver pipe
         char_width      => char_width
         )          
     port map ( 
-        clk         => clk_pad,                      
-        rst_n       => rst_n,
+        clk         => clk_rx,--pad,                      
+        rst         => rst,
         data        => d_inA,
         strobe      => s_inA,
         dtct_null   => dtct_nullA,
@@ -132,17 +143,22 @@ RX1_pipeline_nd: entity work.RX_pipeline            -- instantiate receiver pipe
         CharRxEx    => CharRxExA,
         display     => display     
         ); 	   
-	
---    process (clk_pad,rst_n)
---        begin
-            --if rising_edge(clk_pad) then
---                if (rst_n = '0') then                          -- reset all 
---                    led         <= "0000";        
---                    ledb        <= "0000"; 
---                    display     <= "00000000";          
---                end if; 
-            --end if;           
---        end process;    	
+
+TX1_pipeline_nd: entity work.TX_pipeline            -- instantiate transmission pipeline
+    generic map(
+        char_width      => char_width
+        )  
+    port map ( 
+        clk         => clk_tx,                      
+        rst         => rst,
+        sw          => sw,
+        btn         => btn,
+        ExTx        => ExTxA,
+        data        => d_outA,
+        strobe      => s_outA,
+        CharTxEx    => CharTxExA       
+        );	
+   	
 	
 	led      <= display(7 downto 4);
 	ledb      <=  display(3 downto 0);  

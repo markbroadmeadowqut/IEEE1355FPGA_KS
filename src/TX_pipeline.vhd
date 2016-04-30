@@ -31,7 +31,7 @@ entity TX_pipeline is
         );
     Port ( 
         clk         : in std_logic;
-        rst_n       : in std_logic;
+        rst         : in std_logic;
         sw          : in std_logic_vector(3 downto 0);
         btn         : in std_logic_vector(3 downto 0);
         ExTx        : in ExTx_reg;
@@ -57,7 +57,7 @@ packet_tx_ins: entity work.packet_tx            -- instantiate packet layer TX
         ) 
     port map ( 
         clk             => clk,
-        rst_n           => rst_n,
+        rst             => rst ,
         sw              => sw,
         btn             => btn, 
         req_pkt         => ExTx.req_pkt,      
@@ -71,7 +71,7 @@ char_tx_ins: entity work.char_tx                -- instantiate character layer T
         )                          
     port map ( 
         clk             => clk,
-        rst_n           => rst_n,
+        rst             => rst,
         char_in         => char_pkt,
         ExTx            => ExTx,
         CharTxEx        => CharTxEx,
@@ -84,7 +84,7 @@ signal_tx_ins: entity work.signal_tx            -- instantiate signal layer TX
         )       
     port map ( 
         clk             => clk,
-        rst_n           => rst_n,
+        rst             => rst,
         char_in         => pc_char,
         ld_txreg        => ExTx.ld_txreg,
         data            => data,

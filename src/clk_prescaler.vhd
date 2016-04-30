@@ -25,11 +25,11 @@ entity clk_prescaler is
 	port ( 
 	   clkin 	: 	in  	std_logic;
        clkout 	: 	out  	std_logic;
-	   rst_n 	: 	in  	std_logic
+	   rst   	: 	in  	std_logic
     );
 end clk_prescaler;
 
-architecture behavioral of clk_prescaler is
+ architecture behavioral of clk_prescaler is
 
 	signal COUNT 	: integer range 0 to PRESCALER-1;
 
@@ -38,10 +38,10 @@ begin
 
 	clkout	<= clk_int;
 
-DIVIDE : process(clkin, rst_n)
+DIVIDE : process(clkin, rst)
 
 begin
-	if rst_n = '0' then
+	if (rst  = '0')  then
 		clk_int		<= '0';
 		COUNT 		<= PRESCALER-1;		
 	elsif rising_edge(clkin) then

@@ -31,7 +31,7 @@ entity char_tx is
         );
     Port ( 
         clk         : in std_logic;        
-        rst_n       : in std_logic;        
+        rst         : in std_logic;        
         char_in     : in std_logic_vector(7 downto 0);
         ExTx        : in ExTx_reg;
         CharTxEx    : out CharTxEx_reg;
@@ -57,9 +57,9 @@ constant CharTxEx_rst: CharTxEx_reg := (
     signal send_end_null        : std_logic;
            
 begin
-    process(clk, rst_n)
+    process(clk, rst )
         begin 
-            if (rst_n = '0') then                  -- set char out to 0 if reset
+            if (rst  = '0') then                  -- set char out to 0 if reset
                 char_out            <= (others => '0');
                 CharTxEx            <= CharTxEx_rst; 
                 send_end_null       <= '0';

@@ -32,13 +32,14 @@ entity exchange_tx is
         );
     Port ( 
         clk         : in std_logic;             -- receiver clock
-        rst_n       : in std_logic;             -- reset
+        rst         : in std_logic;             -- reset
         CharTxExA   : in CharTxEx_reg;          -- flags from Character TX pipeline A
         SigRxExA    : in SigRxEx_reg;           -- flags from Signal RX pipeline A
         CharRxExA   : in CharRxEx_reg;          -- flags from Char RX pipeline A
         dtct_nullA  : out std_logic;            -- flag to detect null on link establish
         char_rcvdA  : out std_logic;            -- flag to indicate char received by sig layaer
         char_saveA  : out std_logic;            -- flag to save data to rx register in pkt layer
+        rst_sw      : out std_logic;            -- flag for node reset by software
         ExTxA       : out ExTx_reg              -- flags sent to TX pipeline
         
         );
@@ -55,6 +56,7 @@ architecture Behavioral of exchange_tx is
         esc_flag    => '0',             -- don't send escape from char Tx layer
         data_flag   => '0',             -- don't send data from char_tx from char Tx layer
         ld_txreg    => '0'              -- don't load character into signal_tx out reg
+                     
         );
    
 --    type state_type is (s0_ready, s1_null_sent, s2_null_rcvd, s3_rcvg_data, s4_error);
@@ -64,14 +66,15 @@ architecture Behavioral of exchange_tx is
     
 begin
 
-    process (clk,rst_n,SigRxExA)
+    process (clk,rst,SigRxExA)
         begin
-            if (rst_n = '0') then                          -- reset all 
+            if (rst = '0') then                          -- reset all 
                 ExTXA       <= ExTx_rst;
                 cnt1        <= "0100"; 
                 dtct_nullA  <= '1';
                 char_rcvdA  <= '0';
                 char_saveA  <= '0';
+                rst_sw      <= '1';
                 
             else
                 char_rcvdA  <= SigRxExA.char_rcvd;
@@ -79,6 +82,12 @@ begin
                 if rising_edge(clk) then
                     cnt1 <= cnt1 - '1';
                     
+                    if  (CharRxExA.parity_error = '1') or (SigRxExA.time_out = '1') then
+                        rst_sw  <= '0';                    
+                    else
+                        rst_sw  <= '1'; 
+                    end if;
+                                       
                     if  (SigRxExA.null_dtcd = '1') then
                         ExTxA.data_flag <= '1';
                         dtct_nullA <= '0';
@@ -104,10 +113,10 @@ begin
             end if;           
         end process;
  
---    process (clk_tx, rst_n)
+--    process (clk_tx, rst)
 --        begin
                         
---            if (rst_n = '0') or (time_out = '1') then
+--            if (rst = '0') or (time_out = '1') then
 --               state <= s4_error;
 --            else if rising_edge(clk_tx) then
 --                case state is
