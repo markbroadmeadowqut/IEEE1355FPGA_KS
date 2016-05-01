@@ -30,7 +30,7 @@ entity RX_pipeline is
         );
     Port ( 
         clk         : in std_logic;
-        rst_n       : in std_logic;
+        rst         : in std_logic;
         data        : in std_logic;
         strobe      : in std_logic;
         dtct_null   : in std_logic;
@@ -62,7 +62,7 @@ signal_rx_inst: entity work.signal_rx           -- Instantiate receiver controll
         )          
     port map (
         clk             => clk,
-        rst_n           => rst_n,
+        rst             => rst,
         data_in         => data,           
         strobe_in       => strobe,
         dtct_null       => dtct_null,
@@ -79,7 +79,7 @@ char_rx_ins: entity work.char_rx                -- instantiate character layer u
         )                         
     port map ( 
         clk             => clk,
-        rst_n           => rst_n,
+        rst             => rst,
         char_rcvd       => char_rcvd,
         rd_parity       => rd_parity,
         rd_char_parity  => rd_char_parity,
@@ -95,7 +95,7 @@ packet_rx_ins: entity work.packet_rx            -- instantiate packet layer upst
         )          
     port map ( 
         clk             => clk,
-        rst_n           => rst_n,
+        rst             => rst,
         char_in         => char_rx,
         char_save       => char_save,
         display         => display

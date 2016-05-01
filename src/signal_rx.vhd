@@ -30,7 +30,7 @@ entity signal_rx is
         );
     Port ( 
         clk             : in  std_logic;         -- rx clock        
-        rst_n 	        : in  std_logic;         -- reset signal      
+        rst  	        : in  std_logic;         -- reset signal      
         data_in         : in  std_logic;         -- data vit in               
         strobe_in       : in  std_logic;         -- strobe in on upstream connection.        
         dtct_null       : in  std_logic;          -- implement detection of a null character on in stream 
@@ -62,9 +62,9 @@ architecture behavioral of signal_rx is
 
 begin
  
-    process(clk,rst_n)  
+    process(clk,rst )  
         begin   
-            if (rst_n = '0') then
+            if (rst  = '0') then
                 pc_char     <= (others => '0');   -- character received 
                 SigRxEx     <= SigRxEx_rst;
                 d_ff1       <= '0';
@@ -96,6 +96,7 @@ begin
                         
                         if (dtct_null = '1') then
                             if (data(8 downto 2) = C_CHAR_NULL) then
+                                pc_char(9 downto 6) <= data(9 downto 6); 
                                 cnt <= "0110";
                                 SigRxEx.null_dtcd <= '1';
                                 pc_char(9)  <= '0';                               
@@ -129,7 +130,7 @@ begin
                         end if; 
                     else
                         timer <= timer+1;
-                        if (timer >= "1111111100") then
+                        if (timer >= "1111111100") then     --"1111111100"
                             SigRxEx.time_out <= '1';
                         end if;  
                     end if;    
