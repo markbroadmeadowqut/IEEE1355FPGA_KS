@@ -31,13 +31,14 @@ entity TX_pipeline is
         );
     Port ( 
         clk         : in std_logic;
-        rst         : in std_logic;
+        rst_n       : in std_logic;
         sw          : in std_logic_vector(3 downto 0);
         btn         : in std_logic_vector(3 downto 0);
-        ExTx        : in ExTx_reg;
+        data_fwd    : in std_logic_vector(7 downto 0);
+        ExTx        : in ExTx_rec;
         data        : out std_logic;
         strobe      : out std_logic;
-        CharTxEx    : out CharTxEx_reg
+        CharTxEx    : out CharTxEx_rec
         );
         
 end TX_pipeline;
@@ -57,10 +58,11 @@ packet_tx_ins: entity work.packet_tx            -- instantiate packet layer TX
         ) 
     port map ( 
         clk             => clk,
-        rst             => rst ,
+        rst_n           => rst_n,
         sw              => sw,
         btn             => btn, 
-        req_pkt         => ExTx.req_pkt,      
+        req_pkt         => ExTx.req_pkt,
+        data_fwd        => data_fwd,      
         char_pkt        => char_pkt
         );           
  
@@ -71,7 +73,7 @@ char_tx_ins: entity work.char_tx                -- instantiate character layer T
         )                          
     port map ( 
         clk             => clk,
-        rst             => rst,
+        rst_n           => rst_n,
         char_in         => char_pkt,
         ExTx            => ExTx,
         CharTxEx        => CharTxEx,
@@ -84,7 +86,7 @@ signal_tx_ins: entity work.signal_tx            -- instantiate signal layer TX
         )       
     port map ( 
         clk             => clk,
-        rst             => rst,
+        rst_n           => rst_n,
         char_in         => pc_char,
         ld_txreg        => ExTx.ld_txreg,
         data            => data,

@@ -30,15 +30,16 @@ entity RX_pipeline is
         );
     Port ( 
         clk         : in std_logic;
-        rst         : in std_logic;
+        rst_n       : in std_logic;
         data        : in std_logic;
         strobe      : in std_logic;
         dtct_null   : in std_logic;
-        char_rcvd   : in std_logic;
+        --char_rcvd   : in std_logic;
         char_save   : in std_logic;
-        SigRxEx     : out SigRxEx_reg;
-        CharRxEx    : out CharRxEx_reg;
-        display     : out std_logic_vector(7 downto 0)
+        SigRxEx     : out SigRxEx_rec;
+        CharRxEx    : out CharRxEx_rec;
+        display     : out std_logic_vector(7 downto 0);
+        data_fwd    : out std_logic_vector(7 downto 0)
         );
         
 end RX_pipeline;
@@ -51,6 +52,8 @@ architecture Behavioral of RX_pipeline is
 	-- flags
     signal rd_parity        : std_logic;
     signal rd_char_parity   : std_logic;
+    signal char_rcvd        : std_logic;
+    signal SigChar          : SigChar_rec;
     
 
 begin
@@ -62,13 +65,12 @@ signal_rx_inst: entity work.signal_rx           -- Instantiate receiver controll
         )          
     port map (
         clk             => clk,
-        rst             => rst,
+        rst_n           => rst_n,
         data_in         => data,           
         strobe_in       => strobe,
-        dtct_null       => dtct_null,
-        rd_parity       => rd_parity,
-        rd_char_parity  => rd_char_parity,     
+        dtct_null       => dtct_null, 
         pc_char         => pc_char,
+        SigChar         => SigChar,
         SigRxEx         => SigRxEx          
         );
 	   
@@ -79,11 +81,9 @@ char_rx_ins: entity work.char_rx                -- instantiate character layer u
         )                         
     port map ( 
         clk             => clk,
-        rst             => rst,
-        char_rcvd       => char_rcvd,
-        rd_parity       => rd_parity,
-        rd_char_parity  => rd_char_parity,
+        rst_n           => rst_n,
         pc_char         => pc_char,
+        SigChar        => SigChar,
         char_rx         => char_rx,
         CharRxEx        => CharRxEx        
         );    	
@@ -95,10 +95,11 @@ packet_rx_ins: entity work.packet_rx            -- instantiate packet layer upst
         )          
     port map ( 
         clk             => clk,
-        rst             => rst,
+        rst_n           => rst_n,
         char_in         => char_rx,
         char_save       => char_save,
-        display         => display
+        display         => display,
+        data_fwd        => data_fwd
         );	
 
 end Behavioral;
