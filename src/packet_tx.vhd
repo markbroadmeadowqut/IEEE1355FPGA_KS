@@ -27,10 +27,11 @@ entity packet_tx is
         );
     Port ( 
         clk         : in std_logic;                       -- transmission clock        
-        rst   	    : in std_logic;
+        rst_n  	    : in std_logic;
         sw          : in std_logic_vector(3 downto 0);
         btn         : in std_logic_vector(3 downto 0);                          
-        req_pkt     : in std_logic;                         
+        req_pkt     : in std_logic;
+        data_fwd    : in std_logic_vector(7 downto 0);                        
         char_pkt    : out std_logic_vector(7 downto 0)    -- out register    
     );
 end packet_tx;
@@ -40,15 +41,16 @@ architecture Behavioral of packet_tx is
    
 begin
 
-    process (clk,rst,req_pkt)
+    process (clk,rst_n,req_pkt)
        
         begin
-             if (rst = '0') then                          -- reset all 
+             if (rst_n = '0') then                          -- reset all 
                 char_pkt    <= (others => '0');                  
              else
-                if rising_edge(clk) then--and (req_pkt = '1') then
-                    char_pkt(3 downto 0)    <= btn;
-                    char_pkt(7 downto 4)    <= sw;                 
+                if rising_edge(clk) then
+                    char_pkt   <= data_fwd; 
+                    --char_pkt(3 downto 0)    <= btn;
+                    --char_pkt(7 downto 4)    <= sw;                 
                 end if;
             end if;       
         end process;

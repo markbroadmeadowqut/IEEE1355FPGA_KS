@@ -28,32 +28,31 @@ entity packet_rx is
         );
     Port ( 
     clk            : in  std_logic;         -- recovered clock    
-    rst  	       : in  std_logic;    
+    rst_n  	       : in  std_logic;    
     char_in        : in  std_logic_vector(7 downto 0);    -- character received
     char_save      : in  std_logic;
-    display        : out std_logic_vector(7 downto 0)             
+    display        : out std_logic_vector(7 downto 0); 
+    data_fwd       : out std_logic_vector(7 downto 0) 
 );
 
 end packet_rx;
 
 architecture behavioral of packet_rx is
-    
-    signal data_sv      : std_logic_vector(7 downto 0);    
-    
+       
 begin
 
-process(clk,rst )  
+process(clk,rst_n )  
     begin
-        if (rst  = '0') then
-            display <= (others => '0');
-            data_sv <= (others => '0');
+        if (rst_n  = '0') then
+            display     <= (others => '0');
+            data_fwd    <= (others => '0');  
         else
              if rising_edge(clk) then
-                if (char_save = '1') then                 
-                    data_sv <= char_in;
-                else
-                    data_sv <= (others => '0');
-                end if;     
+                --if  (char_fwd = '1') then                 
+                    data_fwd <= char_in;
+                --else
+                 --   data_fwd <= (others => '0');
+               -- end if;     
              end if;
              display <= char_in;  
         end if;           

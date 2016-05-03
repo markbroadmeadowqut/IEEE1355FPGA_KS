@@ -33,9 +33,9 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity RST_manager is
     Port ( 
-    rst_n   : in std_logic;
-    rst_sw  : in std_logic;
-    rst     : out std_logic
+    rstn_hw     : in std_logic;
+    rstn_sw     : in std_logic;
+    reset_n     : out std_logic
     );
     
 end RST_manager;
@@ -44,13 +44,13 @@ architecture Behavioral of RST_manager is
 
 begin
 
-reset : process(rst_n, rst_sw)
+reset : process(rstn_hw, rstn_sw)
 
     begin
-        if (rst_n = '0') or (rst_sw = '0') then
-                rst <= '0';
+        if (rstn_hw = '0') or (rstn_sw = '0') then
+                reset_n <= '0';
         else
-                rst <= '1';
+                reset_n <= '1';
         end if;
 end process reset;
 

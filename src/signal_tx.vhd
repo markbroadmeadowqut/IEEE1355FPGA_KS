@@ -32,7 +32,7 @@ entity signal_tx is
         );
     Port ( 
         clk         : in std_logic;
-        rst   	    : in std_logic;
+        rst_n   	    : in std_logic;
         char_in     : in std_logic_vector(9 downto 0);
         ld_txreg    : in std_logic;
         data        : out std_logic;
@@ -49,10 +49,10 @@ architecture Behavioral of signal_tx is
    
 begin    
     
-    process(clk,rst )
+    process(clk,rst_n )
                         
         begin                   
-            if (rst  = '0') then
+            if (rst_n  = '0') then
                 data        <= '0';
                 strobe      <= '0';
                 st_temp     <= '0';

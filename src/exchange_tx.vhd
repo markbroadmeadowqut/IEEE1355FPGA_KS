@@ -25,30 +25,30 @@ use IEEE.NUMERIC_STD.ALL;
 use IEEE.std_logic_unsigned.all;
 use work.bus_pkg.all;
 
-entity exchange_tx is
+entity exchange is
 
     generic(
         char_width  : integer
         );
     Port ( 
         clk         : in std_logic;             -- receiver clock
-        rst         : in std_logic;             -- reset
-        CharTxExA   : in CharTxEx_reg;          -- flags from Character TX pipeline A
-        SigRxExA    : in SigRxEx_reg;           -- flags from Signal RX pipeline A
-        CharRxExA   : in CharRxEx_reg;          -- flags from Char RX pipeline A
-        dtct_nullA  : out std_logic;            -- flag to detect null on link establish
-        char_rcvdA  : out std_logic;            -- flag to indicate char received by sig layaer
+        rst_n       : in std_logic;             -- reset
+        locked      : in std_logic;             -- indicates when clocks are stable
+        CharTxExA   : in CharTxEx_rec;          -- flags from Character TX pipeline A
+        SigRxExA    : in SigRxEx_rec;           -- flags from Signal RX pipeline A
+        CharRxExA   : in CharRxEx_rec;          -- flags from Char RX pipeline A
+        dtct_nullA  : out std_logic;            -- flag to detect null on link establish         -- flag to indicate char received by sig layaer
         char_saveA  : out std_logic;            -- flag to save data to rx register in pkt layer
-        rst_sw      : out std_logic;            -- flag for node reset by software
-        ExTxA       : out ExTx_reg              -- flags sent to TX pipeline
+        rstn_sw      : out std_logic;            -- flag for node reset by software
+        ExTxA       : inout ExTx_rec              -- flags sent to TX pipeline
         
         );
-end exchange_tx;
+end exchange;
 
-architecture Behavioral of exchange_tx is
+architecture Behavioral of exchange is
 
     -- TX pipeline register reset
-    constant ExTx_rst: ExTx_reg := (
+    constant ExTx_rst: ExTx_rec := (
         req_pkt     => '0',             -- don't request char from packet layer
         fcc_flag    => '0',             -- don't send fcc from char Tx layer
         eop1_flag   => '0',             -- don't send eop1 from char Tx layer
@@ -63,53 +63,98 @@ architecture Behavioral of exchange_tx is
 --    signal state : state_type;
 
     signal cnt1         : std_logic_vector(3 downto 0);
+    signal df_latch    : std_logic;
     
 begin
 
-    process (clk,rst,SigRxExA)
+    process (clk,rst_n,SigRxExA)
         begin
-            if (rst = '0') then                          -- reset all 
-                ExTXA       <= ExTx_rst;
+            if (rst_n = '0') then                          -- reset all 
+                ExTxA       <= ExTx_rst;
                 cnt1        <= "0100"; 
                 dtct_nullA  <= '1';
-                char_rcvdA  <= '0';
                 char_saveA  <= '0';
-                rst_sw      <= '1';
+                rstn_sw     <= '1';
+                df_latch    <= '0';
                 
             else
-                char_rcvdA  <= SigRxExA.char_rcvd;
-                
-                if rising_edge(clk) then
-                    cnt1 <= cnt1 - '1';
-                    
-                    if  (CharRxExA.parity_error = '1') or (SigRxExA.time_out = '1') then
-                        rst_sw  <= '0';                    
-                    else
-                        rst_sw  <= '1'; 
+                --if ( locked = '1') then 
+                    if rising_edge(clk) then
+                        cnt1 <= cnt1 - '1';
+                        
+                        --  If data being rcvd set data flag
+                        if (SigRxExA.d_char_rcvd = '1')  then
+                            ExTxA.data_flag <= '1';
+                        else
+                            ExTxA.data_flag <= '0';
+                        end if;
+                        
+                        df_latch <= ExTxA.data_flag;
+                        
+                        if (df_latch = '1') and (SigRxExA.d_char_rcvd = '0') then
+                            ExTxA.eop1_flag <= '1';
+                        else
+                           if ( cnt1 = 0 ) then
+                                ExTxA.eop1_flag <= '0'; 
+                           end if;      
+                        end if; 
+                        
+                        --  If data being rcvd set data flag
+--                        if (CharTxExA.cnt_max = 9)  then
+--                            ExTxA.data_flag <= '1';
+--                            data_temp <= '1';
+--                       else
+--                            data_temp <= '0';
+--                        end if;
+                        
+                        
+                        
+---                        if (data_temp = '1') and (ExTxA.data_flag = '0') then
+--                            ExTxA.eop1_flag <= '1';
+--                        else
+--                           if ( cnt1 = 0 ) then
+--                                ExTxA.eop1_flag <= '0'; 
+--                           end if;      
+--                        end if;                         
+                        
+                        if  (CharRxExA.parity_error = '1') or (SigRxExA.time_out = '1') then
+                            rstn_sw <= '0';                    
+                        else
+                            rstn_sw <= '1'; 
+                        end if;
+                        
+                        
+                                           
+                        if  (SigRxExA.null_dtcd = '1') then
+                            dtct_nullA <= '0';
+                        end if;
+                        
+                        
+                        
+                        if (cnt1 = 0) then
+                            cnt1 <= CharTxExA.cnt_max ;
+                            --ExTxA <= ExTx_rst;   
+                        end if;  
+                        
+                        
+                        
+                        if (cnt1 = 3) then      -- request a char from pkt
+                            ExTxA.req_pkt <= '1';
+                        else
+                            ExTxA.req_pkt <= '0';
+                        end if; 
+                        
+                        
+                        
+                        if (cnt1 = 1) then      -- request a char from pkt
+                            ExTxA.ld_txreg <= '1';
+                        else
+                            ExTxA.ld_txreg <= '0';
+                        end if;
+                        
+                                                    
                     end if;
-                                       
-                    if  (SigRxExA.null_dtcd = '1') then
-                        ExTxA.data_flag <= '1';
-                        dtct_nullA <= '0';
-                    end if;
-                    
-                    if (cnt1 = 0) then
-                         cnt1 <= CharTxExA.cnt_max ;    
-                    end if;  
-                    
-                    if (cnt1 = 3) then      -- request a char from pkt
-                        ExTxA.req_pkt <= '1';
-                    else
-                        ExTxA.req_pkt <= '0';
-                    end if; 
-                    
-                    if (cnt1 = 1) then      -- request a char from pkt
-                        ExTxA.ld_txreg <= '1';
-                    else
-                        ExTxA.ld_txreg <= '0';
-                    end if; 
-                                                                
-                end if;
+                --end if;     
             end if;           
         end process;
  

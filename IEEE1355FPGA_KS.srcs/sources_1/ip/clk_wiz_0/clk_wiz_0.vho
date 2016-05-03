@@ -73,7 +73,7 @@ port
   clk_tx          : out    std_logic;
   clk_rx          : out    std_logic;
   -- Status and control signals
-  reset             : in     std_logic;
+  resetn             : in     std_logic;
   locked            : out    std_logic
  );
 end component;
@@ -91,7 +91,7 @@ your_instance_name : clk_wiz_0
    clk_tx => clk_tx,
    clk_rx => clk_rx,
   -- Status and control signals                
-   reset => reset,
+   resetn => resetn,
    locked => locked            
  );
 -- INST_TAG_END ------ End INSTANTIATION Template ------------
