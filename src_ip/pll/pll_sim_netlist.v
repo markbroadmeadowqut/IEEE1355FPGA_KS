@@ -1,80 +1,65 @@
 // Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
-// Tool Version: Vivado v.2015.4 (win64) Build 1412921 Wed Nov 18 09:43:45 MST 2015
-// Date        : Mon May 02 19:07:27 2016
-// Host        : DESKTOP-K3PR8B2 running 64-bit major release  (build 9200)
-// Command     : write_verilog -force -mode funcsim
-//               C:/Github/IEEE1355FPGA_KS/IEEE1355FPGA_KS.srcs/sources_1/ip/clk_wiz_0/clk_wiz_0_sim_netlist.v
-// Design      : clk_wiz_0
+// Tool Version: Vivado v.2015.4.2 (win64) Build 1494164 Fri Feb 26 04:18:56 MST 2016
+// Date        : Wed May 04 19:25:57 2016
+// Host        : SEF-PA00122509 running 64-bit Service Pack 1  (build 7601)
+// Command     : write_verilog -force -mode funcsim c:/GitHub/IEEE1355FPGA_KS/src_ip/pll/pll_sim_netlist.v
+// Design      : pll
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
 //               or synthesized. This netlist cannot be used for SDF annotated simulation.
 // Device      : xc7a35ticsg324-1L
 // --------------------------------------------------------------------------------
 `timescale 1 ps / 1 ps
 
-(* CORE_GENERATION_INFO = "clk_wiz_0,clk_wiz_v5_2_1,{component_name=clk_wiz_0,use_phase_alignment=true,use_min_o_jitter=false,use_max_i_jitter=false,use_dyn_phase_shift=false,use_inclk_switchover=false,use_dyn_reconfig=false,enable_axi=0,feedback_source=FDBK_AUTO,PRIMITIVE=PLL,num_out_clk=2,clkin1_period=10.0,clkin2_period=10.0,use_power_down=false,use_reset=true,use_locked=true,use_inclk_stopped=false,feedback_type=SINGLE,CLOCK_MGR_TYPE=NA,manual_override=false}" *) 
+(* CORE_GENERATION_INFO = "pll,clk_wiz_v5_2_1,{component_name=pll,use_phase_alignment=true,use_min_o_jitter=false,use_max_i_jitter=false,use_dyn_phase_shift=false,use_inclk_switchover=false,use_dyn_reconfig=false,enable_axi=0,feedback_source=FDBK_AUTO,PRIMITIVE=PLL,num_out_clk=2,clkin1_period=10.0,clkin2_period=10.0,use_power_down=false,use_reset=false,use_locked=false,use_inclk_stopped=false,feedback_type=SINGLE,CLOCK_MGR_TYPE=NA,manual_override=false}" *) 
 (* NotValidForBitStream *)
-module clk_wiz_0
-   (clk_in1,
-    clk_tx,
-    clk_rx,
-    resetn,
-    locked);
-  input clk_in1;
-  output clk_tx;
-  output clk_rx;
-  input resetn;
-  output locked;
+module pll
+   (clk_pad,
+    clk_100,
+    clk_200);
+  input clk_pad;
+  output clk_100;
+  output clk_200;
 
-  (* IBUF_LOW_PWR *) wire clk_in1;
-  wire clk_rx;
-  wire clk_tx;
-  wire locked;
-  wire resetn;
+  wire clk_100;
+  wire clk_200;
+  (* IBUF_LOW_PWR *) wire clk_pad;
 
-  clk_wiz_0_clk_wiz_0_clk_wiz inst
-       (.clk_in1(clk_in1),
-        .clk_rx(clk_rx),
-        .clk_tx(clk_tx),
-        .locked(locked),
-        .resetn(resetn));
+  pll_pll_clk_wiz inst
+       (.clk_100(clk_100),
+        .clk_200(clk_200),
+        .clk_pad(clk_pad));
 endmodule
 
-(* ORIG_REF_NAME = "clk_wiz_0_clk_wiz" *) 
-module clk_wiz_0_clk_wiz_0_clk_wiz
-   (clk_in1,
-    clk_tx,
-    clk_rx,
-    resetn,
-    locked);
-  input clk_in1;
-  output clk_tx;
-  output clk_rx;
-  input resetn;
-  output locked;
+(* ORIG_REF_NAME = "pll_clk_wiz" *) 
+module pll_pll_clk_wiz
+   (clk_pad,
+    clk_100,
+    clk_200);
+  input clk_pad;
+  output clk_100;
+  output clk_200;
 
-  wire clk_in1;
-  wire clk_in1_clk_wiz_0;
-  wire clk_rx;
-  wire clk_rx_clk_wiz_0;
-  wire clk_tx;
-  wire clk_tx_clk_wiz_0;
-  wire clkfbout_buf_clk_wiz_0;
-  wire clkfbout_clk_wiz_0;
-  wire locked;
-  wire reset_high;
-  wire resetn;
+  wire clk_100;
+  wire clk_100_pll;
+  wire clk_200;
+  wire clk_200_pll;
+  wire clk_pad;
+  wire clk_pad_pll;
+  wire clkfbout_buf_pll;
+  wire clkfbout_pll;
   wire NLW_plle2_adv_inst_CLKOUT2_UNCONNECTED;
   wire NLW_plle2_adv_inst_CLKOUT3_UNCONNECTED;
   wire NLW_plle2_adv_inst_CLKOUT4_UNCONNECTED;
   wire NLW_plle2_adv_inst_CLKOUT5_UNCONNECTED;
   wire NLW_plle2_adv_inst_DRDY_UNCONNECTED;
+  wire NLW_plle2_adv_inst_LOCKED_UNCONNECTED;
   wire [15:0]NLW_plle2_adv_inst_DO_UNCONNECTED;
 
   (* BOX_TYPE = "PRIMITIVE" *) 
   BUFG clkf_buf
-       (.I(clkfbout_clk_wiz_0),
-        .O(clkfbout_buf_clk_wiz_0));
+       (.I(clkfbout_pll),
+        .O(clkfbout_buf_pll));
   (* BOX_TYPE = "PRIMITIVE" *) 
   (* CAPACITANCE = "DONT_CARE" *) 
   (* IBUF_DELAY_VALUE = "0" *) 
@@ -82,16 +67,16 @@ module clk_wiz_0_clk_wiz_0_clk_wiz
   IBUF #(
     .IOSTANDARD("DEFAULT")) 
     clkin1_ibufg
-       (.I(clk_in1),
-        .O(clk_in1_clk_wiz_0));
+       (.I(clk_pad),
+        .O(clk_pad_pll));
   (* BOX_TYPE = "PRIMITIVE" *) 
   BUFG clkout1_buf
-       (.I(clk_tx_clk_wiz_0),
-        .O(clk_tx));
+       (.I(clk_100_pll),
+        .O(clk_100));
   (* BOX_TYPE = "PRIMITIVE" *) 
   BUFG clkout2_buf
-       (.I(clk_rx_clk_wiz_0),
-        .O(clk_rx));
+       (.I(clk_200_pll),
+        .O(clk_200));
   (* BOX_TYPE = "PRIMITIVE" *) 
   PLLE2_ADV #(
     .BANDWIDTH("OPTIMIZED"),
@@ -126,13 +111,13 @@ module clk_wiz_0_clk_wiz_0_clk_wiz
     .REF_JITTER2(0.010000),
     .STARTUP_WAIT("FALSE")) 
     plle2_adv_inst
-       (.CLKFBIN(clkfbout_buf_clk_wiz_0),
-        .CLKFBOUT(clkfbout_clk_wiz_0),
-        .CLKIN1(clk_in1_clk_wiz_0),
+       (.CLKFBIN(clkfbout_buf_pll),
+        .CLKFBOUT(clkfbout_pll),
+        .CLKIN1(clk_pad_pll),
         .CLKIN2(1'b0),
         .CLKINSEL(1'b1),
-        .CLKOUT0(clk_tx_clk_wiz_0),
-        .CLKOUT1(clk_rx_clk_wiz_0),
+        .CLKOUT0(clk_100_pll),
+        .CLKOUT1(clk_200_pll),
         .CLKOUT2(NLW_plle2_adv_inst_CLKOUT2_UNCONNECTED),
         .CLKOUT3(NLW_plle2_adv_inst_CLKOUT3_UNCONNECTED),
         .CLKOUT4(NLW_plle2_adv_inst_CLKOUT4_UNCONNECTED),
@@ -144,14 +129,9 @@ module clk_wiz_0_clk_wiz_0_clk_wiz
         .DO(NLW_plle2_adv_inst_DO_UNCONNECTED[15:0]),
         .DRDY(NLW_plle2_adv_inst_DRDY_UNCONNECTED),
         .DWE(1'b0),
-        .LOCKED(locked),
+        .LOCKED(NLW_plle2_adv_inst_LOCKED_UNCONNECTED),
         .PWRDWN(1'b0),
-        .RST(reset_high));
-  LUT1 #(
-    .INIT(2'h1)) 
-    plle2_adv_inst_i_1
-       (.I0(resetn),
-        .O(reset_high));
+        .RST(1'b0));
 endmodule
 `ifndef GLBL
 `define GLBL

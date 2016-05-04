@@ -65,16 +65,13 @@
 
 -- The following code must appear in the VHDL architecture header:
 ------------- Begin Cut here for COMPONENT Declaration ------ COMP_TAG
-component clk_wiz_0
+component pll
 port
  (-- Clock in ports
-  clk_in1           : in     std_logic;
+  clk_pad           : in     std_logic;
   -- Clock out ports
-  clk_tx          : out    std_logic;
-  clk_rx          : out    std_logic;
-  -- Status and control signals
-  resetn             : in     std_logic;
-  locked            : out    std_logic
+  clk_100          : out    std_logic;
+  clk_200          : out    std_logic
  );
 end component;
 
@@ -82,16 +79,13 @@ end component;
 -- The following code must appear in the VHDL architecture
 -- body. Substitute your own instance name and net names.
 ------------- Begin Cut here for INSTANTIATION Template ----- INST_TAG
-your_instance_name : clk_wiz_0
+your_instance_name : pll
    port map ( 
 
    -- Clock in ports
-   clk_in1 => clk_in1,
+   clk_pad => clk_pad,
   -- Clock out ports  
-   clk_tx => clk_tx,
-   clk_rx => clk_rx,
-  -- Status and control signals                
-   resetn => resetn,
-   locked => locked            
+   clk_100 => clk_100,
+   clk_200 => clk_200              
  );
 -- INST_TAG_END ------ End INSTANTIATION Template ------------

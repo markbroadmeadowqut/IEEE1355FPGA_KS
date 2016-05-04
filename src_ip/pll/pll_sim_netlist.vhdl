@@ -1,11 +1,10 @@
 -- Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
--- Tool Version: Vivado v.2015.4 (win64) Build 1412921 Wed Nov 18 09:43:45 MST 2015
--- Date        : Mon May 02 19:07:27 2016
--- Host        : DESKTOP-K3PR8B2 running 64-bit major release  (build 9200)
--- Command     : write_vhdl -force -mode funcsim
---               C:/Github/IEEE1355FPGA_KS/IEEE1355FPGA_KS.srcs/sources_1/ip/clk_wiz_0/clk_wiz_0_sim_netlist.vhdl
--- Design      : clk_wiz_0
+-- Tool Version: Vivado v.2015.4.2 (win64) Build 1494164 Fri Feb 26 04:18:56 MST 2016
+-- Date        : Wed May 04 19:25:57 2016
+-- Host        : SEF-PA00122509 running 64-bit Service Pack 1  (build 7601)
+-- Command     : write_vhdl -force -mode funcsim c:/GitHub/IEEE1355FPGA_KS/src_ip/pll/pll_sim_netlist.vhdl
+-- Design      : pll
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
 -- Device      : xc7a35ticsg324-1L
@@ -14,30 +13,28 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 library UNISIM;
 use UNISIM.VCOMPONENTS.ALL;
-entity clk_wiz_0_clk_wiz_0_clk_wiz is
+entity pll_pll_clk_wiz is
   port (
-    clk_in1 : in STD_LOGIC;
-    clk_tx : out STD_LOGIC;
-    clk_rx : out STD_LOGIC;
-    resetn : in STD_LOGIC;
-    locked : out STD_LOGIC
+    clk_pad : in STD_LOGIC;
+    clk_100 : out STD_LOGIC;
+    clk_200 : out STD_LOGIC
   );
   attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of clk_wiz_0_clk_wiz_0_clk_wiz : entity is "clk_wiz_0_clk_wiz";
-end clk_wiz_0_clk_wiz_0_clk_wiz;
+  attribute ORIG_REF_NAME of pll_pll_clk_wiz : entity is "pll_clk_wiz";
+end pll_pll_clk_wiz;
 
-architecture STRUCTURE of clk_wiz_0_clk_wiz_0_clk_wiz is
-  signal clk_in1_clk_wiz_0 : STD_LOGIC;
-  signal clk_rx_clk_wiz_0 : STD_LOGIC;
-  signal clk_tx_clk_wiz_0 : STD_LOGIC;
-  signal clkfbout_buf_clk_wiz_0 : STD_LOGIC;
-  signal clkfbout_clk_wiz_0 : STD_LOGIC;
-  signal reset_high : STD_LOGIC;
+architecture STRUCTURE of pll_pll_clk_wiz is
+  signal clk_100_pll : STD_LOGIC;
+  signal clk_200_pll : STD_LOGIC;
+  signal clk_pad_pll : STD_LOGIC;
+  signal clkfbout_buf_pll : STD_LOGIC;
+  signal clkfbout_pll : STD_LOGIC;
   signal NLW_plle2_adv_inst_CLKOUT2_UNCONNECTED : STD_LOGIC;
   signal NLW_plle2_adv_inst_CLKOUT3_UNCONNECTED : STD_LOGIC;
   signal NLW_plle2_adv_inst_CLKOUT4_UNCONNECTED : STD_LOGIC;
   signal NLW_plle2_adv_inst_CLKOUT5_UNCONNECTED : STD_LOGIC;
   signal NLW_plle2_adv_inst_DRDY_UNCONNECTED : STD_LOGIC;
+  signal NLW_plle2_adv_inst_LOCKED_UNCONNECTED : STD_LOGIC;
   signal NLW_plle2_adv_inst_DO_UNCONNECTED : STD_LOGIC_VECTOR ( 15 downto 0 );
   attribute BOX_TYPE : string;
   attribute BOX_TYPE of clkf_buf : label is "PRIMITIVE";
@@ -54,26 +51,26 @@ architecture STRUCTURE of clk_wiz_0_clk_wiz_0_clk_wiz is
 begin
 clkf_buf: unisim.vcomponents.BUFG
      port map (
-      I => clkfbout_clk_wiz_0,
-      O => clkfbout_buf_clk_wiz_0
+      I => clkfbout_pll,
+      O => clkfbout_buf_pll
     );
 clkin1_ibufg: unisim.vcomponents.IBUF
     generic map(
       IOSTANDARD => "DEFAULT"
     )
         port map (
-      I => clk_in1,
-      O => clk_in1_clk_wiz_0
+      I => clk_pad,
+      O => clk_pad_pll
     );
 clkout1_buf: unisim.vcomponents.BUFG
      port map (
-      I => clk_tx_clk_wiz_0,
-      O => clk_tx
+      I => clk_100_pll,
+      O => clk_100
     );
 clkout2_buf: unisim.vcomponents.BUFG
      port map (
-      I => clk_rx_clk_wiz_0,
-      O => clk_rx
+      I => clk_200_pll,
+      O => clk_200
     );
 plle2_adv_inst: unisim.vcomponents.PLLE2_ADV
     generic map(
@@ -110,13 +107,13 @@ plle2_adv_inst: unisim.vcomponents.PLLE2_ADV
       STARTUP_WAIT => "FALSE"
     )
         port map (
-      CLKFBIN => clkfbout_buf_clk_wiz_0,
-      CLKFBOUT => clkfbout_clk_wiz_0,
-      CLKIN1 => clk_in1_clk_wiz_0,
+      CLKFBIN => clkfbout_buf_pll,
+      CLKFBOUT => clkfbout_pll,
+      CLKIN1 => clk_pad_pll,
       CLKIN2 => '0',
       CLKINSEL => '1',
-      CLKOUT0 => clk_tx_clk_wiz_0,
-      CLKOUT1 => clk_rx_clk_wiz_0,
+      CLKOUT0 => clk_100_pll,
+      CLKOUT1 => clk_200_pll,
       CLKOUT2 => NLW_plle2_adv_inst_CLKOUT2_UNCONNECTED,
       CLKOUT3 => NLW_plle2_adv_inst_CLKOUT3_UNCONNECTED,
       CLKOUT4 => NLW_plle2_adv_inst_CLKOUT4_UNCONNECTED,
@@ -128,45 +125,33 @@ plle2_adv_inst: unisim.vcomponents.PLLE2_ADV
       DO(15 downto 0) => NLW_plle2_adv_inst_DO_UNCONNECTED(15 downto 0),
       DRDY => NLW_plle2_adv_inst_DRDY_UNCONNECTED,
       DWE => '0',
-      LOCKED => locked,
+      LOCKED => NLW_plle2_adv_inst_LOCKED_UNCONNECTED,
       PWRDWN => '0',
-      RST => reset_high
-    );
-plle2_adv_inst_i_1: unisim.vcomponents.LUT1
-    generic map(
-      INIT => X"1"
-    )
-        port map (
-      I0 => resetn,
-      O => reset_high
+      RST => '0'
     );
 end STRUCTURE;
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 library UNISIM;
 use UNISIM.VCOMPONENTS.ALL;
-entity clk_wiz_0 is
+entity pll is
   port (
-    clk_in1 : in STD_LOGIC;
-    clk_tx : out STD_LOGIC;
-    clk_rx : out STD_LOGIC;
-    resetn : in STD_LOGIC;
-    locked : out STD_LOGIC
+    clk_pad : in STD_LOGIC;
+    clk_100 : out STD_LOGIC;
+    clk_200 : out STD_LOGIC
   );
   attribute NotValidForBitStream : boolean;
-  attribute NotValidForBitStream of clk_wiz_0 : entity is true;
+  attribute NotValidForBitStream of pll : entity is true;
   attribute CORE_GENERATION_INFO : string;
-  attribute CORE_GENERATION_INFO of clk_wiz_0 : entity is "clk_wiz_0,clk_wiz_v5_2_1,{component_name=clk_wiz_0,use_phase_alignment=true,use_min_o_jitter=false,use_max_i_jitter=false,use_dyn_phase_shift=false,use_inclk_switchover=false,use_dyn_reconfig=false,enable_axi=0,feedback_source=FDBK_AUTO,PRIMITIVE=PLL,num_out_clk=2,clkin1_period=10.0,clkin2_period=10.0,use_power_down=false,use_reset=true,use_locked=true,use_inclk_stopped=false,feedback_type=SINGLE,CLOCK_MGR_TYPE=NA,manual_override=false}";
-end clk_wiz_0;
+  attribute CORE_GENERATION_INFO of pll : entity is "pll,clk_wiz_v5_2_1,{component_name=pll,use_phase_alignment=true,use_min_o_jitter=false,use_max_i_jitter=false,use_dyn_phase_shift=false,use_inclk_switchover=false,use_dyn_reconfig=false,enable_axi=0,feedback_source=FDBK_AUTO,PRIMITIVE=PLL,num_out_clk=2,clkin1_period=10.0,clkin2_period=10.0,use_power_down=false,use_reset=false,use_locked=false,use_inclk_stopped=false,feedback_type=SINGLE,CLOCK_MGR_TYPE=NA,manual_override=false}";
+end pll;
 
-architecture STRUCTURE of clk_wiz_0 is
+architecture STRUCTURE of pll is
 begin
-inst: entity work.clk_wiz_0_clk_wiz_0_clk_wiz
+inst: entity work.pll_pll_clk_wiz
      port map (
-      clk_in1 => clk_in1,
-      clk_rx => clk_rx,
-      clk_tx => clk_tx,
-      locked => locked,
-      resetn => resetn
+      clk_100 => clk_100,
+      clk_200 => clk_200,
+      clk_pad => clk_pad
     );
 end STRUCTURE;

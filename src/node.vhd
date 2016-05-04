@@ -47,6 +47,8 @@ end node;
 architecture RTL of node is
 
     -- clocks
+    signal clk_200, clk_100 : std_logic;
+    
 	signal clk_tx       : std_logic;                            -- transmitter clock
 	signal clk_rx       : std_logic;                            -- receiver clock
 	signal locked       : std_logic;                            -- if '1' clocks stable and usable
@@ -74,15 +76,15 @@ RST_man: entity work.RST_manager                -- instantiate reset manager
     );
         
 
-TXRX_clock: entity work.clk_wiz_0
-
+PM_PLL: entity work.pll
     port map (
-        clk_in1     => clk_pad,
-        clk_tx      => clk_tx,
-        clk_rx      => clk_rx,
-        resetn      => reset_n,
-        locked      => locked
+        clk_pad     => clk_pad,
+        clk_200     => clk_200,
+        clk_100     => clk_100
         );
+        
+        clk_tx  <= clk_200;
+        clk_rx  <= clk_200;
 
 --TX_clock: entity work.clk_prescaler             -- instantiate Ckl prescaler
 --    generic map (                                       

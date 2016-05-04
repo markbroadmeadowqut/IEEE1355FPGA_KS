@@ -1,4 +1,4 @@
-// file: clk_wiz_0.v
+// file: pll.v
 // 
 // (c) Copyright 2008 - 2013 Xilinx, Inc. All rights reserved.
 // 
@@ -65,22 +65,19 @@
 
 `timescale 1ps/1ps
 
-module clk_wiz_0_clk_wiz 
+module pll_clk_wiz 
  (// Clock in ports
-  input         clk_in1,
+  input         clk_pad,
   // Clock out ports
-  output        clk_tx,
-  output        clk_rx,
-  // Status and control signals
-  input         resetn,
-  output        locked
+  output        clk_100,
+  output        clk_200
  );
 
   // Input buffering
   //------------------------------------
   IBUF clkin1_ibufg
-   (.O (clk_in1_clk_wiz_0),
-    .I (clk_in1));
+   (.O (clk_pad_pll),
+    .I (clk_pad));
 
 
 
@@ -94,8 +91,8 @@ module clk_wiz_0_clk_wiz
   wire        drdy_unused;
   wire        psdone_unused;
   wire        locked_int;
-  wire        clkfbout_clk_wiz_0;
-  wire        clkfbout_buf_clk_wiz_0;
+  wire        clkfbout_pll;
+  wire        clkfbout_buf_pll;
   wire        clkfboutb_unused;
    wire clkout2_unused;
    wire clkout3_unused;
@@ -104,7 +101,6 @@ module clk_wiz_0_clk_wiz
   wire        clkout6_unused;
   wire        clkfbstopped_unused;
   wire        clkinstopped_unused;
-  wire        reset_high;
 
   PLLE2_ADV
   #(.BANDWIDTH            ("OPTIMIZED"),
@@ -122,16 +118,16 @@ module clk_wiz_0_clk_wiz
   plle2_adv_inst
     // Output clocks
    (
-    .CLKFBOUT            (clkfbout_clk_wiz_0),
-    .CLKOUT0             (clk_tx_clk_wiz_0),
-    .CLKOUT1             (clk_rx_clk_wiz_0),
+    .CLKFBOUT            (clkfbout_pll),
+    .CLKOUT0             (clk_100_pll),
+    .CLKOUT1             (clk_200_pll),
     .CLKOUT2             (clkout2_unused),
     .CLKOUT3             (clkout3_unused),
     .CLKOUT4             (clkout4_unused),
     .CLKOUT5             (clkout5_unused),
      // Input clock control
-    .CLKFBIN             (clkfbout_buf_clk_wiz_0),
-    .CLKIN1              (clk_in1_clk_wiz_0),
+    .CLKFBIN             (clkfbout_buf_pll),
+    .CLKIN1              (clk_pad_pll),
     .CLKIN2              (1'b0),
      // Tied to always select the primary input clock
     .CLKINSEL            (1'b1),
@@ -146,29 +142,27 @@ module clk_wiz_0_clk_wiz
     // Other control and status signals
     .LOCKED              (locked_int),
     .PWRDWN              (1'b0),
-    .RST                 (reset_high));
+    .RST                 (1'b0));
 
-  assign reset_high = ~resetn; 
 
-  assign locked = locked_int;
 
   // Output buffering
   //-----------------------------------
 
   BUFG clkf_buf
-   (.O (clkfbout_buf_clk_wiz_0),
-    .I (clkfbout_clk_wiz_0));
+   (.O (clkfbout_buf_pll),
+    .I (clkfbout_pll));
 
 
 
   BUFG clkout1_buf
-   (.O   (clk_tx),
-    .I   (clk_tx_clk_wiz_0));
+   (.O   (clk_100),
+    .I   (clk_100_pll));
 
 
   BUFG clkout2_buf
-   (.O   (clk_rx),
-    .I   (clk_rx_clk_wiz_0));
+   (.O   (clk_200),
+    .I   (clk_200_pll));
 
 
 
