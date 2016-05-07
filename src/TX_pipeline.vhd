@@ -31,20 +31,15 @@ entity TX_pipeline is
         );
     Port ( 
         clk         : in std_logic;
-        rst_n       : in std_logic;
-        sw          : in std_logic_vector(3 downto 0);
-        btn         : in std_logic_vector(3 downto 0);
-        data_fwd    : in std_logic_vector(7 downto 0);
-        ExTx        : in ExTx_rec;
-        data        : out std_logic;
-        strobe      : out std_logic;
-        CharTxEx    : out CharTxEx_rec
+        reset_n     : in std_logic;
+        char_in     : in std_logic_vector(7 downto 0);
+        d_out       : out std_logic;
+        s_out       : out std_logic
         );
         
 end TX_pipeline;
 
 architecture Behavioral of TX_pipeline is
-
 
     -- data signals
 	signal char_pkt     : std_logic_vector(7 downto 0);         -- char from packet_tx layer 
@@ -52,22 +47,9 @@ architecture Behavioral of TX_pipeline is
     
 begin
 
-packet_tx_ins: entity work.packet_tx            -- instantiate packet layer TX
-    generic map (
-        char_width      => char_width
-        ) 
-    port map ( 
-        clk             => clk,
-        rst_n           => rst_n,
-        sw              => sw,
-        btn             => btn, 
-        req_pkt         => ExTx.req_pkt,
-        data_fwd        => data_fwd,      
-        char_pkt        => char_pkt
-        );           
- 
         
 char_tx_ins: entity work.char_tx                -- instantiate character layer TX
+   
     generic map (
         char_width      => char_width
         )                          
