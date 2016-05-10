@@ -33,6 +33,7 @@ entity TX_pipeline is
         clk         : in std_logic;
         reset_n     : in std_logic;
         char_in     : in std_logic_vector(7 downto 0);
+        ExRxTx      : in ExRxExTx_rec;
         d_out       : out std_logic;
         s_out       : out std_logic
         );
@@ -43,10 +44,27 @@ architecture Behavioral of TX_pipeline is
 
     -- data signals
 	signal char_pkt     : std_logic_vector(7 downto 0);         -- char from packet_tx layer 
-    signal pc_char      : std_logic_vector(9 downto 0);         -- char from char_tx layer	   
+    signal pc_char      : std_logic_vector(9 downto 0);         -- char from char_tx layer	
+    signal data         : std_logic;
+    -- clocks
+    signal char_clk     : std_logic;
+    
+      
     
 begin
 
+Exchange_tx: entity work.exchange_tx            -- instantiate Ckl prescaler
+    generic map(
+        char_width      => char_width
+        )  
+    port map ( 
+        clk             => clk,                    
+        reset_n         => reset_n,
+        char            => char_in,
+        ExRxTx          => ExRxTx,
+        char_clk        => char_clk,
+        pc_char         => pc_char            
+        );  	
         
 char_tx_ins: entity work.char_tx                -- instantiate character layer TX
    
@@ -55,11 +73,10 @@ char_tx_ins: entity work.char_tx                -- instantiate character layer T
         )                          
     port map ( 
         clk             => clk,
-        rst_n           => rst_n,
-        char_in         => char_pkt,
-        ExTx            => ExTx,
-        CharTxEx        => CharTxEx,
-        char_out        => pc_char  
+        char_clk        => char_clk,
+        reset_n         => reset_n,
+        char_in         => pc_char,
+        d_out           => data  
         );            
 
 signal_tx_ins: entity work.signal_tx            -- instantiate signal layer TX
@@ -68,11 +85,10 @@ signal_tx_ins: entity work.signal_tx            -- instantiate signal layer TX
         )       
     port map ( 
         clk             => clk,
-        rst_n           => rst_n,
-        char_in         => pc_char,
-        ld_txreg        => ExTx.ld_txreg,
-        data            => data,
-        strobe          => strobe
+        reset_n         => reset_n,
+        d_in            => data,
+        d_out           => d_out,
+        s_out           => s_out
         );   
         
 end Behavioral;

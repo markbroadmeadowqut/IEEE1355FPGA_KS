@@ -49,14 +49,14 @@ architecture RTL of node is
     -- clocks
 	signal clk_tx       : std_logic;                            -- transmitter clock
 	signal clk_rx       : std_logic;                            -- receiver clock
---	signal locked       : std_logic;                            -- if '1' clocks stable and usable
+	signal locked       : std_logic;                            -- if '1' clocks stable and usable
     -- data signals
     signal pkt_char_inA     : std_logic_vector(7 downto 0);         -- character received and to be saved to packet layer
     signal pkt_char_outA    : std_logic_vector(7 downto 0);         -- character to be sent by TX pipeline
     signal display          : std_logic_vector(7 downto 0);         -- output to led's
     --flags
---    signal ExTxA        : ExTx_rec;
---   signal CharTxExA    : CharTxEx_rec;
+    --signal ExTxA        : ExTx_rec;
+    signal ExRxRstA      : ExRxRst_rec;
 --    signal SigRxExA     : SigRxEx_rec;
 --    signal CharRxExA    : CharRxEx_rec;
 --    signal dtct_nullA   : std_logic;
@@ -71,9 +71,19 @@ begin
 RST_man: entity work.RST_manager                -- instantiate reset manager
     port map (
         rstn_hw     => rst_n,
-        rstn_sw     => rstn_sw,
+        ExRxRstA    => ExRxRstA,
         reset_n     => reset_n
     );
+ 
+--TXRX_clock: entity work.clk_wiz_0
+    
+--        port map (
+--            clk_in1     => clk_pad,
+--            clk_tx      => clk_tx,
+--            clk_rx      => clk_rx,
+--            resetn      => rst_n,
+--            locked      => locked
+--            ); 
         
 TX_clock: entity work.clk_prescaler             -- instantiate Ckl prescaler
     generic map (                                       
@@ -91,9 +101,9 @@ RX_clock: entity work.clk_prescaler             -- instantiate Ckl prescaler
       )
     port map ( 
         clkin           => clk_pad,
-        clkout          => clk_rx,                       
+         clkout          => clk_rx,                       
         rst_n           => rst_n
-       ); 
+   ); 
        
 Side_A: entity work.side                      -- instantiate Ckl prescaler
     generic map (                                       
@@ -108,7 +118,8 @@ Side_A: entity work.side                      -- instantiate Ckl prescaler
         char_in         => pkt_char_outA,
         d_out           => d_outA,
         s_out           => s_outA,
-        char_out        => pkt_char_inA
+        char_out        => pkt_char_inA,
+        ExRxRst         => ExRxRstA
         );        
 
 packet_ins: entity work.packet       -- instantiate common packet layer 
@@ -119,6 +130,8 @@ packet_ins: entity work.packet       -- instantiate common packet layer
     port map ( 
          clk             => clk_tx,
          reset_n         => reset_n,
+         sw              => sw,
+         btn             => btn,
          char_in         => pkt_char_inA,
          char_out        => Pkt_char_outA,
          display         => display

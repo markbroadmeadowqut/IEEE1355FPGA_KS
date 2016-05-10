@@ -7,8 +7,7 @@
 -- Module Name:         exchange_layer - Behavioral
 -- Project Name:        High Speed Coms Bus Using FPGA
 -- Target Devices:      Artix 7
--- Description:         Exchange layer for bus  
--- Dependencies:
+-- Description:         Exchange layer for transmitter 
 -- 
 -- Dependencies: 
 -- 
@@ -18,197 +17,137 @@
 -- 
 ----------------------------------------------------------------------------------
 
-
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use IEEE.std_logic_unsigned.all;
 use work.bus_pkg.all;
 
-entity exchange is
+entity exchange_tx is
 
     generic(
         char_width  : integer
         );
     Port ( 
         clk         : in std_logic;             -- receiver clock
-        rst_n       : in std_logic;             -- reset
-        locked      : in std_logic;             -- indicates when clocks are stable
-        CharTxExA   : in CharTxEx_rec;          -- flags from Character TX pipeline A
-        SigRxExA    : in SigRxEx_rec;           -- flags from Signal RX pipeline A
-        CharRxExA   : in CharRxEx_rec;          -- flags from Char RX pipeline A
-        dtct_nullA  : out std_logic;            -- flag to detect null on link establish         -- flag to indicate char received by sig layaer
-        char_saveA  : out std_logic;            -- flag to save data to rx register in pkt layer
-        rstn_sw      : out std_logic;            -- flag for node reset by software
-        ExTxA       : inout ExTx_rec              -- flags sent to TX pipeline
+        reset_n     : in std_logic;             -- reset
+        char        : in std_logic_vector(7 downto 0);             -- raw data char
+        ExRxTx      : in ExRxExTx_rec;
+        char_clk    : out std_logic;
+        pc_char     : out std_logic_vector( 9 downto 0)             -- char with parity and control bit
+        
+--        locked      : in std_logic;             -- indicates when clocks are stable
+--        CharTxExA   : in CharTxEx_rec;          -- flags from Character TX pipeline A
+--        SigRxExA    : in SigRxEx_rec;           -- flags from Signal RX pipeline A
+--        CharRxExA   : in CharRxEx_rec;          -- flags from Char RX pipeline A
+--        dtct_nullA  : out std_logic;            -- flag to detect null on link establish         -- flag to indicate char received by sig layaer
+--        char_saveA  : out std_logic;            -- flag to save data to rx register in pkt layer
+--        rstn_sw      : out std_logic;            -- flag for node reset by software
+--        ExTxA       : inout ExTx_rec              -- flags sent to TX pipeline
         
         );
-end exchange;
+end exchange_tx;
 
-architecture Behavioral of exchange is
+architecture Behavioral of exchange_tx is
 
-    -- TX pipeline register reset
-    constant ExTx_rst: ExTx_rec := (
-        req_pkt     => '0',             -- don't request char from packet layer
-        fcc_flag    => '0',             -- don't send fcc from char Tx layer
-        eop1_flag   => '0',             -- don't send eop1 from char Tx layer
-        eop2_flag   => '0',             -- don't send eop2 from char Tx layer
-        esc_flag    => '0',             -- don't send escape from char Tx layer
-        data_flag   => '0',             -- don't send data from char_tx from char Tx layer
-        ld_txreg    => '0'              -- don't load character into signal_tx out reg
-                     
-        );
-   
---    type state_type is (s0_ready, s1_null_sent, s2_null_rcvd, s3_rcvg_data, s4_error);
---    signal state : state_type;
+    type state_type is (s0_wait, s1_req_data, s2_send_data, s3_send_eop);
+    signal current_s, next_s : state_type;
 
-    signal cnt1         : std_logic_vector(3 downto 0);
-    signal df_latch    : std_logic;
+    signal char_clk_latch   : std_logic;
+
+    signal data_parity      : std_logic;                        -- parity of data only
+    signal char_reg         : std_logic_vector(9 downto 0);
+    --signal cnt_max          : std_logic_vector (3 downto 0);             -- length of current character to count out of shift register
+    --signal char_clk_latch   : std_logic;
+  --  
+    signal send_end_null    : std_logic;
+   -- signal buff_empty       : std_logic; 
+   signal cnt            : std_logic_vector (3 downto 0);              -- counter for counting 10 bit character out 
+   signal cnt_max        : std_logic_vector (3 downto 0);
+   signal char_cnt       : std_logic_vector (3 downto 0);             -- for counting out fcc call for  
+    
     
 begin
-
-    process (clk,rst_n,SigRxExA)
+    
+    process (clk,reset_n)
+     
+     
         begin
-            if (rst_n = '0') then                          -- reset all 
-                ExTxA       <= ExTx_rst;
-                cnt1        <= "0100"; 
-                dtct_nullA  <= '1';
-                char_saveA  <= '0';
-                rstn_sw     <= '1';
-                df_latch    <= '0';
-                
+        
+            if (reset_n = '0') then                          -- reset all 
+                char_clk        <= '0';
+                pc_char         <= (others => '0');
+                cnt             <= "0001";
+                cnt_max         <= "0011";
+                char_clk        <= '0';
+                char_clk_latch  <= '0';
+                char_reg(5 downto 0)        <= "000000";
+                current_s       <= s0_wait; 
+                                
             else
-                --if ( locked = '1') then 
-                    if rising_edge(clk) then
-                        cnt1 <= cnt1 - '1';
-                        
-                        --  If data being rcvd set data flag
-                        if (SigRxExA.d_char_rcvd = '1')  then
-                            ExTxA.data_flag <= '1';
-                        else
-                            ExTxA.data_flag <= '0';
-                        end if;
-                        
-                        df_latch <= ExTxA.data_flag;
-                        
-                        if (df_latch = '1') and (SigRxExA.d_char_rcvd = '0') then
-                            ExTxA.eop1_flag <= '1';
-                        else
-                           if ( cnt1 = 0 ) then
-                                ExTxA.eop1_flag <= '0'; 
-                           end if;      
-                        end if; 
-                        
-                        --  If data being rcvd set data flag
---                        if (CharTxExA.cnt_max = 9)  then
---                            ExTxA.data_flag <= '1';
---                            data_temp <= '1';
---                       else
---                            data_temp <= '0';
---                        end if;
-                        
-                        
-                        
----                        if (data_temp = '1') and (ExTxA.data_flag = '0') then
---                            ExTxA.eop1_flag <= '1';
---                        else
---                           if ( cnt1 = 0 ) then
---                                ExTxA.eop1_flag <= '0'; 
---                           end if;      
---                        end if;                         
-                        
-                        if  (CharRxExA.parity_error = '1') or (SigRxExA.time_out = '1') then
-                            rstn_sw <= '0';                    
-                        else
-                            rstn_sw <= '1'; 
-                        end if;
-                        
-                        
-                                           
-                        if  (SigRxExA.null_dtcd = '1') then
-                            dtct_nullA <= '0';
-                        end if;
-                        
-                        
-                        
-                        if (cnt1 = 0) then
-                            cnt1 <= CharTxExA.cnt_max ;
-                            --ExTxA <= ExTx_rst;   
-                        end if;  
-                        
-                        
-                        
-                        if (cnt1 = 3) then      -- request a char from pkt
-                            ExTxA.req_pkt <= '1';
-                        else
-                            ExTxA.req_pkt <= '0';
-                        end if; 
-                        
-                        
-                        
-                        if (cnt1 = 1) then      -- request a char from pkt
-                            ExTxA.ld_txreg <= '1';
-                        else
-                            ExTxA.ld_txreg <= '0';
-                        end if;
-                        
-                                                    
+                if rising_edge(clk) then
+                    current_s    <= next_s;
+                    cnt <= cnt-1;
+                    char_clk <= char_clk_latch;
+                    
+                    if (cnt = "0011") then
+                        char_clk_latch <= '1'; 
+                    else
+                        char_clk_latch <= '0'; 
                     end if;
-                --end if;     
+                    
+                    if (cnt = "0010") then
+                        pc_char <= char_reg;      
+                    end if;
+                    
+                    if (cnt = "0000") then
+                        cnt <= cnt_max;
+                    end if;
+                end if;      
             end if;           
         end process;
- 
---    process (clk_tx, rst)
---        begin
-                        
---            if (rst = '0') or (time_out = '1') then
---               state <= s4_error;
---            else if rising_edge(clk_tx) then
---                case state is
---                    when s0_ready =>
---                        state <= s1_null_sent;    
---                    when s1_null_sent=>
---                        if (null_dtcd = '1') then
---                            --dtct_null  <= '0';
---                            state <= s2_null_rcvd;
---                        end if;    
---                    when s2_null_rcvd =>
---                        if (rcvg_data = '1') then
---                            state <= s3_rcvg_data;                            
---                        end if;                                                                
---                    when s3_rcvg_data =>
---                        if (eop_rcvd = '1') then
---                            state <= s2_null_rcvd;
---                       end if;
---                    when s4_error =>
---                        state <= s0_ready;    
---                end case;
---                end if;                         
- --           end if;
---        end process;
         
---    process(state)
---        begin
---            case state is
---                when s0_ready =>
---                    dtct_null  <= '1';
---                when s1_null_sent =>
---                    dtct_null <= '1'; 
---                when s2_null_rcvd =>
---                    dtct_null <= '0';
---                    if (fcc_sent = '1')then
---                        fcc_flag  <= '0';
---                    else
---                        fcc_flag  <= '1';
---                    end if;        
---                when s3_rcvg_data =>
---                            
---                when s4_error =>
---                    dtct_null  <= '0';  
---                    data_flag  <= '0'; 
---                    fcc_flag   <= '0';
---                end case;                     
---        end process;
+-- State machine for tx exchange layer sending data
+    process (reset_n, char_clk_latch,cnt, current_s)
+        begin
+            if (reset_n = '0') then                          -- reset all 
+                data_parity     <= '0';
+                            
+            else        
+                if rising_edge (char_clk_latch) then
+                    if (cnt = "0011") then
+                        data_parity <= ((char_reg(7) xor char_reg(6)) xor (char_reg(5) xor char_reg(4))) xor ((char_reg(3) xor char_reg(2)) xor (char_reg(1) xor char_reg(0)));
+                    else     
+                        if ( (data_parity xor char_reg(8))= '0') then      -- parity calculation of previous data and current control bit
+                            char_reg(9) <= '1';
+                        else
+                            char_reg(9) <= '0';   
+                        end if; 
+                    end if;   
+                    case current_s is
+                        when s0_wait        =>
+                            if (send_end_null = '1') then
+                                char_reg(8 downto 6)  <=  C_CHAR_FCC ;
+                                char_reg              <= (others=>'0');         -- send second half of Null Char
+                                send_end_null <= '0';
+                            else    
+                                char_reg(8 downto 6)  <=  C_CHAR_ESC;
+                                char_reg(5 downto 0)  <= (others=>'0');         -- send first half of Null Char
+                                send_end_null <= '1';
+                            end if;
+                            cnt_max <= "0011";
+                         when s1_req_data   =>
+                         
+                         when s2_send_data  =>
+                         
+                         when s3_send_eop   =>  
+                         
+                       
+                    end case;  
+                end if; 
+            end if;           
+        end process;
         
- 
+        
+        
 end Behavioral;

@@ -34,6 +34,7 @@ entity char_rx is
         reset_n         : in std_logic;             -- universal reset
         d_in            : in std_logic;             -- data bit from signal layer
         bit_clk         : in std_logic;             -- bit clk from signal layer indicates valid bit
+        --null_dtcd       : out std_logic;            -- initial null has been detected
         char_clk        : out std_logic;            -- indicates valid character in register
         pc_char         : out std_logic_vector(9 downto 0)      -- character out           
     );
@@ -53,6 +54,7 @@ begin
                 pc_char     <= (others => '0');
                 shft_reg    <= (others => '0');
                 cnt         <= (others => '0');
+            --    null_dtcd   <= '0';
                 dtct_null   <= '1';
             else        
                 if rising_edge(bit_clk) then                -- Shift valid bit into register
@@ -65,6 +67,7 @@ begin
                             pc_char(9 downto 6) <= shft_reg(9 downto 6);
                             pc_char(5 downto 0) <= "000000"; 
                             cnt <= "0011";                  -- reset clock to count out character
+                          --  null_dtcd <= '1';
                             dtct_null <= '0';                             
                         end if;     
                     else                    

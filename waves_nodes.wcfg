@@ -13,8 +13,8 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="2048000001fs"></ZoomEndTime>
-      <Cursor1Time time="22750000000fs"></Cursor1Time>
+      <ZoomEndTime time="2050000000001fs"></ZoomEndTime>
+      <Cursor1Time time="965000000fs"></Cursor1Time>
    </zoom_setting>
    <WVObjectSize size="20" />
    <wave_markers>
@@ -101,6 +101,7 @@
       <wvobject fp_name="group2247" type="group">
          <obj_property name="label">Rst manager</obj_property>
          <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
          <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RST_man/rstn_hw" type="logic">
             <obj_property name="ElementShortName">rstn_hw</obj_property>
             <obj_property name="ObjectShortName">rstn_hw</obj_property>
@@ -121,46 +122,27 @@
       <wvobject fp_name="group2252" type="group">
          <obj_property name="label">clocks</obj_property>
          <obj_property name="DisplayName">label</obj_property>
-         <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/TX_clock/clkin" type="logic">
-            <obj_property name="ElementShortName">clkin</obj_property>
-            <obj_property name="ObjectShortName">clkin</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/TX_clock/clkout" type="logic">
-            <obj_property name="ElementShortName">clkout</obj_property>
-            <obj_property name="ObjectShortName">clkout</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/TX_clock/COUNT" type="other">
-            <obj_property name="ElementShortName">COUNT</obj_property>
-            <obj_property name="ObjectShortName">COUNT</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/TX_clock/clk_int" type="logic">
-            <obj_property name="ElementShortName">clk_int</obj_property>
-            <obj_property name="ObjectShortName">clk_int</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/TX_clock/PRESCALER" type="other">
-            <obj_property name="ElementShortName">PRESCALER</obj_property>
-            <obj_property name="ObjectShortName">PRESCALER</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_clock/clkin" type="logic">
-            <obj_property name="ElementShortName">clkin</obj_property>
-            <obj_property name="ObjectShortName">clkin</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_clock/clkout" type="logic">
-            <obj_property name="ElementShortName">clkout</obj_property>
-            <obj_property name="ObjectShortName">clkout</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_clock/COUNT" type="other">
-            <obj_property name="ElementShortName">COUNT</obj_property>
-            <obj_property name="ObjectShortName">COUNT</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_clock/clk_int" type="logic">
-            <obj_property name="ElementShortName">clk_int</obj_property>
-            <obj_property name="ObjectShortName">clk_int</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RX_clock/PRESCALER" type="other">
-            <obj_property name="ElementShortName">PRESCALER</obj_property>
-            <obj_property name="ObjectShortName">PRESCALER</obj_property>
-         </wvobject>
+         <obj_property name="isExpanded"></obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/TXRX_clock/clk_in1" type="logic">
+         <obj_property name="ElementShortName">clk_in1</obj_property>
+         <obj_property name="ObjectShortName">clk_in1</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/TXRX_clock/clk_tx" type="logic">
+         <obj_property name="ElementShortName">clk_tx</obj_property>
+         <obj_property name="ObjectShortName">clk_tx</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/TXRX_clock/clk_rx" type="logic">
+         <obj_property name="ElementShortName">clk_rx</obj_property>
+         <obj_property name="ObjectShortName">clk_rx</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/TXRX_clock/resetn" type="logic">
+         <obj_property name="ElementShortName">resetn</obj_property>
+         <obj_property name="ObjectShortName">resetn</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/TXRX_clock/locked" type="logic">
+         <obj_property name="ElementShortName">locked</obj_property>
+         <obj_property name="ObjectShortName">locked</obj_property>
       </wvobject>
       <wvobject type="divider" fp_name="divider5364">
          <obj_property name="label">SIG Rx 0</obj_property>

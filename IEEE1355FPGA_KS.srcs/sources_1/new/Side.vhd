@@ -38,11 +38,14 @@ entity Side is
         char_in     : in std_logic_vector(7 downto 0);
         d_out       : out std_logic;
         s_out       : out std_logic;
-        char_out    : out std_logic_vector(7 downto 0)  
+        char_out    : out std_logic_vector(7 downto 0);
+        ExRxRst     : out ExRxRst_rec        
         );
 end Side;
 
 architecture Behavioral of Side is
+
+    signal ExRxTx      : ExRxExTx_rec;
 
 begin
 
@@ -56,19 +59,22 @@ RX_pipeline: entity work.RX_pipeline        -- instantiate receiver pipeline
         reset_n     => reset_n,
         d_in        => d_in,
         s_in        => s_in,
-        char_out    => char_out
+        char_out    => char_out,
+        ExRxTx      => ExRxTx,
+        ExRxRst     => ExRxRst
         ); 	
         
---TX_pipeline: entity work.TX_pipeline        -- instantiate transmission pipeline
---    generic map(
---         char_width      => char_width
---         )  
---    port map ( 
---         clk         => clk_tx,                      
---         reset_n     => reset_n,
---         char_in     => char_in,
---         d_out       => d_out,
---         s_out       => s_out       
---         );   
+TX_pipeline: entity work.TX_pipeline        -- instantiate transmission pipeline
+    generic map(
+        char_width      => char_width
+         )  
+    port map ( 
+         clk         => clk_tx,                      
+         reset_n     => reset_n,
+         char_in     => char_in,
+         ExRxTx      => ExRxTx,
+         d_out       => d_out,
+         s_out       => s_out       
+         );   
  
 end Behavioral;

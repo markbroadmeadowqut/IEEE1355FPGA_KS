@@ -21,6 +21,7 @@
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use work.bus_pkg.all;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -34,20 +35,20 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity RST_manager is
     Port ( 
     rstn_hw     : in std_logic;
-    rstn_sw     : in std_logic;
+    ExRxRstA    : in ExRxRst_rec;
     reset_n     : out std_logic
     );
     
 end RST_manager;
 
 architecture Behavioral of RST_manager is
-
+    signal err_cnt  : integer; 
 begin
 
-reset : process(rstn_hw, rstn_sw)
+reset : process(rstn_hw, ExRxRstA)
 
     begin
-        if (rstn_hw = '0') or (rstn_sw = '0') then
+        if (rstn_hw = '0') or (ExRxRstA.parity_err = '1')or (ExRxRstA.timeout = '1') then
                 reset_n <= '0';
         else
                 reset_n <= '1';

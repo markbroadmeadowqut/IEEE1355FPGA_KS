@@ -33,7 +33,9 @@ entity RX_pipeline is
         reset_n     : in std_logic;
         d_in        : in std_logic;
         s_in        : in std_logic;
-        char_out    : out std_logic_vector(7 downto 0)
+        char_out    : out std_logic_vector(7 downto 0);
+        ExRxTx      : out ExRxExTx_rec;
+        ExRxRst     : out ExRxRst_rec
         --dtct_null   : in std_logic;
         --char_rcvd   : in std_logic;
         --char_save   : in std_logic;
@@ -53,6 +55,7 @@ architecture Behavioral of RX_pipeline is
     -- data signals	
     signal data         : std_logic;
     signal pc_char      : std_logic_vector(9 downto 0);         -- char from signal_rx layer
+ 
     --signal char_rx      : std_logic_vector(7 downto 0);         -- char from char_rx layer 
 	-- flags
     --signal rd_parity        : std_logic;
@@ -86,20 +89,25 @@ char_rx_ins: entity work.char_rx                -- instantiate character layer u
         reset_n         => reset_n,
         d_in            => data,
         bit_clk         => bit_clk,
+      --  null_dtct       => null_dtcd,
         char_clk        => char_clk,
         pc_char         => pc_char     
         );    	
 	
---Exchange_nd: entity work.exchange            -- instantiate Ckl prescaler
---            generic map(
---                char_width      => char_width
---                )  
---            port map ( 
---                char_clk        => char_clk,                    
---                rst_n           => reset_n,
---                
---                rstn_sw         => rstn_sw,            
---                );  	
+Exchange_rx: entity work.exchange_rx            -- instantiate Ckl prescaler
+    
+    generic map(
+        char_width      => char_width
+        )  
+    port map ( 
+        clk             => clk,
+        char_clk        => char_clk,                    
+        reset_n         => reset_n,
+        pc_char         => pc_char, 
+        char            => char_out,
+        ExRxTx          => ExRxTx,
+        ExRxRst         => ExRxRst       
+        );  	
 	
 
 

@@ -58,7 +58,7 @@ module tb_node;
         #0      s_inA    = 1'b0;
         
         #1      rst_n   = 1'b0;       
-        #2      rst_n   = 1'b1;        
+        #3      rst_n   = 1'b1;        
      end  
      
     always
