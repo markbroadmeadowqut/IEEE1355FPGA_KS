@@ -35,25 +35,14 @@ entity exchange_tx is
         ExRxTx      : in ExRxExTx_rec;
         char_clk    : out std_logic;
         pc_char     : out std_logic_vector( 9 downto 0)             -- char with parity and control bit
-        
---        locked      : in std_logic;             -- indicates when clocks are stable
---        CharTxExA   : in CharTxEx_rec;          -- flags from Character TX pipeline A
---        SigRxExA    : in SigRxEx_rec;           -- flags from Signal RX pipeline A
---        CharRxExA   : in CharRxEx_rec;          -- flags from Char RX pipeline A
---        dtct_nullA  : out std_logic;            -- flag to detect null on link establish         -- flag to indicate char received by sig layaer
---        char_saveA  : out std_logic;            -- flag to save data to rx register in pkt layer
---        rstn_sw      : out std_logic;            -- flag for node reset by software
---        ExTxA       : inout ExTx_rec              -- flags sent to TX pipeline
-        
         );
 end exchange_tx;
 
 architecture Behavioral of exchange_tx is
 
-    type state_type is (s0_wait, s1_req_data, s2_send_data, s3_send_eop);
+    type state_type is (s0, s1, s2, s3);
     signal current_s, next_s : state_type;
 
-    signal char_clk_latch   : std_logic;
 
     signal data_parity      : std_logic;                        -- parity of data only
     signal char_reg         : std_logic_vector(9 downto 0);
@@ -61,93 +50,95 @@ architecture Behavioral of exchange_tx is
     --signal char_clk_latch   : std_logic;
   --  
     signal send_end_null    : std_logic;
-   -- signal buff_empty       : std_logic; 
+    signal buff_empty       : std_logic; 
    signal cnt            : std_logic_vector (3 downto 0);              -- counter for counting 10 bit character out 
    signal cnt_max        : std_logic_vector (3 downto 0);
    signal char_cnt       : std_logic_vector (3 downto 0);             -- for counting out fcc call for  
     
-    
 begin
-    
+       
     process (clk,reset_n)
-     
-     
-        begin
         
-            if (reset_n = '0') then                          -- reset all 
-                char_clk        <= '0';
-                pc_char         <= (others => '0');
-                cnt             <= "0001";
-                cnt_max         <= "0011";
-                char_clk        <= '0';
-                char_clk_latch  <= '0';
-                char_reg(5 downto 0)        <= "000000";
-                current_s       <= s0_wait; 
-                                
-            else
-                if rising_edge(clk) then
-                    current_s    <= next_s;
-                    cnt <= cnt-1;
-                    char_clk <= char_clk_latch;
-                    
-                    if (cnt = "0011") then
-                        char_clk_latch <= '1'; 
+        variable char_cnt       : integer range 0 to 8;             -- for counting out fcc call for characters
+        
+            begin
+                if (reset_n = '0') then                          -- reset all 
+                    cnt             <= "0011";                                   
+                elsif rising_edge(clk) then
+                    if (cnt > 0) then
+                        cnt <= cnt - 1;
                     else
-                        char_clk_latch <= '0'; 
+                        cnt <= cnt_max ;   
                     end if;
-                    
-                    if (cnt = "0010") then
-                        pc_char <= char_reg;      
-                    end if;
-                    
-                    if (cnt = "0000") then
-                        cnt <= cnt_max;
-                    end if;
-                end if;      
-            end if;           
-        end process;
-        
--- State machine for tx exchange layer sending data
-    process (reset_n, char_clk_latch,cnt, current_s)
+                    current_s <= next_s;
+                end if;    
+            end process;                   
+    
+    -- state machine for operations according to cycle 
+    process (current_s, cnt)
         begin
             if (reset_n = '0') then                          -- reset all 
+                cnt_max         <= "0011";
+                pc_char         <= (others => '0');
+                char_reg        <= (others => '0');
                 data_parity     <= '0';
-                            
-            else        
-                if rising_edge (char_clk_latch) then
-                    if (cnt = "0011") then
-                        data_parity <= ((char_reg(7) xor char_reg(6)) xor (char_reg(5) xor char_reg(4))) xor ((char_reg(3) xor char_reg(2)) xor (char_reg(1) xor char_reg(0)));
-                    else     
+                send_end_null   <= '0';  
+            else         
+                case current_s is
+                    when s0 =>
+                        next_s <= s3;
+                        pc_char <= char_reg;
+
+                        
+                        if (ExRxTx.eop1_rcvd = '1') or (ExRxTx.eop2_rcvd = '1') then        -- send FCC
+                            char_reg(8 downto 6)  <= C_CHAR_FCC;
+                            char_reg(5 downto 0)  <= "000000";
+                            char_cnt <=  "1000";
+                        elsif ( char_cnt = 1) then
+                            char_reg(8 downto 6)  <= C_CHAR_EOP1;
+                            char_reg(5 downto 0)  <= "000000";                               -- send EOP 1 
+                            char_cnt <= "0000";                                                                                              
+                        elsif ( char_cnt >= 2) then                                         -- send data
+                            char_reg(7 downto 0) <= char(0)&char(1)&char(2)&char(3)&char(4)&char(5)&char(6)&char(7);
+                            char_reg(8) <= '0';                            
+                            char_cnt <= char_cnt - 1;
+                        elsif (send_end_null = '1') then
+                            char_reg(8 downto 6)  <=  C_CHAR_FCC;            -- send second half of Null Char
+                            char_reg(5 downto 0)  <= "000000";          
+                            send_end_null <= '0';
+                        else    
+                            char_reg(8 downto 6)  <=  C_CHAR_ESC;            -- send first half of Null Char
+                            char_reg(5 downto 0)  <= "000000";          
+                            send_end_null <= '1';
+                        end if;                       
+                           
+                    when s1 =>                                              -- calcuate the parity of data in previous character
+                        data_parity <= ((char_reg(7) xor char_reg(6)) xor (char_reg(5) xor char_reg(4))) xor ((char_reg(3) xor char_reg(2)) xor (char_reg(1) xor char_reg(0)));       
+                        next_s <= s0;
+ 
+                        
+                    when s2 => 
                         if ( (data_parity xor char_reg(8))= '0') then      -- parity calculation of previous data and current control bit
                             char_reg(9) <= '1';
                         else
                             char_reg(9) <= '0';   
-                        end if; 
-                    end if;   
-                    case current_s is
-                        when s0_wait        =>
-                            if (send_end_null = '1') then
-                                char_reg(8 downto 6)  <=  C_CHAR_FCC ;
-                                char_reg              <= (others=>'0');         -- send second half of Null Char
-                                send_end_null <= '0';
-                            else    
-                                char_reg(8 downto 6)  <=  C_CHAR_ESC;
-                                char_reg(5 downto 0)  <= (others=>'0');         -- send first half of Null Char
-                                send_end_null <= '1';
-                            end if;
-                            cnt_max <= "0011";
-                         when s1_req_data   =>
-                         
-                         when s2_send_data  =>
-                         
-                         when s3_send_eop   =>  
-                         
-                       
-                    end case;  
-                end if; 
-            end if;           
+                        end if;                              
+                        next_s <= s1;
+                        
+                    when s3 =>
+                        if (cnt >= 3) then
+                            next_s <= s3;
+                            if (char_reg(8) = '1') then
+                                cnt_max <= "0010";
+                            else
+                                cnt_max <= "1000";
+                            end if;                               
+                        else
+                            next_s <= s2;
+                        end if;
+                        
+           
+                end case;
+            end if;                      
         end process;
-        
-        
-        
-end Behavioral;
+   end Behavioral;

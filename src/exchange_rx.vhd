@@ -69,12 +69,12 @@ begin
         begin
             if (reset_n  = '0') then
             
-                ExRxTx          <= ExRxTx_rst;
-                ExRxRst         <= ExRxRst_rst;
-                char            <= (others => '0');
-                data_parity     <= '0';
-                total_parity    <= '0';    
-                half_null_dtcd  <= '0';    
+               -- ExRxTx          <= ExRxTx_rst;
+               -- ExRxRst         <= ExRxRst_rst;
+               -- char            <= (others => '0');
+               -- data_parity     <= '0';
+               -- total_parity    <= '0';    
+               -- half_null_dtcd  <= '0';    
                                  
             else
                 if rising_edge(clk) then
@@ -129,7 +129,7 @@ begin
                             end if;
                         end if;
                     end if;    
-                    ExRxTx  <= (others => '0');
+                    --ExRxTx  <= (others => '0');
                 else    
                     char  <=  pc_char(0)& pc_char(1)& pc_char(2)& pc_char(3)& pc_char(4)& pc_char(5)& pc_char(6)& pc_char(7);                  
                 end if;      

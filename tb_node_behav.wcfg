@@ -13,8 +13,8 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="4350000001fs"></ZoomEndTime>
-      <Cursor1Time time="685616000fs"></Cursor1Time>
+      <ZoomEndTime time="2248000001fs"></ZoomEndTime>
+      <Cursor1Time time="124000000fs"></Cursor1Time>
    </zoom_setting>
    <WVObjectSize size="10" />
    <wvobject fp_name="group1311" type="group">
@@ -289,6 +289,7 @@
    <wvobject fp_name="group1337" type="group">
       <obj_property name="label">pkt</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
       <wvobject db_ref_id="1" fp_name="/tb_node/dut/packet_ins/clk" type="logic">
          <obj_property name="ElementShortName">clk</obj_property>
          <obj_property name="ObjectShortName">clk</obj_property>
@@ -346,6 +347,11 @@
          <obj_property name="ElementShortName">char_clk</obj_property>
          <obj_property name="ObjectShortName">char_clk</obj_property>
       </wvobject>
+      <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/TX_pipeline/Exchange_tx/pc_char" type="array">
+         <obj_property name="ElementShortName">pc_char[9:0]</obj_property>
+         <obj_property name="ObjectShortName">pc_char[9:0]</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+      </wvobject>
       <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/TX_pipeline/Exchange_tx/current_s" type="other">
          <obj_property name="ElementShortName">current_s</obj_property>
          <obj_property name="ObjectShortName">current_s</obj_property>
@@ -353,10 +359,6 @@
       <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/TX_pipeline/Exchange_tx/next_s" type="other">
          <obj_property name="ElementShortName">next_s</obj_property>
          <obj_property name="ObjectShortName">next_s</obj_property>
-      </wvobject>
-      <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/TX_pipeline/Exchange_tx/char_clk_latch" type="logic">
-         <obj_property name="ElementShortName">char_clk_latch</obj_property>
-         <obj_property name="ObjectShortName">char_clk_latch</obj_property>
       </wvobject>
       <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/TX_pipeline/Exchange_tx/data_parity" type="logic">
          <obj_property name="ElementShortName">data_parity</obj_property>
@@ -367,17 +369,18 @@
          <obj_property name="ObjectShortName">char_reg[9:0]</obj_property>
          <obj_property name="isExpanded"></obj_property>
       </wvobject>
-      <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/TX_pipeline/Exchange_tx/pc_char" type="array">
-         <obj_property name="ElementShortName">pc_char[9:0]</obj_property>
-         <obj_property name="ObjectShortName">pc_char[9:0]</obj_property>
-      </wvobject>
       <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/TX_pipeline/Exchange_tx/send_end_null" type="logic">
          <obj_property name="ElementShortName">send_end_null</obj_property>
          <obj_property name="ObjectShortName">send_end_null</obj_property>
       </wvobject>
+      <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/TX_pipeline/Exchange_tx/buff_empty" type="logic">
+         <obj_property name="ElementShortName">buff_empty</obj_property>
+         <obj_property name="ObjectShortName">buff_empty</obj_property>
+      </wvobject>
       <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/TX_pipeline/Exchange_tx/cnt" type="array">
          <obj_property name="ElementShortName">cnt[3:0]</obj_property>
          <obj_property name="ObjectShortName">cnt[3:0]</obj_property>
+         <obj_property name="isExpanded"></obj_property>
       </wvobject>
       <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/TX_pipeline/Exchange_tx/cnt_max" type="array">
          <obj_property name="ElementShortName">cnt_max[3:0]</obj_property>
@@ -386,7 +389,6 @@
       <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/TX_pipeline/Exchange_tx/char_cnt" type="array">
          <obj_property name="ElementShortName">char_cnt[3:0]</obj_property>
          <obj_property name="ObjectShortName">char_cnt[3:0]</obj_property>
-         <obj_property name="isExpanded"></obj_property>
       </wvobject>
       <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/TX_pipeline/Exchange_tx/char_width" type="other">
          <obj_property name="ElementShortName">char_width</obj_property>
