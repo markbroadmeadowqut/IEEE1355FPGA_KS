@@ -48,9 +48,9 @@ entity RX_pipeline is
 end RX_pipeline;
 
 architecture Behavioral of RX_pipeline is
-    -- clocks
-    signal bit_clk      : std_logic;
-    signal char_clk     : std_logic;
+    
+    signal bit_valid    : std_logic;
+    signal char_valid   : std_logic;
     
     -- data signals	
     signal data         : std_logic;
@@ -58,7 +58,7 @@ architecture Behavioral of RX_pipeline is
  
     --signal char_rx      : std_logic_vector(7 downto 0);         -- char from char_rx layer 
 	-- flags
-    --signal rd_parity        : std_logic;
+    signal null_dtcd        : std_logic;
     --signal rd_char_parity   : std_logic;
     --signal char_rcvd        : std_logic;
     --signal SigChar          : SigChar_rec;
@@ -77,7 +77,7 @@ signal_rx_inst: entity work.signal_rx           -- Instantiate receiver controll
         d_in            => d_in,           
         s_in            => s_in,
         d_out           => data,
-        bit_clk         => bit_clk
+        bit_valid       => bit_valid
         );
 	   
 char_rx_ins: entity work.char_rx                -- instantiate character layer upstream
@@ -86,11 +86,12 @@ char_rx_ins: entity work.char_rx                -- instantiate character layer u
         char_width      => char_width
         )                         
     port map (
+        clk             => clk,
         reset_n         => reset_n,
         d_in            => data,
-        bit_clk         => bit_clk,
-      --  null_dtct       => null_dtcd,
-        char_clk        => char_clk,
+        bit_valid       => bit_valid,
+        null_dtcd       => null_dtcd,
+        char_valid      => char_valid,
         pc_char         => pc_char     
         );    	
 	
@@ -101,8 +102,9 @@ Exchange_rx: entity work.exchange_rx            -- instantiate Ckl prescaler
         )  
     port map ( 
         clk             => clk,
-        char_clk        => char_clk,                    
+        char_valid      => char_valid,                    
         reset_n         => reset_n,
+        null_dtcd       => null_dtcd,
         pc_char         => pc_char, 
         char            => char_out,
         ExRxTx          => ExRxTx,

@@ -70,6 +70,7 @@ begin
 
 RST_man: entity work.RST_manager                -- instantiate reset manager
     port map (
+        clk         => clk_pad,
         rstn_hw     => rst_n,
         ExRxRstA    => ExRxRstA,
         reset_n     => reset_n
@@ -87,7 +88,7 @@ RST_man: entity work.RST_manager                -- instantiate reset manager
         
 TX_clock: entity work.clk_prescaler             -- instantiate Ckl prescaler
     generic map (                                       
-        PRESCALER 				=> 2            
+        PRESCALER 				=> 2           
         )
     port map ( 
         clkin           => clk_pad,
@@ -97,11 +98,11 @@ TX_clock: entity work.clk_prescaler             -- instantiate Ckl prescaler
 
 RX_clock: entity work.clk_prescaler             -- instantiate Ckl prescaler
     generic map (                                       
-        PRESCALER 				=> 1              
+        PRESCALER 				=> 1             
       )
     port map ( 
         clkin           => clk_pad,
-         clkout          => clk_rx,                       
+        clkout          => clk_rx,                       
         rst_n           => rst_n
    ); 
        

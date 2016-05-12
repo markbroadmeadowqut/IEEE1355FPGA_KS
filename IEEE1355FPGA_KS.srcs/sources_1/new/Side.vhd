@@ -55,7 +55,7 @@ RX_pipeline: entity work.RX_pipeline        -- instantiate receiver pipeline
         char_width      => char_width
         )          
     port map ( 
-        clk         => clk_rx,                     
+        clk         => clk_rx,                      
         reset_n     => reset_n,
         d_in        => d_in,
         s_in        => s_in,

@@ -47,7 +47,7 @@ architecture Behavioral of TX_pipeline is
     signal pc_char      : std_logic_vector(9 downto 0);         -- char from char_tx layer	
     signal data         : std_logic;
     -- clocks
-    signal char_clk     : std_logic;
+    signal char_valid     : std_logic;
     
       
     
@@ -62,7 +62,7 @@ Exchange_tx: entity work.exchange_tx            -- instantiate Ckl prescaler
         reset_n         => reset_n,
         char            => char_in,
         ExRxTx          => ExRxTx,
-        char_clk        => char_clk,
+        char_valid      => char_valid,
         pc_char         => pc_char            
         );  	
         
@@ -73,7 +73,7 @@ char_tx_ins: entity work.char_tx                -- instantiate character layer T
         )                          
     port map ( 
         clk             => clk,
-        char_clk        => char_clk,
+        char_valid      => char_valid,
         reset_n         => reset_n,
         char_in         => pc_char,
         d_out           => data  

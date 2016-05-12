@@ -31,11 +31,12 @@ entity char_rx is
         char_width  : integer
         );
     Port (  
+        clk             : in std_logic;
         reset_n         : in std_logic;             -- universal reset
         d_in            : in std_logic;             -- data bit from signal layer
-        bit_clk         : in std_logic;             -- bit clk from signal layer indicates valid bit
-        --null_dtcd       : out std_logic;            -- initial null has been detected
-        char_clk        : out std_logic;            -- indicates valid character in register
+        bit_valid       : in std_logic;             -- bit clk from signal layer indicates valid bit
+        null_dtcd       : out std_logic;
+        char_valid      : out std_logic;            -- indicates valid character in register;
         pc_char         : out std_logic_vector(9 downto 0)      -- character out           
     );
     
@@ -48,27 +49,31 @@ architecture Behavioral of char_rx is
     signal dtct_null    : std_logic;                        -- if 1 look for null char 
     
 begin
-    process(bit_clk,reset_n  )
+    process(clk, reset_n  )
         begin
             if (reset_n  = '0') then                        -- reset procedure
+                char_valid  <= '0';
                 pc_char     <= (others => '0');
                 shft_reg    <= (others => '0');
                 cnt         <= (others => '0');
-            --    null_dtcd   <= '0';
                 dtct_null   <= '1';
-            else        
-                if rising_edge(bit_clk) then                -- Shift valid bit into register
+                null_dtcd   <= '0';
+            elsif rising_edge(clk) then                   -- Shift valid bit into register
+                if (bit_valid = '1') then
                     shft_reg(0)  <= d_in;
                     shft_reg(9 downto 1) <= shft_reg(8 downto 0); 
                     cnt <= cnt - 1;
-                    
+                        
                     if (dtct_null = '1') then               -- detect null char in shift register
                         if (shft_reg(8 downto 2) = C_CHAR_NULL) then
                             pc_char(9 downto 6) <= shft_reg(9 downto 6);
                             pc_char(5 downto 0) <= "000000"; 
                             cnt <= "0011";                  -- reset clock to count out character
-                          --  null_dtcd <= '1';
-                            dtct_null <= '0';                             
+                              --  null_dtcd <= '1';
+                            dtct_null <= '0';
+                            char_valid <= '1'; 
+                            null_dtcd <= '1';
+                                                        
                         end if;     
                     else                    
                         if (cnt = 0) then                      
@@ -78,11 +83,11 @@ begin
                                 cnt <= "0011";                  -- set counter to count out current control char bits
                             else
                                 pc_char <= shft_reg;                -- send data char to exchange layer
-                                cnt <= "0000";                                   
+                                cnt <= "1001";                                   
                             end if; 
-                            char_clk <= '1';                    --  flag to indicate full char is in register
-                        else                        
-                            char_clk <= '0';
+                            char_valid <= '1';                    --  flag to indicate full char is in register
+                        else                                    -- if you swap 0 and 1 on char clock you increase latency by 6 clock cycles                        
+                            char_valid <= '0';
                         end if;                    
                     end if; 
                 end if;                   

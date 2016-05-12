@@ -31,7 +31,7 @@ entity char_tx is
         );
     Port ( 
         clk         : in std_logic; 
-        char_clk    : in std_logic;       
+        char_valid  : in std_logic;       
         reset_n     : in std_logic;        
         char_in     : in std_logic_vector(9 downto 0);
         d_out       : out std_logic
@@ -52,7 +52,7 @@ begin
             else
                 if rising_edge(clk) then
                     d_out   <= shft_reg(9);
-                    if (char_clk = '1') then
+                    if (char_valid = '1') then
                         shft_reg    <= char_in;
                     else
                         shft_reg(9 downto 1) <= shft_reg(8 downto 0);
