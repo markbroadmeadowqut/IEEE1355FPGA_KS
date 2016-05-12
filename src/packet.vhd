@@ -22,32 +22,36 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
-entity packet_rx is
+entity packet is
     generic(
         char_width  : integer
         );
     Port ( 
     clk            : in  std_logic;                         -- TX clock    
-    reset_n  	   : in  std_logic;    
+    reset_n  	   : in  std_logic;
+    sw             : in  std_logic_vector(3 downto 0);
+    btn            : in  std_logic_vector(3 downto 0);        
     char_in        : in  std_logic_vector(7 downto 0);      -- character received
-    char_out       : in  std_logic_vector(7 downto 0);      -- character out register
+    char_out       : out std_logic_vector(7 downto 0);      -- character out register
     display        : out std_logic_vector(7 downto 0) 
-);
+    );
 
-end packet_rx;
+end packet;
 
-architecture behavioral of packet_rx is
+architecture behavioral of packet is
        
 begin
 
-process(clk,rst_n )  
+process(clk,reset_n )  
     begin
         if (reset_n  = '0') then
             display     <= (others => '0');
             char_out    <= (others => '0');
         else
              if rising_edge(clk) then
-                char_out <= char_in;    
+                --char_out <= char_in;
+                char_out(3 downto 0)    <= btn;
+                char_out(7 downto 4)    <= sw;                       
              end if;
              display <= char_in;  
         end if;           

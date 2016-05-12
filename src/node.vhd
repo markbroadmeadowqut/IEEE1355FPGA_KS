@@ -52,117 +52,95 @@ architecture RTL of node is
 	signal clk_tx       : std_logic;                            -- transmitter clock
 	signal clk_rx       : std_logic;                            -- receiver clock
 	signal locked       : std_logic;                            -- if '1' clocks stable and usable
-    -- data signals	
-    signal display      : std_logic_vector(7 downto 0);         -- output to led's
+    -- data signals
+    signal pkt_char_inA     : std_logic_vector(7 downto 0);         -- character received and to be saved to packet layer
+    signal pkt_char_outA    : std_logic_vector(7 downto 0);         -- character to be sent by TX pipeline
+    signal display          : std_logic_vector(7 downto 0);         -- output to led's
     --flags
-    signal ExTxA        : ExTx_rec;
-    signal CharTxExA    : CharTxEx_rec;
-    signal SigRxExA     : SigRxEx_rec;
-    signal CharRxExA    : CharRxEx_rec;
-    signal dtct_nullA   : std_logic;
-    signal char_saveA   : std_logic;
+    --signal ExTxA        : ExTx_rec;
+    signal ExRxRstA      : ExRxRst_rec;
+--    signal SigRxExA     : SigRxEx_rec;
+--    signal CharRxExA    : CharRxEx_rec;
+--    signal dtct_nullA   : std_logic;
+--    signal char_saveA   : std_logic;
     signal reset_n      : std_logic;
     signal rstn_sw      : std_logic;
-    signal data_fwd     : std_logic_vector(7 downto 0);
+--    signal data_fwd     : std_logic_vector(7 downto 0);
 begin
 
 
 
 RST_man: entity work.RST_manager                -- instantiate reset manager
     port map (
+        clk         => clk_pad,
         rstn_hw     => rst_n,
-        rstn_sw     => rstn_sw,
+        ExRxRstA    => ExRxRstA,
         reset_n     => reset_n
     );
+ 
+--TXRX_clock: entity work.clk_wiz_0
+    
+--        port map (
+--            clk_in1     => clk_pad,
+--            clk_tx      => clk_tx,
+--            clk_rx      => clk_rx,
+--            resetn      => rst_n,
+--            locked      => locked
+--            ); 
         
+TX_clock: entity work.clk_prescaler             -- instantiate Ckl prescaler
+    generic map (                                       
+        PRESCALER 				=> 2           
+        )
+    port map ( 
+        clkin           => clk_pad,
+        clkout          => clk_tx,                      
+        rst_n           => rst_n
+        );    
 
-PM_PLL: entity work.pll
-    port map (
-        clk_pad     => clk_pad,
-        clk_200     => clk_200,
-        clk_100     => clk_100
-        );
-        
-        clk_tx  <= clk_200;
-        clk_rx  <= clk_200;
+RX_clock: entity work.clk_prescaler             -- instantiate Ckl prescaler
+    generic map (                                       
+        PRESCALER 				=> 1             
+      )
+    port map ( 
+        clkin           => clk_pad,
+        clkout          => clk_rx,                       
+        rst_n           => rst_n
+   ); 
+       
+Side_A: entity work.side                      -- instantiate Ckl prescaler
+    generic map (                                       
+        char_width      => char_width              
+        )
+    port map ( 
+        clk_tx          => clk_tx,
+        clk_rx          => clk_rx,                       
+        reset_n         => reset_n,
+        d_in            => d_inA,
+        s_in            => s_inA,
+        char_in         => pkt_char_outA,
+        d_out           => d_outA,
+        s_out           => s_outA,
+        char_out        => pkt_char_inA,
+        ExRxRst         => ExRxRstA
+        );        
 
---TX_clock: entity work.clk_prescaler             -- instantiate Ckl prescaler
---    generic map (                                       
---        PRESCALER 				=> 2            
---        )
---    port map ( 
---        clkin           => clk_pad,
---        clkout          => clk_tx,                      
---        rst             => rst
---        );    
---RX_clock: entity work.clk_prescaler             -- instantiate Ckl prescaler
---    generic map (                                       
---        PRESCALER 				=> 1              
---      )
---    port map ( 
---        clkin           => clk_pad,
---        clkout          => clk_rx,                       
---       rst             => rst
---        ); 
-
-
-Exchange_nd: entity work.exchange            -- instantiate Ckl prescaler
+packet_ins: entity work.packet       -- instantiate common packet layer 
+                
     generic map(
         char_width      => char_width
-        )  
+         )          
     port map ( 
-        clk             => clk_tx,                    
-        rst_n           => reset_n,
-        locked          => locked,
-        CharTxExA       => CharTxExA,
-        SigRxExA        => SigRxExA,
-        CharRxExA       => CharRxExA,
-        dtct_nullA      => dtct_nullA,
-        char_saveA      => char_saveA,
-        rstn_sw         => rstn_sw,
-        ExTxA           => ExTxA                
-        );  
-
-	   
-RX1_pipeline_nd: entity work.RX_pipeline            -- instantiate receiver pipeline
-
-    generic map(
-        char_width      => char_width
-        )          
-    port map ( 
-        clk         => clk_rx,--pad,                      
-        rst_n       => reset_n,
-        data        => d_inA,
-        strobe      => s_inA,
-        dtct_null   => dtct_nullA,
-        char_save   => char_saveA,
-        SigRxEx     => SigRxExA,
-        CharRxEx    => CharRxExA,
-        display     => display,
-        data_fwd    => data_fwd     
-        ); 	   
-
-TX1_pipeline_nd: entity work.TX_pipeline            -- instantiate transmission pipeline
-    generic map(
-        char_width      => char_width
-        )  
-    port map ( 
-        clk         => clk_tx,                      
-        rst_n       => rst_n,
-        sw          => sw,
-        btn         => btn,
-        data_fwd    => data_fwd, 
-        ExTx        => ExTxA,
-        data        => d_outA,
-        strobe      => s_outA,
-        CharTxEx    => CharTxExA       
-        );	
-   	
+         clk             => clk_tx,
+         reset_n         => reset_n,
+         sw              => sw,
+         btn             => btn,
+         char_in         => pkt_char_inA,
+         char_out        => Pkt_char_outA,
+         display         => display
+         );                	
 	
-	led      <= display(7 downto 4);
-	ledb      <=  display(3 downto 0);  
-	--led(0)  <= data;
-	--led(1) 	<= strobe;
-	
+	led       <= display(7 downto 4);
+	ledb      <= display(3 downto 0);  
 	  
 end RTL;

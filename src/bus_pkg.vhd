@@ -31,50 +31,58 @@ package bus_pkg is
     constant C_CHAR_ESC     : std_logic_vector(2 downto 0) := "111";
     constant C_CHAR_NULL    : std_logic_vector(6 downto 0) := "1110100";
 
-    -- Exchange layer record for flags to control TX pipeline
-    type ExTx_rec is record
-        req_pkt     : std_logic;            -- request char from packet layer
-        fcc_flag    : std_logic;            -- send fcc from char_tx
-        eop1_flag   : std_logic;            -- send eop1 from char_tx
-        eop2_flag   : std_logic;            -- send eop2 from char_tx
-        esc_flag    : std_logic;            -- send data from char_tx
-        data_flag   : std_logic;            -- send data from char_tx
-        ld_txreg    : std_logic;            -- load character into signal_tx out reg
+    -- RX char record for flags indicating status of received character
+    type ExRxExTx_rec is record
+        fcc_rcvd        : std_logic;            -- when = 1 fcc received
+        eop1_rcvd       : std_logic;            -- when = 1 eop1 received
+        eop2_rcvd       : std_logic;            -- when = 1 eop2 received
+        esc_rcvd        : std_logic;            -- when = 1 exc received
+        null_rcvd       : std_logic;            -- when = 1 null received
+        send_fcc        : std_logic;            -- when = 1 request data from other node
+    end record;
+    
+    --Rx Exchange layer record for flags to reset manager
+    type ExRxRst_rec is record
+        parity_err    : std_logic;            -- parity error detected flag
+        timeout       : std_logic;            -- Timeout flag for reset manager
     end record; 
+
+    -- Exchange layer record for flags to control TX pipeline
+--    type ExTx_rec is record
+--        req_pkt     : std_logic;            -- request char from packet layer
+--        fcc_flag    : std_logic;            -- send fcc from char_tx
+--        eop1_flag   : std_logic;            -- send eop1 from char_tx
+--        eop2_flag   : std_logic;            -- send eop2 from char_tx
+--        esc_flag    : std_logic;            -- send data from char_tx
+--        data_flag   : std_logic;            -- send data from char_tx
+--        ld_txreg    : std_logic;            -- load character into signal_tx out reg
+--    end record; 
     
     -- Exchange layer record for flags to control TX pipeline
-    type CharTxEx_rec is record
+--    type CharTxEx_rec is record
        -- fcc_sent        : std_logic;            -- send fcc from char_tx
        -- eop1_sent       : std_logic;            -- send eop1 from char_tx
        -- eop2_sent       : std_logic;            -- send eop2 from char_tx
       --  esc_sent        : std_logic;            -- send data from char_tx
       -- data_sent       : std_logic;            -- send data from char_tx
-        cnt_max         : std_logic_vector(3 downto 0);            -- send length of character being sent
-    end record;    
+--        cnt_max         : std_logic_vector(3 downto 0);            -- send length of character being sent
+--    end record;    
     
     -- RX signal record for flags indicating status of signal
-    type SigRxEx_rec is record
-        d_char_rcvd     : std_logic;            -- data char received on signal incoming 
-        null_dtcd       : std_logic;            -- null detected on signal incoming 
-        time_out        : std_logic;            -- connection timed out              
-    end record;
+--    type SigRxEx_rec is record
+--        d_char_rcvd     : std_logic;            -- data char received on signal incoming 
+--        null_dtcd       : std_logic;            -- null detected on signal incoming 
+--        time_out        : std_logic;            -- connection timed out              
+--    end record;
     
     
-    -- RX char record for flags indicating status of received character
-    type CharRxEx_rec is record
-        fcc_rcvd        : std_logic;            -- fcc detected in char layer
-        eop1_rcvd       : std_logic;            -- eop1 detected in char layer
-        eop2_rcvd       : std_logic;            -- eop2 detected in char layer
-        esc_rcvd        : std_logic;            -- exc detected in char layer
-        null_rcvd       : std_logic;            -- null detected in char layer
-        parity_error    : std_logic;            -- parity error detected
-    end record;
+
     
     -- RX char record for flags indicating status of received character
-    type SigChar_rec is record
-        rd_tot_parity   : std_logic;            -- fcc detected in char layer
-        rd_char_parity  : std_logic;            -- eop1 detected in char layer
-        char_rcvd       : std_logic;            -- eop2 detected in char layer
-    end record;    
+--    type SigChar_rec is record
+--        rd_tot_parity   : std_logic;            -- fcc detected in char layer
+--        rd_char_parity  : std_logic;            -- eop1 detected in char layer
+--        char_rcvd       : std_logic;            -- eop2 detected in char layer
+--    end record;    
     
 end package;

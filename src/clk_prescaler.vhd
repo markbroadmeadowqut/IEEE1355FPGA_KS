@@ -25,7 +25,7 @@ entity clk_prescaler is
 	port ( 
 	   clkin 	: 	in  	std_logic;
        clkout 	: 	out  	std_logic;
-	   rst   	: 	in  	std_logic
+	   rst_n    : 	in  	std_logic
     );
 end clk_prescaler;
 
@@ -38,10 +38,10 @@ begin
 
 	clkout	<= clk_int;
 
-DIVIDE : process(clkin, rst)
+DIVIDE : process(clkin, rst_n)
 
 begin
-	if (rst  = '0')  then
+	if (rst_n  = '0')  then
 		clk_int		<= '0';
 		COUNT 		<= PRESCALER-1;		
 	elsif rising_edge(clkin) then

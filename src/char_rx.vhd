@@ -23,97 +23,73 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
+use IEEE.std_logic_unsigned.all;
 use work.bus_pkg.all;
 
 entity char_rx is
     generic(
         char_width  : integer
         );
-    Port ( 
-        clk             : in std_logic;  
-        rst_n  	        : in std_logic;
-        pc_char         : in std_logic_vector(9 downto 0);
-        SigChar         : in SigChar_rec;
-        char_rx         : out std_logic_vector(7 downto 0);
-        CharRxEx        : out CharRxEx_rec
-              
+    Port (  
+        clk             : in std_logic;
+        reset_n         : in std_logic;             -- universal reset
+        d_in            : in std_logic;             -- data bit from signal layer
+        bit_valid       : in std_logic;             -- bit clk from signal layer indicates valid bit
+        null_dtcd       : out std_logic;
+        char_valid      : out std_logic;            -- indicates valid character in register;
+        pc_char         : out std_logic_vector(9 downto 0)      -- character out           
     );
     
 end char_rx;
 
 architecture Behavioral of char_rx is
-
-    -- signal to exchange register reset
-    constant CharRxEx_rst: CharRxEx_rec := (
-        fcc_rcvd    => '0',
-        eop1_rcvd   => '0',
-        eop2_rcvd   => '0',
-        esc_rcvd    => '0',
-        null_rcvd   => '0',
-        parity_error=> '0'
-        );
-        
-    signal char_parity      : std_logic; 
-    signal total_parity     : std_logic; 
-    signal half_null_dtcd   : std_logic;    
+    
+    signal shft_reg     : std_logic_vector(9 downto 0);     -- 10 bit shift register
+    signal cnt          : std_logic_vector(3 downto 0);     -- counter 0 to 9     
+    signal dtct_null    : std_logic;                        -- if 1 look for null char 
     
 begin
-    process(clk,rst_n  )
+    process(clk, reset_n  )
         begin
-            if (rst_n  = '0') then
-                char_rx         <= (others => '0');
-                CharRxEx        <= CharRxEx_rst;
-                char_parity     <= '0';
-                total_parity    <= '1';
-                half_null_dtcd  <= '0';
-                
-            else
-                if rising_edge(clk) then
-                    if (SigChar.char_rcvd = '1') then
-                        if (pc_char(8) = '1') then
-                            if ( pc_char(8 downto 6) = C_CHAR_FCC ) then
-                                if ( half_null_dtcd = '1') then
-                                    CharRxEx.null_rcvd   <=  '1'; 
-                                    half_null_dtcd      <= '0';                                                     
-                                else
-                                    CharRxEx.fcc_rcvd   <=  '1'; 
-                                end if;   
+            if (reset_n  = '0') then                        -- reset procedure
+                char_valid  <= '0';
+                pc_char     <= (others => '0');
+                shft_reg    <= (others => '0');
+                cnt         <= (others => '0');
+                dtct_null   <= '1';
+                null_dtcd   <= '0';
+            elsif rising_edge(clk) then                   -- Shift valid bit into register
+                if (bit_valid = '1') then
+                    shft_reg(0)  <= d_in;
+                    shft_reg(9 downto 1) <= shft_reg(8 downto 0); 
+                    cnt <= cnt - 1;
+                        
+                    if (dtct_null = '1') then               -- detect null char in shift register
+                        if (shft_reg(8 downto 2) = C_CHAR_NULL) then
+                            pc_char(9 downto 6) <= shft_reg(9 downto 6);
+                            pc_char(5 downto 0) <= "000000"; 
+                            cnt <= "0011";                  -- reset clock to count out character
+                              --  null_dtcd <= '1';
+                            dtct_null <= '0';
+                            char_valid <= '1'; 
+                            null_dtcd <= '1';
+                                                        
+                        end if;     
+                    else                    
+                        if (cnt = 0) then                      
+                            if (shft_reg(8) = '1') then         -- detect control char
+                                pc_char(9 downto 6) <= shft_reg(9 downto 6);  -- send to exchange layer
+                                pc_char(5 downto 0) <= "000000";
+                                cnt <= "0011";                  -- set counter to count out current control char bits
                             else
-                                if ( pc_char(8 downto 6) = C_CHAR_ESC ) then
-                                    half_null_dtcd  <=  '1';                         
-                                else
-                                    if ( pc_char(8 downto 6) = C_CHAR_EOP1 ) then
-                                        CharRxEx.eop1_rcvd   <=  '1';
-                                    end if;
-            
-                                    if ( pc_char(8 downto 6) = C_CHAR_EOP2 ) then
-                                        CharRxEx.eop2_rcvd   <=  '1';
-                                    end if; 
-                                
-                                    if (half_null_dtcd = '1') then 
-                                         CharRxEx.esc_rcvd   <=  '1';  
-                                    end if;
-                                end if;       
-                            end if;    
-                            char_rx  <= (others => '0');
-                        else    
-                            char_rx  <=  pc_char(0)& pc_char(1)& pc_char(2)& pc_char(3)& pc_char(4)& pc_char(5)& pc_char(6)& pc_char(7);                  
-                        end if;      
-                    end if;
-                
-                    if (SigChar.rd_char_parity = '1') then 
-                        char_parity <= ((pc_char(7) xor pc_char(6)) xor (pc_char(5) xor pc_char(4))) xor ((pc_char(3) xor pc_char(2)) xor (pc_char(1) xor pc_char(0))); 
-                    end if;
-    
-                    if (SigChar.rd_tot_parity = '1') then 
-                        total_parity <= char_parity xor pc_char(8) xor pc_char(9); 
-                    end if;
-                                    
-                    if (total_parity = '0') then
-                        CharRxEx.parity_error <= '1';
-                    else
-                        CharRxEx.parity_error <= '0';
-                    end if;    
+                                pc_char <= shft_reg;                -- send data char to exchange layer
+                                cnt <= "1001";                                   
+                            end if; 
+                            char_valid <= '1';                    --  flag to indicate full char is in register
+                        else                                    -- if you swap 0 and 1 on char clock you increase latency by 6 clock cycles                        
+                            char_valid <= '0';
+                        end if;                    
+                    end if; 
                 end if;                   
             end if;      
         end process;
