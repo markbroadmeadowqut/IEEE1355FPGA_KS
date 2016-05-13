@@ -48,47 +48,44 @@ architecture behavioral of signal_rx is
     signal s_latch      : std_logic;                    -- latch previous strobe bit
     signal enable       : std_logic;                    -- bit clock latched for use
     
-
 begin 
-    process(clk,reset_n )  
-        begin   
-            if (reset_n  = '0') then
-                d_out       <= '0';
-                bit_valid   <= '0';            
-                d_ff1       <= '0';
-                d_ff2       <= '0';
-                s_ff1       <= '0';
-                s_ff2       <= '0';
-                s_latch     <= '0';
-                d_latch     <= '0';
-                enable      <= '0';
 
+	enable    <=  (d_ff2 xor s_ff2) xor (d_latch xor s_latch);       	-- bit clock latched for use in next statement 
+																		-- Edge detection of TX clock
+
+
+    process(clk,reset_n )  
+    begin   
+        if (reset_n  = '0') then
+            d_out       <= '0';
+            bit_valid   <= '0';            
+            d_ff1       <= '0';
+            d_ff2       <= '0';
+            s_ff1       <= '0';
+            s_ff2       <= '0';
+            s_latch     <= '0';
+            d_latch     <= '0';
+
+				
+        elsif rising_edge( clk ) then
                 
+            if (enable = '1') then
+                bit_valid   <=  '1';
             else
-                
-                enable    <=  (d_ff2 xor s_ff2) xor (d_latch xor s_latch);        -- bit clock latched for use in next statement 
-                                      -- Edge detection of TX clock
-                if rising_edge(clk) then
-                               
-                if (enable = '1') then
-                    bit_valid   <=  '1';
-                else
-                    bit_valid   <= '0';      
-                end if;                  
+                bit_valid   <= '0';      
+            end if;                  
                         
-                    d_ff1       <=  d_in;       -- use two stage Flip Flops
-                    s_ff1       <=  s_in;       -- to stabilise signal
-                    d_ff2       <=  d_ff1;
-                    s_ff2       <=  s_ff1;
+            d_ff1       <=  d_in;       -- use two stage Flip Flops
+            s_ff1       <=  s_in;       -- to stabilise signal
+            d_ff2       <=  d_ff1;
+            s_ff2       <=  s_ff1;
                            
-                    if (enable = '1') then    -- select bit for character (edge detector of bit from DS signal)
-                        d_out       <=  d_ff2;
-                        d_latch     <=  d_ff2;
-                        s_latch     <=  s_ff2;
-                        --bit_clk     <=  d_latch xor s_latch;        -- Edge detection of TX clock
-                        
-                    end if;    
-                end if;
+            if (enable = '1') then    -- select bit for character (edge detector of bit from DS signal)
+                d_out       <=  d_ff2;
+                d_latch     <=  d_ff2;
+                s_latch     <=  s_ff2;
+                --bit_clk     <=  d_latch xor s_latch;        -- Edge detection of TX clock
             end if;
-        end process;   
+		end if;
+    end process;   
 end behavioral;

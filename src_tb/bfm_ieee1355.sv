@@ -196,22 +196,27 @@ endfunction
 // INPUT STAGE
 // Double sample the D and S inputs, then edge detect
 //#################################################################################################
+	reg 	D_in_2;
+	reg 	D_in_3;
+	reg 	S_in_2;
+	reg 	S_in_3;	
+
 	always @( negedge rst_n or posedge clk_x4 )
 	begin	
 		reg		D_in_1;
-		reg 	D_in_2;
-		reg 	S_in_1;		
-		reg 	S_in_2;	
+		reg 	S_in_1;				
 	
 		if ( rst_n==1'b0 ) 
 		begin			
 			D_in_1			<= 1'b0;
 			D_in_2			<= 1'b0;
+			D_in_3			<= 1'b0;
 			S_in_1			<= 1'b0;
 			S_in_2			<= 1'b0;
+			S_in_3			<= 1'b0;
 			
-			D_in_edge		<= 1'b0;
-			S_in_edge		<= 1'b0;
+//			D_in_edge		<= 1'b0;
+//			S_in_edge		<= 1'b0;
 			
 			D_in_safe		<= 1'b0;
 			S_in_safe		<= 1'b0;
@@ -220,17 +225,19 @@ endfunction
 		begin
 			D_in_1			<= D_in;
 			D_in_2			<= D_in_1;
+			D_in_3			<= D_in_2;
 		
 			S_in_1			<= S_in;
 			S_in_2			<= S_in_1;
-			
-			D_in_edge		<= D_in_2 ^ D_in_1;
-			S_in_edge		<= S_in_2 ^ S_in_1;			
-			
+			S_in_3			<= S_in_2;
+						
 			if ( D_in_edge == 1'b1 ) D_in_safe <= !D_in_safe;
 			if ( S_in_edge == 1'b1 ) S_in_safe <= !S_in_safe;
 		end
 	end	
+	
+	assign D_in_edge	= D_in_3 ^ D_in_2;
+	assign S_in_edge	= S_in_3 ^ S_in_2;				
 
 //#################################################################################################	
 // INPUT STAGE

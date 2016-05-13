@@ -12,11 +12,11 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="2050000000001fs"></ZoomEndTime>
-      <Cursor1Time time="965000000fs"></Cursor1Time>
+      <ZoomStartTime time="2072752172fs"></ZoomStartTime>
+      <ZoomEndTime time="2233116849fs"></ZoomEndTime>
+      <Cursor1Time time="2104765000fs"></Cursor1Time>
    </zoom_setting>
-   <WVObjectSize size="20" />
+   <WVObjectSize size="21" />
    <wave_markers>
       <marker time="5508430000" label="" />
    </wave_markers>
@@ -59,7 +59,6 @@
    <wvobject db_ref_id="1" fp_name="/tb_fpga/btn_0" type="array">
       <obj_property name="ElementShortName">btn_0[3:0]</obj_property>
       <obj_property name="ObjectShortName">btn_0[3:0]</obj_property>
-      <obj_property name="isExpanded"></obj_property>
    </wvobject>
    <wvobject db_ref_id="1" fp_name="/tb_fpga/led_0" type="array">
       <obj_property name="ElementShortName">led_0[3:0]</obj_property>
@@ -84,7 +83,6 @@
    <wvobject db_ref_id="1" fp_name="/tb_fpga/ledb_1" type="array">
       <obj_property name="ElementShortName">ledb_1[3:0]</obj_property>
       <obj_property name="ObjectShortName">ledb_1[3:0]</obj_property>
-      <obj_property name="isExpanded"></obj_property>
    </wvobject>
    <wvobject type="divider" fp_name="divider42">
       <obj_property name="label">Node 0</obj_property>
@@ -106,10 +104,6 @@
             <obj_property name="ElementShortName">rstn_hw</obj_property>
             <obj_property name="ObjectShortName">rstn_hw</obj_property>
          </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RST_man/rstn_sw" type="logic">
-            <obj_property name="ElementShortName">rstn_sw</obj_property>
-            <obj_property name="ObjectShortName">rstn_sw</obj_property>
-         </wvobject>
          <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/RST_man/reset_n" type="logic">
             <obj_property name="ElementShortName">reset_n</obj_property>
             <obj_property name="ObjectShortName">reset_n</obj_property>
@@ -123,26 +117,6 @@
          <obj_property name="label">clocks</obj_property>
          <obj_property name="DisplayName">label</obj_property>
          <obj_property name="isExpanded"></obj_property>
-      </wvobject>
-      <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/TXRX_clock/clk_in1" type="logic">
-         <obj_property name="ElementShortName">clk_in1</obj_property>
-         <obj_property name="ObjectShortName">clk_in1</obj_property>
-      </wvobject>
-      <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/TXRX_clock/clk_tx" type="logic">
-         <obj_property name="ElementShortName">clk_tx</obj_property>
-         <obj_property name="ObjectShortName">clk_tx</obj_property>
-      </wvobject>
-      <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/TXRX_clock/clk_rx" type="logic">
-         <obj_property name="ElementShortName">clk_rx</obj_property>
-         <obj_property name="ObjectShortName">clk_rx</obj_property>
-      </wvobject>
-      <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/TXRX_clock/resetn" type="logic">
-         <obj_property name="ElementShortName">resetn</obj_property>
-         <obj_property name="ObjectShortName">resetn</obj_property>
-      </wvobject>
-      <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/TXRX_clock/locked" type="logic">
-         <obj_property name="ElementShortName">locked</obj_property>
-         <obj_property name="ObjectShortName">locked</obj_property>
       </wvobject>
       <wvobject type="divider" fp_name="divider5364">
          <obj_property name="label">SIG Rx 0</obj_property>
@@ -168,14 +142,6 @@
             <obj_property name="ElementShortName">s_in</obj_property>
             <obj_property name="ObjectShortName">s_in</obj_property>
          </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_A/RX_pipeline/signal_rx_inst/d_out" type="logic">
-            <obj_property name="ElementShortName">d_out</obj_property>
-            <obj_property name="ObjectShortName">d_out</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_A/RX_pipeline/signal_rx_inst/bit_clk" type="logic">
-            <obj_property name="ElementShortName">bit_clk</obj_property>
-            <obj_property name="ObjectShortName">bit_clk</obj_property>
-         </wvobject>
          <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_A/RX_pipeline/signal_rx_inst/d_ff1" type="logic">
             <obj_property name="ElementShortName">d_ff1</obj_property>
             <obj_property name="ObjectShortName">d_ff1</obj_property>
@@ -196,9 +162,13 @@
             <obj_property name="ElementShortName">s_latch</obj_property>
             <obj_property name="ObjectShortName">s_latch</obj_property>
          </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_A/RX_pipeline/signal_rx_inst/char_width" type="other">
-            <obj_property name="ElementShortName">char_width</obj_property>
-            <obj_property name="ObjectShortName">char_width</obj_property>
+         <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_A/RX_pipeline/signal_rx_inst/enable" type="logic">
+            <obj_property name="ElementShortName">enable</obj_property>
+            <obj_property name="ObjectShortName">enable</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_A/RX_pipeline/signal_rx_inst/d_out" type="logic">
+            <obj_property name="ElementShortName">d_out</obj_property>
+            <obj_property name="ObjectShortName">d_out</obj_property>
          </wvobject>
       </wvobject>
       <wvobject type="divider" fp_name="divider1421">
@@ -209,6 +179,50 @@
          <obj_property name="label">Char Rx 0</obj_property>
          <obj_property name="DisplayName">label</obj_property>
          <obj_property name="isExpanded"></obj_property>
+         <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_A/RX_pipeline/char_rx_ins/clk" type="logic">
+            <obj_property name="ElementShortName">clk</obj_property>
+            <obj_property name="ObjectShortName">clk</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_A/RX_pipeline/char_rx_ins/reset_n" type="logic">
+            <obj_property name="ElementShortName">reset_n</obj_property>
+            <obj_property name="ObjectShortName">reset_n</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_A/RX_pipeline/char_rx_ins/d_in" type="logic">
+            <obj_property name="ElementShortName">d_in</obj_property>
+            <obj_property name="ObjectShortName">d_in</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_A/RX_pipeline/char_rx_ins/bit_valid" type="logic">
+            <obj_property name="ElementShortName">bit_valid</obj_property>
+            <obj_property name="ObjectShortName">bit_valid</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_A/RX_pipeline/char_rx_ins/null_dtcd" type="logic">
+            <obj_property name="ElementShortName">null_dtcd</obj_property>
+            <obj_property name="ObjectShortName">null_dtcd</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_A/RX_pipeline/char_rx_ins/char_valid" type="logic">
+            <obj_property name="ElementShortName">char_valid</obj_property>
+            <obj_property name="ObjectShortName">char_valid</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_A/RX_pipeline/char_rx_ins/pc_char" type="array">
+            <obj_property name="ElementShortName">pc_char[9:0]</obj_property>
+            <obj_property name="ObjectShortName">pc_char[9:0]</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_A/RX_pipeline/char_rx_ins/shft_reg" type="array">
+            <obj_property name="ElementShortName">shft_reg[9:0]</obj_property>
+            <obj_property name="ObjectShortName">shft_reg[9:0]</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_A/RX_pipeline/char_rx_ins/cnt" type="array">
+            <obj_property name="ElementShortName">cnt[3:0]</obj_property>
+            <obj_property name="ObjectShortName">cnt[3:0]</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_A/RX_pipeline/char_rx_ins/dtct_null" type="logic">
+            <obj_property name="ElementShortName">dtct_null</obj_property>
+            <obj_property name="ObjectShortName">dtct_null</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_A/RX_pipeline/char_rx_ins/char_width" type="other">
+            <obj_property name="ElementShortName">char_width</obj_property>
+            <obj_property name="ObjectShortName">char_width</obj_property>
+         </wvobject>
       </wvobject>
       <wvobject type="divider" fp_name="divider230">
          <obj_property name="label">Exchange rx</obj_property>
@@ -255,6 +269,10 @@
          <obj_property name="isExpanded"></obj_property>
       </wvobject>
    </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_A/RX_pipeline/signal_rx_inst/enable" type="logic">
+      <obj_property name="ElementShortName">enable</obj_property>
+      <obj_property name="ObjectShortName">enable</obj_property>
+   </wvobject>
    <wvobject type="divider" fp_name="divider29">
       <obj_property name="label">Node 1 </obj_property>
       <obj_property name="DisplayName">label</obj_property>
@@ -266,6 +284,7 @@
       <wvobject fp_name="group883" type="group">
          <obj_property name="label">Node 1</obj_property>
          <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
          <wvobject db_ref_id="1" fp_name="/tb_fpga/node_1/clk_pad" type="logic">
             <obj_property name="ElementShortName">clk_pad</obj_property>
             <obj_property name="ObjectShortName">clk_pad</obj_property>
@@ -350,10 +369,6 @@
             <obj_property name="ElementShortName">d_out</obj_property>
             <obj_property name="ObjectShortName">d_out</obj_property>
          </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_A/RX_pipeline/signal_rx_inst/bit_clk" type="logic">
-            <obj_property name="ElementShortName">bit_clk</obj_property>
-            <obj_property name="ObjectShortName">bit_clk</obj_property>
-         </wvobject>
          <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_A/RX_pipeline/signal_rx_inst/d_ff1" type="logic">
             <obj_property name="ElementShortName">d_ff1</obj_property>
             <obj_property name="ObjectShortName">d_ff1</obj_property>
@@ -426,6 +441,7 @@
       <wvobject fp_name="group2166" type="group">
          <obj_property name="label">Sig tx 1</obj_property>
          <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
       </wvobject>
    </wvobject>
 </wave_config>
