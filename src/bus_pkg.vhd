@@ -42,7 +42,7 @@ package bus_pkg is
     end record;
     
     --Rx Exchange layer record for flags to reset manager
-    type ExRxRst_rec is record
+    type RxRst_rec is record
         parity_err    : std_logic;            -- parity error detected flag
         timeout       : std_logic;            -- Timeout flag for reset manager
     end record; 

@@ -84,8 +84,10 @@ begin
                             else
                                 pc_char <= shft_reg;                -- send data char to exchange layer
                                 cnt <= "1001";                                   
+                            end if;
+                            if (bit_valid = '1') then
+                                char_valid <= '1';                    --  flag to indicate full char is in register
                             end if; 
-                            char_valid <= '1';                    --  flag to indicate full char is in register
                         else                                    -- if you swap 0 and 1 on char clock you increase latency by 6 clock cycles                        
                             char_valid <= '0';
                         end if;                    

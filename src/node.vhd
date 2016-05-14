@@ -55,15 +55,9 @@ architecture RTL of node is
     signal pkt_char_outA    : std_logic_vector(7 downto 0);         -- character to be sent by TX pipeline
     signal display          : std_logic_vector(7 downto 0);         -- output to led's
     --flags
-    --signal ExTxA        : ExTx_rec;
-    signal ExRxRstA      : ExRxRst_rec;
---    signal SigRxExA     : SigRxEx_rec;
---    signal CharRxExA    : CharRxEx_rec;
---    signal dtct_nullA   : std_logic;
---    signal char_saveA   : std_logic;
+    signal RxRstA       : RxRst_rec;
     signal reset_n      : std_logic;
     signal rstn_sw      : std_logic;
---    signal data_fwd     : std_logic_vector(7 downto 0);
 begin
 
 
@@ -72,7 +66,7 @@ RST_man: entity work.RST_manager                -- instantiate reset manager
     port map (
         clk         => clk_pad,
         rstn_hw     => rst_n,
-        ExRxRstA    => ExRxRstA,
+        RxRstA      => RxRstA,
         reset_n     => reset_n
     );
  
@@ -120,7 +114,7 @@ Side_A: entity work.side                      -- instantiate Ckl prescaler
         d_out           => d_outA,
         s_out           => s_outA,
         char_out        => pkt_char_inA,
-        ExRxRst         => ExRxRstA
+        RxRst           => RxRstA
         );        
 
 packet_ins: entity work.packet       -- instantiate common packet layer 

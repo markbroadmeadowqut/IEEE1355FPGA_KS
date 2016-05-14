@@ -39,7 +39,7 @@ entity Side is
         d_out       : out std_logic;
         s_out       : out std_logic;
         char_out    : out std_logic_vector(7 downto 0);
-        ExRxRst     : out ExRxRst_rec        
+        RxRst       : out RxRst_rec        
         );
 end Side;
 
@@ -61,7 +61,7 @@ RX_pipeline: entity work.RX_pipeline        -- instantiate receiver pipeline
         s_in        => s_in,
         char_out    => char_out,
         ExRxTx      => ExRxTx,
-        ExRxRst     => ExRxRst
+        RxRst       => RxRst
         ); 	
         
 TX_pipeline: entity work.TX_pipeline        -- instantiate transmission pipeline

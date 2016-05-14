@@ -49,9 +49,9 @@ process(clk,reset_n )
             char_out    <= (others => '0');
         else
              if rising_edge(clk) then
-                --char_out <= char_in;
-                char_out(3 downto 0)    <= btn;
-                char_out(7 downto 4)    <= sw;                       
+                char_out <= char_in;
+                --char_out(3 downto 0)    <= btn;
+                --char_out(7 downto 4)    <= sw;                       
              end if;
              display <= char_in;  
         end if;           
