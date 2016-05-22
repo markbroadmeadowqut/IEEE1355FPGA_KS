@@ -51,12 +51,12 @@ begin
                 shft_reg    <= (others => '0');
             else
                 if rising_edge(clk) then
-                    d_out   <= shft_reg(9);
+                    d_out   <= shft_reg(0);
                     if (char_valid = '1') then
                         shft_reg    <= char_in;
                     else
-                        shft_reg(9 downto 1) <= shft_reg(8 downto 0);
-                        shft_reg(0) <= '0';
+                        shft_reg(8 downto 0) <= shft_reg(9 downto 1);
+                        shft_reg(9) <= '0';
                     end if;         
                 end if;  
             end if;                                

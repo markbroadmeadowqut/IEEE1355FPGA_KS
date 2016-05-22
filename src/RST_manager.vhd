@@ -36,7 +36,7 @@ entity RST_manager is
     Port (
     clk         : in std_logic; 
     rstn_hw     : in std_logic;
-    RxRstA      : in RxRst_rec;
+    RxRst       : in RxRst_rec;
     reset_n     : out std_logic
     );
     
@@ -56,7 +56,7 @@ reset : process(rstn_hw, clk)
         end if;
             
         if rising_edge(clk) then  
-            if (RxRstA.parity_err = '1') or (RxRstA.timeout = '1') then
+            if (RxRst.parity_err = '1') then --or (RxRst.timeout = '1') then
                 reset_n <= '0';
             else
                  reset_n <= '1';       

@@ -52,7 +52,9 @@ architecture behavioral of signal_rx is
     
 
 begin 
-    process(clk,reset_n )  
+
+
+    process(clk, reset_n )  
         begin   
             if (reset_n  = '0') then
                 d_out       <= '0';
@@ -67,40 +69,37 @@ begin
                 to_cnt      <= (others => '0');
                 time_out    <= '0';
                 
-            else
-                
-                if rising_edge(clk) then
+            elsif rising_edge(clk) then
                                
-                    if (enable = '1') then
+                if (enable = '1') then
                         bit_valid   <=  '1';
                         to_cnt <= (others => '0');
-                    else
-                        bit_valid   <= '0';
+                else
+                       bit_valid   <= '0';
                         to_cnt <= to_cnt + 1;      
-                    end if;                  
+                end if;                  
                         
                     d_ff1       <=  d_in;       -- use two stage Flip Flops
                     s_ff1       <=  s_in;       -- to stabilise signal
                     d_ff2       <=  d_ff1;
                     s_ff2       <=  s_ff1;
                            
-                    if (enable = '1') then    -- select bit for character (edge detector of bit from DS signal)
+                if (enable = '1') then    -- select bit for character (edge detector of bit from DS signal)
                         d_out       <=  d_ff2;
                         d_hold      <=  d_ff2;
                         s_hold      <=  s_ff2;
                         --bit_clk     <=  d_latch xor s_latch;        -- Edge detection of TX clock
                         
-                    end if;
-                    
-                    if (to_cnt > "111100") then
-                        time_out <= '1';
-                    else
-                        time_out <= '0';    
-                    end if;                     
-                        
                 end if;
-                enable    <=  (d_ff2 xor s_ff2) xor (d_hold xor s_hold);        -- bit clock latched for use in next statement 
-                                                                                   -- Edge detection of TX clock
+                    
+                if (to_cnt > "111100") then
+                        time_out <= '1';
+                else
+                        time_out <= '0';    
+                end if;                     
+                        
             end if;
-        end process;   
+        enable    <=  (d_ff2 xor s_ff2) xor (d_hold xor s_hold);        -- bit clock latched for use in next statement 
+                                                                                         -- Edge detection of TX clock
+    end process;   
 end behavioral;

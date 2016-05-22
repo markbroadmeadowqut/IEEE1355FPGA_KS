@@ -33,7 +33,9 @@ entity RX_pipeline is
         reset_n     : in std_logic;
         d_in        : in std_logic;
         s_in        : in std_logic;
-        char_out    : out std_logic_vector(7 downto 0);
+        PkgEx       : in PkgEx_rec;
+        wr_en       : out std_logic;
+        char        : out std_logic_vector(7 downto 0);
         ExRxTx      : out ExRxExTx_rec;
         RxRst       : out RxRst_rec
         );
@@ -45,8 +47,7 @@ architecture Behavioral of RX_pipeline is
     -- data signals	
     signal data         : std_logic;
     signal pc_char      : std_logic_vector(9 downto 0);         -- char from signal_rx layer
-	-- flags
-    signal null_dtcd    : std_logic;    
+	-- flags   
     signal bit_valid    : std_logic;
     signal char_valid   : std_logic;
 begin
@@ -76,7 +77,6 @@ char_rx_ins: entity work.char_rx                -- instantiate character layer u
         reset_n         => reset_n,
         d_in            => data,
         bit_valid       => bit_valid,
-        null_dtcd       => null_dtcd,
         char_valid      => char_valid,
         pc_char         => pc_char     
         );    	
@@ -90,12 +90,12 @@ Exchange_rx: entity work.exchange_rx            -- instantiate Ckl prescaler
         clk             => clk,
         char_valid      => char_valid,                    
         reset_n         => reset_n,
-        null_dtcd       => null_dtcd,
+        full            => PkgEx.full,
         pc_char         => pc_char,
         parity_err      => RxRst.parity_err, 
-        char            => char_out,
-        ExRxTx          => ExRxTx
-        --ExRxRst         => ExRxRst       
+        wr_en           => wr_en,
+        char            => char,
+        ExRxTx          => ExRxTx      
         );  	
 	
 

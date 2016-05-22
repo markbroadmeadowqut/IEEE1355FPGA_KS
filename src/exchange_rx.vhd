@@ -32,12 +32,12 @@ entity exchange_rx is
         clk         : in std_logic;
         char_valid  : in std_logic;
         reset_n     : in std_logic;
-        null_dtcd   : in std_logic;
+        full        : in std_logic;
         pc_char     : in std_logic_vector( 9 downto 0 );
         parity_err  : out std_logic;
+        wr_en       : out std_logic;
         char        : out std_logic_vector( 7 downto 0);
         ExRxTx      : out ExRxExTx_rec
-        --ExRxRst     : out ExRxRst_rec 
         );
         
 end exchange_rx;
@@ -89,7 +89,8 @@ begin
                 data_parity     <= '0';
                 total_parity    <= '0';    
                 half_null_dtcd  <= '0'; 
-                null_rcvd       <= '0';               
+                null_rcvd       <= '0';
+                wr_en           <= '0';               
             else
                 if rising_edge(clk) then
                    case state is
@@ -104,12 +105,12 @@ begin
                             end if;
                             
                         when s1_rcvg => 
-                            total_parity <= data_parity xor pc_char(8) xor pc_char(9);
+                            total_parity <= data_parity xor pc_char(1) xor pc_char(0);
                             if (total_parity = '0') then
                                 parity_err <= '1';
                             else
                                 parity_err <= '0';
-                                if ( pc_char(8) = '1') then
+                                if ( pc_char(1) = '1') then
                                     state <= s2_lchar;
                                 else
                                     state <= s3_nchar;
@@ -124,22 +125,22 @@ begin
                             end if;
                             
                         when s2_lchar =>
-                            data_parity <= pc_char(7) xor pc_char(6);
-                            if ( pc_char(8 downto 6) = C_CHAR_FCC ) then
+                            data_parity <= pc_char(2) xor pc_char(3);
+                            if ( pc_char(3 downto 1) = C_CHAR_FCC ) then
                                 if ( half_null_dtcd = '1') then
                                     half_null_dtcd      <= '0';                                                                                 
                                 else
                                     ExRxTx.fcc_rcvd   <=  '1'; 
                                 end if;   
                             else
-                                if ( pc_char(8 downto 6) = C_CHAR_ESC ) then
+                                if ( pc_char(3 downto 1) = C_CHAR_ESC ) then
                                     half_null_dtcd  <=  '1';                         
                                 else
-                                    if ( pc_char(8 downto 6) = C_CHAR_EOP1 ) then
+                                    if ( pc_char(3 downto 1) = C_CHAR_EOP1 ) then
                                         ExRxTx.eop1_rcvd   <=  '1';
                                     end if;
             
-                                    if ( pc_char(8 downto 6) = C_CHAR_EOP2 ) then
+                                    if ( pc_char(3 downto 1) = C_CHAR_EOP2 ) then
                                         ExRxTx.eop2_rcvd   <=  '1';
                                     end if; 
                                 
@@ -148,17 +149,18 @@ begin
                                     end if;
                                 end if;
                             end if;    
-                            state  <= s4_nodata;  --s1_rcvg; --
+                            state  <= s4_nodata;  
                                                   
                         when s3_nchar => 
-                            data_parity <= ((pc_char(7) xor pc_char(6)) xor (pc_char(5) xor pc_char(4))) xor ((pc_char(3) xor pc_char(2)) xor (pc_char(1) xor pc_char(0)));
-                            char  <=  pc_char(0)& pc_char(1)& pc_char(2)& pc_char(3)& pc_char(4)& pc_char(5)& pc_char(6)& pc_char(7); 
+                            data_parity <= ((pc_char(9) xor pc_char(8)) xor (pc_char(7) xor pc_char(6))) xor ((pc_char(5) xor pc_char(4)) xor (pc_char(3) xor pc_char(2)));
+                            char  <=  pc_char(9 downto 2);
+                            wr_en <= '1'; 
                             state <= s4_nodata; 
                             ExRxTx.null_rcvd   <=  '0';
                             null_rcvd   <=  '0'; 
                             
-                            
                         when s4_nodata =>
+                            wr_en <= '0';
                             if (char_valid = '1') then
                                 state  <= s1_rcvg;                      
                             end if;     

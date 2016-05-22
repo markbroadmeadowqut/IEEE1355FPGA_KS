@@ -31,9 +31,11 @@ entity exchange_tx is
     Port ( 
         clk         : in std_logic;             -- receiver clock
         reset_n     : in std_logic;             -- reset
+        empty       : in std_logic;
         char        : in std_logic_vector(7 downto 0);             -- raw data char
         ExRxTx      : in ExRxExTx_rec;
         char_valid  : out std_logic;
+        rd_en       : out std_logic;
         pc_char     : out std_logic_vector( 9 downto 0)             -- char with parity and control bit
         );
 end exchange_tx;
@@ -45,8 +47,7 @@ architecture Behavioral of exchange_tx is
 
     signal data_parity      : std_logic;                        -- parity of data only
     signal char_reg         : std_logic_vector(9 downto 0);
-    signal send_end_null    : std_logic;
-    signal buff_empty       : std_logic; 
+    signal send_end_null    : std_logic; 
 
         signal char_cnt       : std_logic_vector (3 downto 0);              -- for counting out fcc call for characters
         signal cnt            : std_logic_vector (3 downto 0);         -- counter for counting 10 bit character out 
@@ -69,7 +70,9 @@ begin
                     char_reg        <= (others => '0');
                     data_parity     <= '0';
                     send_end_null   <= '0';
-                    char_cnt        <= "0000";  
+                    char_cnt        <= "0000";
+                    char_valid      <= '0';
+                    rd_en           <= '0'; 
             elsif rising_edge(clk) then  
             
                 if (cnt > 0) then
@@ -84,59 +87,71 @@ begin
                             char_valid <= '1';
                             
                         if (send_end_null = '1') then
-                            char_reg(8 downto 6)  <=  C_CHAR_FCC;            -- send second half of Null Char
-                            char_reg(5 downto 0)  <= "000000"; 
+                            char_reg(3 downto 1)  <=  C_CHAR_FCC;            -- send second half of Null Char
+                            char_reg(9 downto 4)  <= "000000"; 
                             cnt_max <= "0011";         
                             send_end_null <= '0';                            
                             
                         elsif (char_cnt = "0010") then                 -- send FCC
-                            char_reg(8 downto 6)  <= C_CHAR_FCC;
-                            char_reg(5 downto 0)  <= "000000";
+                            char_reg(3 downto 1)  <= C_CHAR_FCC;
+                            char_reg(9 downto 4)  <= "000000";
                             cnt_max <= "0011";
                             char_cnt <=  "0001";
                         elsif ( char_cnt = "0001") then
-                            char_reg(8 downto 6)  <= C_CHAR_EOP1;
-                            char_reg(5 downto 0)  <= "000000";                               -- send EOP 1 
+                            char_reg(3 downto 1)  <= C_CHAR_EOP1;
+                            char_reg(9 downto 4)  <= "000000";                               -- send EOP 1 
                             cnt_max <= "0011";
                             char_cnt <= "1010";                                                                                              
                         
                         elsif ( char_cnt >= "0011") then                                         -- send data
-                                char_reg(7 downto 0) <= char(0)&char(1)&char(2)&char(3)&char(4)&char(5)&char(6)&char(7);
-                                char_reg(8) <= '0';  
+                             if (empty = '1') then
+                                char_reg(3 downto 1)  <=  C_CHAR_ESC;            -- send first half of Null Char
+                                char_reg(9 downto 4)  <= "000000";
+                                cnt_max <= "0011";
+                                send_end_null <= '1';
+                             else
+                                char_reg(9 downto 2) <= char;
+                                rd_en <= '1';
+                                char_reg(1) <= '0';  
                                 cnt_max <= "1001";                          
-                                char_cnt <= char_cnt - 1;         
-                        else   
+                                char_cnt <= char_cnt - 1;
+                             end if;             
+                        else
                             if (ExRxTx.null_rcvd = '1') then
-                                char_reg(8 downto 6)  <=  C_CHAR_FCC;
+                                char_reg(3 downto 1)  <=  C_CHAR_FCC;
+                                cnt_max <= "0011";
                                 char_cnt <= "1010";
                             else
-                                char_reg(8 downto 6)  <=  C_CHAR_ESC;            -- send first half of Null Char
+                                char_reg(3 downto 1)  <=  C_CHAR_ESC;            -- send first half of Null Char
                                 send_end_null <= '1';
                             end if;
-                            char_reg(5 downto 0)  <= "000000";
+                            char_reg(9 downto 4)  <= "000000";
                             cnt_max <= "0011";   
                         end if;                            
                                
                      when s1 =>                                              -- calcuate the parity of data in previous character
-                            data_parity <= ((char_reg(7) xor char_reg(6)) xor (char_reg(5) xor char_reg(4))) xor ((char_reg(3) xor char_reg(2)) xor (char_reg(1) xor char_reg(0)));       
+                            data_parity <= ((char_reg(9) xor char_reg(8)) xor (char_reg(7) xor char_reg(6))) xor ((char_reg(5) xor char_reg(4)) xor (char_reg(3) xor char_reg(2)));       
                             state <= s0;
                             pc_char <= char_reg;
                             char_valid <= '0';     
                             
                      when s2 => 
-                        if ( (data_parity xor char_reg(8))= '0') then      -- parity calculation of previous data and current control bit
-                            char_reg(9) <= '1';
+                        if ( (data_parity xor char_reg(1))= '0') then      -- parity calculation of previous data and current control bit
+                            char_reg(0) <= '1';
                         else
-                            char_reg(9) <= '0';   
+                            char_reg(0) <= '0';   
                         end if;                              
                         state <= s1;
                         char_valid <= '0';
                             
                      when s3 =>  
-                        char_valid <= '0';  
+                        char_valid <= '0';
+                          
                         if (cnt > 3) then
+                            rd_en <= '0';
                             state <= s3;                                        
                         else
+                            rd_en <= '0';
                             state <= s2;
                         end if; 
                 end case;
