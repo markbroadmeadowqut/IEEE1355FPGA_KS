@@ -36,7 +36,7 @@ entity RST_manager is
     Port (
     clk         : in std_logic; 
     rstn_hw     : in std_logic;
-    ExRxRstA    : in ExRxRst_rec;
+    RxRst       : in RxRst_rec;
     reset_n     : out std_logic
     );
     
@@ -46,14 +46,17 @@ architecture Behavioral of RST_manager is
     --signal err_cnt  : integer; 
 begin
 
-reset : process(rstn_hw, ExRxRstA)
+reset : process(rstn_hw, clk)
 
     begin
         if (rstn_hw = '0') then
             reset_n <= '0';
+        else 
+            reset_n <= '1';
+        end if;
             
-        elsif rising_edge(clk) then  
-            if (ExRxRstA.parity_err = '1')or (ExRxRstA.timeout = '1') then
+        if rising_edge(clk) then  
+            if (RxRst.parity_err = '1') then --or (RxRst.timeout = '1') then
                 reset_n <= '0';
             else
                  reset_n <= '1';       

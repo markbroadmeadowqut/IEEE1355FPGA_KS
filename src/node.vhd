@@ -37,12 +37,16 @@ entity node is
         btn             : in        std_logic_vector(3 downto 0);   -- 4 buttons on fpga board        
         d_inA           : in        std_logic;                      -- Data in pin
         s_inA           : in        std_logic;                      -- Strobe in pin  
+        d_inB           : in        std_logic;                      -- Data in pin
+        s_inB           : in        std_logic;                      -- Strobe in pin          
         led             : out       std_logic_vector(3 downto 0);   -- 4 LEDs on FPGA board        
         ledb            : out       std_logic_vector(3 downto 0);   -- 4 blue LEDs on FPGA board        
         d_outA          : out       std_logic;                      -- Data out pin
-        s_outA          : out       std_logic                       -- strobe out pin
-
+        s_outA          : out       std_logic;                       -- strobe out pin
+        d_outB          : out       std_logic;                      -- Data out pin
+        s_outB          : out       std_logic                       -- strobe out pin
 	);
+
 	
 end node;
 
@@ -64,21 +68,35 @@ architecture RTL of node is
     
 	signal clk_tx       : std_logic;                            -- transmitter clock
 	signal clk_rx       : std_logic;                            -- receiver clock
+<<<<<<< HEAD
+=======
+	--signal locked       : std_logic;                            -- if '1' clocks stable and usable
+    
+>>>>>>> ken
     -- data signals
-    signal pkt_char_inA     : std_logic_vector(7 downto 0);         -- character received and to be saved to packet layer
-    signal pkt_char_outA    : std_logic_vector(7 downto 0);         -- character to be sent by TX pipeline
+    --signal pkt_char_inA     : std_logic_vector(7 downto 0);         -- character received and to be saved to packet layer
+    --signal pkt_char_outA    : std_logic_vector(7 downto 0);         -- character to be sent by TX pipeline
     signal display          : std_logic_vector(7 downto 0);         -- output to led's
+    
     --flags
-    --signal ExTxA        : ExTx_rec;
-    signal ExRxRstA      : ExRxRst_rec;
---    signal SigRxExA     : SigRxEx_rec;
---    signal CharRxExA    : CharRxEx_rec;
---    signal dtct_nullA   : std_logic;
---    signal char_saveA   : std_logic;
-    signal reset_n      : std_logic;
-    signal rstn_sw      : std_logic;
---    signal data_fwd     : std_logic_vector(7 downto 0);
+    --signal rstn_sw      : std_logic;
+    
+    -- Records
+    signal ExPkgA          : ExPkg_rec;        
+    signal ExPkgB          : ExPkg_rec; 
+    signal PkgExA          : PkgEx_rec; 
+    signal PkgExB          : PkgEx_rec;   
+    
+    -- components
+    component pll
+        port (
+            clk_pad         : in     std_logic;     -- Clock in ports
+            clk_tx          : out    std_logic;     -- Clock out ports
+            clk_rx          : out    std_logic
+         );
+        end component;        
 begin
+<<<<<<< HEAD
 
 
  --PLL to take the clock 100M input and create a 200M and 100M synchronised internal clocks 
@@ -104,10 +122,24 @@ RST_man: entity work.RST_manager                -- instantiate reset manager
 --TX_clock: entity work.clk_prescaler             -- instantiate Ckl prescaler
 --    generic map (                                       
 --        PRESCALER 				=> 2           
+=======
+ 
+TXRX_clks : pll
+    port map ( 
+       clk_pad => clk_pad,     -- Clock in ports
+       clk_tx => clk_tx,        -- Clock out ports  
+       clk_rx => clk_rx              
+ );
+        
+--TX_clock: entity work.clk_prescaler             -- instantiate Ckl prescaler
+--    generic map (                                       
+--        PRESCALER 				=> 1           
+>>>>>>> ken
 --        )
 --    port map ( 
 --        clkin           => clk_pad,
 --        clkout          => clk_tx,                      
+<<<<<<< HEAD
 --        rst_n           => rst_n
 --        );    
 --
@@ -121,6 +153,20 @@ RST_man: entity work.RST_manager                -- instantiate reset manager
 --        rst_n           => rst_n
 --   ); 
 
+=======
+--       rst_n           => rst_n
+--        );    
+
+--RX_clock: entity work.clk_prescaler             -- instantiate Ckl prescaler
+--    generic map (                                       
+--        PRESCALER 				=> 1             
+--      )
+--    port map ( 
+--        clkin           => clk_pad,
+--        clkout          => clk_rx,                       
+--       rst_n           => rst_n
+--   ); 
+>>>>>>> ken
        
 Side_A: entity work.side                      -- instantiate Ckl prescaler
     generic map (                                       
@@ -129,15 +175,30 @@ Side_A: entity work.side                      -- instantiate Ckl prescaler
     port map ( 
         clk_tx          => clk_tx,
         clk_rx          => clk_rx,                       
-        reset_n         => reset_n,
+        rst_n           => rst_n,
         d_in            => d_inA,
         s_in            => s_inA,
-        char_in         => pkt_char_outA,
+        PkgEx           => PkgExA,
         d_out           => d_outA,
         s_out           => s_outA,
-        char_out        => pkt_char_inA,
-        ExRxRst         => ExRxRstA
+        ExPkg           => ExPkgA        
         );        
+        
+Side_B: entity work.side                      -- instantiate Ckl prescaler
+    generic map (                                       
+        char_width      => char_width              
+        )
+    port map ( 
+        clk_tx          => clk_tx,
+        clk_rx          => clk_rx,                       
+        rst_n           => rst_n,
+        d_in            => d_inB,
+        s_in            => s_inB,
+        PkgEx           => PkgExB,
+        d_out           => d_outB,
+        s_out           => s_outB,
+        ExPkg           => ExPkgB        
+        );         
 
 packet_ins: entity work.packet       -- instantiate common packet layer 
                 
@@ -145,14 +206,17 @@ packet_ins: entity work.packet       -- instantiate common packet layer
         char_width      => char_width
          )          
     port map ( 
-         clk             => clk_tx,
-         reset_n         => reset_n,
-         sw              => sw,
-         btn             => btn,
-         char_in         => pkt_char_inA,
-         char_out        => Pkt_char_outA,
-         display         => display
-         );                	
+        wr_clk          => clk_rx,
+        rd_clk          => clk_tx,
+        rst_n           => rst_n,
+        sw              => sw,
+        btn             => btn,
+        ExPkgA          => ExPkgA,        
+        ExPkgB          => ExPkgB,          
+        display         => display,
+        PkgExA          => PkgExA, 
+        PkgExB          => PkgExB         
+        );                	
 	
 	led       <= display(7 downto 4);
 	ledb      <= display(3 downto 0);  

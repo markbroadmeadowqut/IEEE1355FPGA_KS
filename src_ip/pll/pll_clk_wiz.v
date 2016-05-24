@@ -69,8 +69,8 @@ module pll_clk_wiz
  (// Clock in ports
   input         clk_pad,
   // Clock out ports
-  output        clk_100,
-  output        clk_200
+  output        clk_tx,
+  output        clk_rx
  );
 
   // Input buffering
@@ -119,8 +119,8 @@ module pll_clk_wiz
     // Output clocks
    (
     .CLKFBOUT            (clkfbout_pll),
-    .CLKOUT0             (clk_100_pll),
-    .CLKOUT1             (clk_200_pll),
+    .CLKOUT0             (clk_tx_pll),
+    .CLKOUT1             (clk_rx_pll),
     .CLKOUT2             (clkout2_unused),
     .CLKOUT3             (clkout3_unused),
     .CLKOUT4             (clkout4_unused),
@@ -156,13 +156,13 @@ module pll_clk_wiz
 
 
   BUFG clkout1_buf
-   (.O   (clk_100),
-    .I   (clk_100_pll));
+   (.O   (clk_tx),
+    .I   (clk_tx_pll));
 
 
   BUFG clkout2_buf
-   (.O   (clk_200),
-    .I   (clk_200_pll));
+   (.O   (clk_rx),
+    .I   (clk_rx_pll));
 
 
 

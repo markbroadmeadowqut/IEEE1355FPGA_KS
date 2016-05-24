@@ -70,8 +70,8 @@ port
  (-- Clock in ports
   clk_pad           : in     std_logic;
   -- Clock out ports
-  clk_100          : out    std_logic;
-  clk_200          : out    std_logic
+  clk_tx          : out    std_logic;
+  clk_rx          : out    std_logic
  );
 end component;
 
@@ -85,7 +85,7 @@ your_instance_name : pll
    -- Clock in ports
    clk_pad => clk_pad,
   -- Clock out ports  
-   clk_100 => clk_100,
-   clk_200 => clk_200              
+   clk_tx => clk_tx,
+   clk_rx => clk_rx              
  );
 -- INST_TAG_END ------ End INSTANTIATION Template ------------

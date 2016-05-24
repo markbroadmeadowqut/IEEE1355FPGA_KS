@@ -32,22 +32,31 @@ entity Side is
     Port ( 
         clk_tx      : in std_logic;
         clk_rx      : in std_logic;
-        reset_n     : in std_logic;
+        rst_n       : in std_logic;
         d_in        : in std_logic;
         s_in        : in std_logic;
-        char_in     : in std_logic_vector(7 downto 0);
+        PkgEx       : in PkgEx_rec;
         d_out       : out std_logic;
         s_out       : out std_logic;
-        char_out    : out std_logic_vector(7 downto 0);
-        ExRxRst     : out ExRxRst_rec        
+        ExPkg       : out ExPkg_rec
         );
 end Side;
 
 architecture Behavioral of Side is
 
-    signal ExRxTx      : ExRxExTx_rec;
+    signal ExRxTx       : ExRxExTx_rec;
+    signal RxRst        : RxRst_rec;
+    signal reset_n      : std_logic;
 
 begin
+
+RST_man: entity work.RST_manager                -- instantiate reset manager
+    port map (
+        clk         => clk_rx,
+        rstn_hw     => rst_n,
+        RxRst       => RxRst,
+        reset_n     => reset_n
+    );
 
 RX_pipeline: entity work.RX_pipeline        -- instantiate receiver pipeline
 
@@ -59,9 +68,11 @@ RX_pipeline: entity work.RX_pipeline        -- instantiate receiver pipeline
         reset_n     => reset_n,
         d_in        => d_in,
         s_in        => s_in,
-        char_out    => char_out,
+        PkgEx       => PkgEx,        
+        wr_en       => ExPkg.wr_en,
+        char        => ExPkg.din,
         ExRxTx      => ExRxTx,
-        ExRxRst     => ExRxRst
+        RxRst       => RxRst
         ); 	
         
 TX_pipeline: entity work.TX_pipeline        -- instantiate transmission pipeline
@@ -71,8 +82,9 @@ TX_pipeline: entity work.TX_pipeline        -- instantiate transmission pipeline
     port map ( 
          clk         => clk_tx,                      
          reset_n     => reset_n,
-         char_in     => char_in,
+         PkgEx       => PkgEx,         
          ExRxTx      => ExRxTx,
+         rd_en       => ExPkg.rd_en,
          d_out       => d_out,
          s_out       => s_out       
          );   

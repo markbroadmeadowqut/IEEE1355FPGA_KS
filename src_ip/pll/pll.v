@@ -72,8 +72,8 @@ module pll
  // Clock in ports
   input         clk_pad,
   // Clock out ports
-  output        clk_100,
-  output        clk_200
+  output        clk_tx,
+  output        clk_rx
  );
 
   pll_clk_wiz inst
@@ -81,8 +81,8 @@ module pll
  // Clock in ports
   .clk_pad(clk_pad),
   // Clock out ports  
-  .clk_100(clk_100),
-  .clk_200(clk_200)              
+  .clk_tx(clk_tx),
+  .clk_rx(clk_rx)              
   );
 
 endmodule

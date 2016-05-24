@@ -42,8 +42,8 @@ end signal_tx;
 
 architecture Behavioral of signal_tx is
 
-   signal d_latch   : std_logic;
-   signal s_latch   : std_logic;
+   signal d_hold   : std_logic;
+   signal s_hold   : std_logic;
    
 begin    
     
@@ -53,14 +53,14 @@ begin
             if (reset_n  = '0') then
                 d_out       <= '0';
                 s_out       <= '0';
-                d_latch     <= '0';
-                s_latch     <= '0';
+                d_hold      <= '0';
+                s_hold      <= '0';
             else  
                 if rising_edge(clk)then
-                    d_latch     <= d_in;
-                    s_latch     <= s_latch xor (d_in xnor d_latch);
-                    d_out       <= d_latch; 
-                    s_out       <= s_latch;                               
+                    d_hold      <= d_in;
+                    s_hold      <= s_hold  xor (d_in xnor d_hold );
+                    d_out       <= d_hold; 
+                    s_out       <= s_hold;                               
                 end if;
             end if;          
     end process;       
