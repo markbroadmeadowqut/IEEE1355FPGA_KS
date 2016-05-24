@@ -19,7 +19,11 @@ module AB_test;
 	reg 			D_2	;
 	reg 			S_2	;		
 	reg 			D_3	;
-	reg 			S_3	;	
+	reg 			S_3	;
+	reg             D_4 ;
+	reg	            S_4 ;
+	reg             D_5 ;
+	reg             S_5 ;
 	
 	reg 	[3:0]	sw_0;
 	reg 	[3:0]	btn_0;
@@ -72,7 +76,26 @@ module AB_test;
 		.ledb           ( ledb_0 )		//: out     std_logic_vector(3 downto 0)		
 	);		
 
-    
+    node #() node_1
+	(	   
+		.clk_pad		( clk_100 ),
+		.rst_n			( rst_n_0 ),
+		
+		.d_inA			( D_3 ),
+		.s_inA			( S_3 ),
+		.d_outA			( D_2 ),
+		.s_outA			( S_2 ),
+		
+		.d_inB			( D_4 ),
+        .s_inB          ( S_4 ),
+        .d_outB         ( D_5 ),
+        .s_outB         ( S_5 ),
+		
+		.sw				( sw_0 ),		//: in 		std_logic_vector(3 downto 0);	-- 4 switches on FPGA board	
+		.btn            ( btn_0 ),		//: in      std_logic_vector(3 downto 0);	-- 4 buttons on FPGA board		  
+		.led			( led_0 ),		//: out		std_logic_vector(3 downto 0);	-- 4 LEDs on FPGA board		
+		.ledb           ( ledb_0 )		//: out     std_logic_vector(3 downto 0)		
+	);		  
 	
 //#################################################################################################	
 //BFM IEEE1355
@@ -102,11 +125,11 @@ module AB_test;
 	(  
 		.rst_n				( rst_n_1 ),
 
-		.D_in				( D_3 ),
-		.S_in				( S_3 ),
+		.D_in				( D_5 ),
+		.S_in				( S_5 ),
 		
-		.D_out				( D_2 ),
-		.S_out				( S_2 )
+		.D_out				( D_4 ),
+		.S_out				( S_4 )
     );	
 	
 	

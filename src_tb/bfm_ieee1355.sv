@@ -216,8 +216,8 @@ endfunction
 			D_in_edge		<= D_in_2 ^ D_in_1;
 			S_in_edge		<= S_in_2 ^ S_in_1;			
 			
-			if ( D_in_edge == 1'b1 ) D_in_safe <= !D_in_safe;
-			if ( S_in_edge == 1'b1 ) S_in_safe <= !S_in_safe;
+			if ( D_in_edge == 1'b1 || S_in_edge == 1'b1 ) D_in_safe <= D_in_2;
+			//if ( S_in_edge == 1'b1 ) S_in_safe <= !S_in_safe;
 		end
 	end	
 

@@ -60,20 +60,9 @@ END COMPONENT;
        
 begin
 
-fifo_AtoB : fifo_generator_0
-    PORT MAP (
-        rst     => not rst_n,
-        wr_clk  => wr_clk,
-        rd_clk  => rd_clk,
-        din     => ExPkgB.din,
-        wr_en   => ExPkgB.wr_en,
-        rd_en   => ExPkgA.rd_en,
-        dout    => PkgExA.dout,
-        full    => PkgExB.full,
-        empty   => PkgExA.empty
-    );
+
   
-fifo_BtoA : fifo_generator_0
+fifo_AtoB : fifo_generator_0
     PORT MAP (
         rst     => not rst_n,
         wr_clk  => wr_clk,
@@ -84,7 +73,20 @@ fifo_BtoA : fifo_generator_0
         dout    => PkgExB.dout,
         full    => PkgExA.full,
         empty   => PkgExB.empty
-    );  
+    ); 
+    
+fifo_BtoA : fifo_generator_0
+    PORT MAP (
+        rst     => not rst_n,
+        wr_clk  => wr_clk,
+        rd_clk  => rd_clk,
+        din     => ExPkgB.din,
+        wr_en   => ExPkgB.wr_en,
+        rd_en   => ExPkgA.rd_en,
+        dout    => PkgExA.dout,
+        full    => PkgExB.full,
+        empty   => PkgExA.empty
+    );     
 
 process(rst_n)  
     begin
