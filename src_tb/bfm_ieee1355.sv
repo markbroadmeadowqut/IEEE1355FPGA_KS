@@ -5,9 +5,6 @@
 //
 //--------------------------------------------------------------------------------
 
-
-
-
 module bfm_ieee1355
 	#(
     parameter 
@@ -180,7 +177,7 @@ endfunction
 		else if ( clk_x4==1'b1 )
 		begin
 		
-			if ( count == 3 )
+			if ( count == 1 )
 			begin
 				count	= 0;
 				clk 	= !clk;
@@ -231,8 +228,8 @@ endfunction
 			S_in_2			<= S_in_1;
 			S_in_3			<= S_in_2;
 						
-			if ( D_in_edge == 1'b1 ) D_in_safe <= !D_in_safe;
-			if ( S_in_edge == 1'b1 ) S_in_safe <= !S_in_safe;
+			if ( D_in_edge == 1'b1 || S_in_edge == 1'b1 ) D_in_safe <= D_in_2;
+
 		end
 	end	
 	
