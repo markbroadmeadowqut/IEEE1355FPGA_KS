@@ -18,9 +18,11 @@
 ----------------------------------------------------------------------------------
 
 library IEEE;
-use IEEE.std_logic_1164.all;
-use IEEE.numeric_std.all;
-use work.bus_pkg.all;
+	use IEEE.std_logic_1164.all;
+	use IEEE.numeric_std.all;
+
+library WORK;
+	use work.bus_pkg.all;
 
 entity node is
     generic ( 
@@ -50,11 +52,27 @@ end node;
 
 architecture RTL of node is
 
+    COMPONENT pll
+        port (
+            -- Clock in ports
+            clk_pad             	: in     STD_LOGIC;
+            -- Clock out ports
+            clk_200             	: out    STD_LOGIC;
+            clk_100             	: out    STD_LOGIC
+        );
+    end COMPONENT;
+
+
     -- clocks
+    signal clk_200, clk_100 : std_logic;
+    
 	signal clk_tx       : std_logic;                            -- transmitter clock
 	signal clk_rx       : std_logic;                            -- receiver clock
+<<<<<<< HEAD
+=======
 	--signal locked       : std_logic;                            -- if '1' clocks stable and usable
     
+>>>>>>> ken
     -- data signals
     --signal pkt_char_inA     : std_logic_vector(7 downto 0);         -- character received and to be saved to packet layer
     --signal pkt_char_outA    : std_logic_vector(7 downto 0);         -- character to be sent by TX pipeline
@@ -78,6 +96,33 @@ architecture RTL of node is
          );
         end component;        
 begin
+<<<<<<< HEAD
+
+
+ --PLL to take the clock 100M input and create a 200M and 100M synchronised internal clocks 
+PM_PLL: entity work.pll
+	port map (
+        clk_pad     => clk_pad,
+        clk_100     => clk_100,
+		clk_200     => clk_200
+	); 
+
+	clk_rx	<= clk_200;		--Clock RX needs to be at least 1.5 times clock TX
+	clk_tx	<= clk_100;
+
+RST_man: entity work.RST_manager                -- instantiate reset manager
+    port map (
+        clk         => clk_100,
+        rstn_hw     => rst_n,
+        ExRxRstA    => ExRxRstA,
+        reset_n     => reset_n
+    );
+	
+        
+--TX_clock: entity work.clk_prescaler             -- instantiate Ckl prescaler
+--    generic map (                                       
+--        PRESCALER 				=> 2           
+=======
  
 TXRX_clks : pll
     port map ( 
@@ -89,10 +134,26 @@ TXRX_clks : pll
 --TX_clock: entity work.clk_prescaler             -- instantiate Ckl prescaler
 --    generic map (                                       
 --        PRESCALER 				=> 1           
+>>>>>>> ken
 --        )
 --    port map ( 
 --        clkin           => clk_pad,
 --        clkout          => clk_tx,                      
+<<<<<<< HEAD
+--        rst_n           => rst_n
+--        );    
+--
+--RX_clock: entity work.clk_prescaler             -- instantiate Ckl prescaler
+--    generic map (                                       
+--        PRESCALER 				=> 1             
+--      )
+--    port map ( 
+--        clkin           => clk_pad,
+--        clkout          => clk_rx,                       
+--        rst_n           => rst_n
+--   ); 
+
+=======
 --       rst_n           => rst_n
 --        );    
 
@@ -105,6 +166,7 @@ TXRX_clks : pll
 --        clkout          => clk_rx,                       
 --       rst_n           => rst_n
 --   ); 
+>>>>>>> ken
        
 Side_A: entity work.side                      -- instantiate Ckl prescaler
     generic map (                                       
