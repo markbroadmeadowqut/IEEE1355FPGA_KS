@@ -19,11 +19,11 @@ module AB_test;
 	reg 			D_2	;
 	reg 			S_2	;		
 	reg 			D_3	;
-	reg 			S_3	;
-	reg             D_4 ;
-	reg	            S_4 ;
-	reg             D_5 ;
-	reg             S_5 ;
+	reg 			S_3	;	
+	reg 			D_4	;
+    reg             S_4 ;        
+    reg             D_5 ;
+    reg             S_5 ;	
 	
 	reg 	[3:0]	sw_0;
 	reg 	[3:0]	btn_0;
@@ -68,7 +68,7 @@ module AB_test;
 		.d_inB			( D_2 ),
         .s_inB          ( S_2 ),
         .d_outB         ( D_3 ),
-        .s_outB         ( S_3 ),
+        .s_outB         ( S_3 ),		
 		
 		.sw				( sw_0 ),		//: in 		std_logic_vector(3 downto 0);	-- 4 switches on FPGA board	
 		.btn            ( btn_0 ),		//: in      std_logic_vector(3 downto 0);	-- 4 buttons on FPGA board		  
@@ -79,23 +79,24 @@ module AB_test;
     node #() node_1
 	(	   
 		.clk_pad		( clk_100 ),
-		.rst_n			( rst_n_0 ),
+		.rst_n			( rst_n_1 ),
 		
 		.d_inA			( D_3 ),
-		.s_inA			( S_3 ),
+		.s_inA			( S_3 ),		
 		.d_outA			( D_2 ),
 		.s_outA			( S_2 ),
-		
+			
 		.d_inB			( D_4 ),
         .s_inB          ( S_4 ),
         .d_outB         ( D_5 ),
         .s_outB         ( S_5 ),
 		
-		.sw				( sw_0 ),		//: in 		std_logic_vector(3 downto 0);	-- 4 switches on FPGA board	
-		.btn            ( btn_0 ),		//: in      std_logic_vector(3 downto 0);	-- 4 buttons on FPGA board		  
-		.led			( led_0 ),		//: out		std_logic_vector(3 downto 0);	-- 4 LEDs on FPGA board		
-		.ledb           ( ledb_0 )		//: out     std_logic_vector(3 downto 0)		
-	);		  
+		.sw				( sw_1 ),		//: in 		std_logic_vector(3 downto 0);	-- 4 switches on FPGA board	
+		.btn            ( btn_1 ),		//: in      std_logic_vector(3 downto 0);	-- 4 buttons on FPGA board		  
+		.led			( led_1 ),		//: out		std_logic_vector(3 downto 0);	-- 4 LEDs on FPGA board		
+		.ledb           ( ledb_1 )		//: out     std_logic_vector(3 downto 0)		
+	);		
+	
 	
 //#################################################################################################	
 //BFM IEEE1355
@@ -147,7 +148,9 @@ module AB_test;
 		
 		//Default switches and buttons
 		#0  	sw_0	= 4'b0000;
-		#0  	btn_0	= 4'b0000;	
+		#0  	sw_1	= 4'b0000;
+		#0  	btn_0	= 4'b0000;		
+		#0  	btn_1	= 4'b0000;	
 		
 		
 		//Bring up resets at a different time
@@ -171,6 +174,16 @@ module AB_test;
 
 	
 		$display("TEST STARTED");
+		
+		#2000;
+		bfm_ieee1355_0.link_READY_to_STARTED();
+		#2000;
+		bfm_ieee1355_1.link_NULL_RECEIVED_to_RUN();		
+		
+		#2000;
+		bfm_ieee1355_0.wait_link_RUN();
+		bfm_ieee1355_1.wait_link_RUN();
+		
 		
 		#5000;
 		$display ( "%gns TB : Sending 5 bytes (DATA=NULL)", $time );
@@ -208,6 +221,17 @@ module AB_test;
 		bfm_ieee1355_1.fifo_rx.wait_fill_level	( test_length );
 		bfm_ieee1355_1.fifo_rx.check_data_array	( test_length, test_array );		
 		#1000;		
+		
+		
+		//Inject a parity error in TX side
+		$display ( "%gns TB : Inject Parity Error", $time );
+		bfm_ieee1355_0.inject_TX_PARITY_ERROR_control(1'b1);
+		bfm_ieee1355_1.wait_link_WAIT_IN_STOP();
+		bfm_ieee1355_0.inject_TX_PARITY_ERROR_control(1'b0);
+		
+		
+		
+		#10000;
 		
 		if ( error_count==0 ) $display("TEST PASSED");
 		else                  $display("TEST FAILED : %d ERRORS", error_count );
