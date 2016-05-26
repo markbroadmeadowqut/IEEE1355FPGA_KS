@@ -108,7 +108,8 @@ begin
                                 rd_en <= '1';
                                 char_reg(1) <= '0';  
                                 cnt_max <= "1001";                          
-                                char_cnt <= char_cnt - 1;                               
+                                char_cnt <= char_cnt - 1;
+                                first_dat_rcvd <= '1';                               
                                 
                             else
                                 if (eop_sent = '0') and (first_dat_rcvd = '1') then
@@ -123,10 +124,7 @@ begin
                                      send_end_null <= '1';  
                                 end if;
                             
-                            end if;divider227
-                                group224
-                                divider230
-                                group225
+                            end if;
                             
                         else
                             char_reg(3 downto 1)  <=  C_CHAR_ESC;            -- send first half of Null Char
