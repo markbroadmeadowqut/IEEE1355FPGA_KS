@@ -178,11 +178,11 @@ module AB_test;
 		#2000;
 		bfm_ieee1355_0.link_READY_to_STARTED();
 		#2000;
-		bfm_ieee1355_1.link_NULL_RECEIVED_to_RUN();		
+		bfm_ieee1355_1.link_READY_to_STARTED();		
 		
 		#2000;
-		bfm_ieee1355_0.wait_link_RUN();
-		bfm_ieee1355_1.wait_link_RUN();
+		//bfm_ieee1355_0.wait_link_RUN();
+		//bfm_ieee1355_1.wait_link_RUN();
 		
 		
 		#5000;

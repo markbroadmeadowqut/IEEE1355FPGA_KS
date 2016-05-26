@@ -19,7 +19,13 @@ module tb_fpga;
 	reg 			D_2	;
 	reg 			S_2	;		
 	reg 			D_3	;
-	reg 			S_3	;	
+	reg 			S_3	;
+	reg 			D_4	;
+    reg             S_4 ;    
+    reg             D_5 ;
+    reg             S_5 ;    
+    reg             D_6 ;
+    reg             S_6 ;   			
 	
 	reg 	[3:0]	sw_0;
 	reg 	[3:0]	btn_0;
@@ -60,6 +66,12 @@ module tb_fpga;
 		.s_inA			( S_1 ),
 		.d_outA			( D_2 ),
 		.s_outA			( S_2 ),
+        
+        .d_inB			( D_4 ),
+        .s_inB          ( S_4 ),
+        .d_outB         ( D_3 ),
+        .s_outB         ( S_3 ),
+		
 		
 		.sw				( sw_0 ),		//: in 		std_logic_vector(3 downto 0);	-- 4 switches on FPGA board	
 		.btn            ( btn_0 ),		//: in      std_logic_vector(3 downto 0);	-- 4 buttons on FPGA board		  
@@ -72,10 +84,15 @@ module tb_fpga;
 		.clk_pad		( clk_100 ),
 		.rst_n			( rst_n_1 ),
 		
-		.d_inA			( D_2 ),
-		.s_inA			( S_2 ),		
-		.d_outA			( D_3 ),
-		.s_outA			( S_3 ),	
+		.d_inA			( D_3 ),
+		.s_inA			( S_3 ),		
+		.d_outA			( D_4 ),
+		.s_outA			( S_4 ),
+		
+        .d_inB			( D_6 ),
+        .s_inB          ( S_6 ),
+        .d_outB         ( D_5 ),
+        .s_outB         ( S_5 ),			
 		
 		.sw				( sw_1 ),		//: in 		std_logic_vector(3 downto 0);	-- 4 switches on FPGA board	
 		.btn            ( btn_1 ),		//: in      std_logic_vector(3 downto 0);	-- 4 buttons on FPGA board		  
@@ -128,11 +145,11 @@ module tb_fpga;
 	(  
 		.rst_n				( rst_n_1 ),
 
-		.D_in				( D_3 ),
-		.S_in				( S_3 ),
+		.D_in				( D_5 ),
+		.S_in				( S_5 ),
 		
-		.D_out				( ),
-		.S_out				( )
+		.D_out				( D_6 ),
+		.S_out				( S_6 )
     );	
 	
 	

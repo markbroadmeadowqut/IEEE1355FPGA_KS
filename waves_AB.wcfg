@@ -13,13 +13,14 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="1045000000000fs"></ZoomEndTime>
-      <Cursor1Time time="4872000000fs"></Cursor1Time>
+      <ZoomEndTime time="2068000001fs"></ZoomEndTime>
+      <Cursor1Time time="996000000fs"></Cursor1Time>
    </zoom_setting>
    <WVObjectSize size="9" />
    <wvobject fp_name="group513" type="group">
       <obj_property name="label">ABTEST</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
       <wvobject db_ref_id="1" fp_name="/AB_test/error_count" type="array">
          <obj_property name="ElementShortName">error_count[31:0]</obj_property>
          <obj_property name="ObjectShortName">error_count[31:0]</obj_property>
@@ -75,6 +76,22 @@
       <wvobject db_ref_id="1" fp_name="/AB_test/S_3" type="logic">
          <obj_property name="ElementShortName">S_3</obj_property>
          <obj_property name="ObjectShortName">S_3</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" fp_name="/AB_test/D_4" type="logic">
+         <obj_property name="ElementShortName">D_4</obj_property>
+         <obj_property name="ObjectShortName">D_4</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" fp_name="/AB_test/S_4" type="logic">
+         <obj_property name="ElementShortName">S_4</obj_property>
+         <obj_property name="ObjectShortName">S_4</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" fp_name="/AB_test/D_5" type="logic">
+         <obj_property name="ElementShortName">D_5</obj_property>
+         <obj_property name="ObjectShortName">D_5</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" fp_name="/AB_test/S_5" type="logic">
+         <obj_property name="ElementShortName">S_5</obj_property>
+         <obj_property name="ObjectShortName">S_5</obj_property>
       </wvobject>
       <wvobject db_ref_id="1" fp_name="/AB_test/sw_0" type="array">
          <obj_property name="ElementShortName">sw_0[3:0]</obj_property>
@@ -161,6 +178,7 @@
       <wvobject fp_name="group25" type="group">
          <obj_property name="label">signal</obj_property>
          <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
          <wvobject db_ref_id="1" fp_name="/AB_test/node_0/Side_A/RX_pipeline/signal_rx_inst/clk" type="logic">
             <obj_property name="ElementShortName">clk</obj_property>
             <obj_property name="ObjectShortName">clk</obj_property>
@@ -295,6 +313,7 @@
          <wvobject db_ref_id="1" fp_name="/AB_test/node_0/Side_A/RX_pipeline/Exchange_rx/pc_char" type="array">
             <obj_property name="ElementShortName">pc_char[9:0]</obj_property>
             <obj_property name="ObjectShortName">pc_char[9:0]</obj_property>
+            <obj_property name="isExpanded"></obj_property>
          </wvobject>
          <wvobject db_ref_id="1" fp_name="/AB_test/node_0/Side_A/RX_pipeline/Exchange_rx/parity_err" type="logic">
             <obj_property name="ElementShortName">parity_err</obj_property>
@@ -916,7 +935,6 @@
    <wvobject fp_name="group775" type="group">
       <obj_property name="label">Node 1</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="isExpanded"></obj_property>
       <wvobject fp_name="group25" type="group">
          <obj_property name="label">clocks</obj_property>
          <obj_property name="DisplayName">label</obj_property>
@@ -1028,6 +1046,7 @@
       <wvobject fp_name="group35" type="group">
          <obj_property name="label">char</obj_property>
          <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
          <wvobject db_ref_id="1" fp_name="/AB_test/node_1/Side_A/RX_pipeline/char_rx_ins/clk" type="logic">
             <obj_property name="ElementShortName">clk</obj_property>
             <obj_property name="ObjectShortName">clk</obj_property>
@@ -1109,6 +1128,7 @@
          <wvobject db_ref_id="1" fp_name="/AB_test/node_1/Side_A/RX_pipeline/Exchange_rx/ExRxTx" type="array">
             <obj_property name="ElementShortName">ExRxTx</obj_property>
             <obj_property name="ObjectShortName">ExRxTx</obj_property>
+            <obj_property name="isExpanded"></obj_property>
          </wvobject>
          <wvobject db_ref_id="1" fp_name="/AB_test/node_1/Side_A/RX_pipeline/Exchange_rx/state" type="other">
             <obj_property name="ElementShortName">state</obj_property>
@@ -1571,6 +1591,7 @@
       <wvobject fp_name="group37" type="group">
          <obj_property name="label">exc</obj_property>
          <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
          <wvobject db_ref_id="1" fp_name="/AB_test/node_1/Side_A/TX_pipeline/Exchange_tx/clk" type="logic">
             <obj_property name="ElementShortName">clk</obj_property>
             <obj_property name="ObjectShortName">clk</obj_property>
@@ -1602,6 +1623,7 @@
          <wvobject db_ref_id="1" fp_name="/AB_test/node_1/Side_A/TX_pipeline/Exchange_tx/pc_char" type="array">
             <obj_property name="ElementShortName">pc_char[9:0]</obj_property>
             <obj_property name="ObjectShortName">pc_char[9:0]</obj_property>
+            <obj_property name="isExpanded"></obj_property>
          </wvobject>
          <wvobject db_ref_id="1" fp_name="/AB_test/node_1/Side_A/TX_pipeline/Exchange_tx/state" type="other">
             <obj_property name="ElementShortName">state</obj_property>

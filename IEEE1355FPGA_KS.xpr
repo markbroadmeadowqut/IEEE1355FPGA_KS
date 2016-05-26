@@ -17,7 +17,7 @@
     <Option Name="CompiledLibDirActivehdl" Val="$PCACHEDIR/compile_simlib/activehdl"/>
     <Option Name="TargetLanguage" Val="VHDL"/>
     <Option Name="BoardPart" Val="digilentinc.com:arty:part0:1.1"/>
-    <Option Name="ActiveSimSet" Val="sim_2"/>
+    <Option Name="ActiveSimSet" Val="sim_steve"/>
     <Option Name="DefaultLib" Val="xil_defaultlib"/>
     <Option Name="EnableCoreContainer" Val="FALSE"/>
     <Option Name="CreateRefXciForCoreContainers" Val="FALSE"/>
@@ -109,13 +109,6 @@
       </File>
       <File Path="$PPRDIR/src/node.vhd">
         <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/src/clk_prescaler.vhd">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
@@ -216,10 +209,10 @@
         <Option Name="TopModule" Val="tb_fpga"/>
         <Option Name="TopLib" Val="xil_defaultlib"/>
         <Option Name="TopAutoSet" Val="TRUE"/>
-        <Option Name="SimMode" Val="post-implementation"/>
         <Option Name="SrcSet" Val="sources_1"/>
         <Option Name="XSimWcfgFile" Val="$PPRDIR/waves_nodes.wcfg"/>
         <Option Name="XSimWcfgFile" Val="$PPRDIR/waves_bfm.wcfg"/>
+        <Option Name="XSimWcfgFile" Val="$PPRDIR/waves_nodes.wcfg"/>
         <Option Name="xsim.simulate.runtime" Val="1ms"/>
       </Config>
     </FileSet>
@@ -273,7 +266,7 @@
         <Option Name="XSimWcfgFile" Val="$PPRDIR/AB_test_behav.wcfg"/>
         <Option Name="XSimWcfgFile" Val="$PPRDIR/AB_test_behav.wcfg"/>
         <Option Name="XSimWcfgFile" Val="$PPRDIR/waves_AB.wcfg"/>
-        <Option Name="xsim.simulate.runtime" Val="1ms"/>
+        <Option Name="xsim.simulate.runtime" Val="100us"/>
       </Config>
     </FileSet>
   </FileSets>

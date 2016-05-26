@@ -146,12 +146,11 @@ begin
                             
                      when s3 =>  
                         char_valid <= '0';
+                        rd_en <= '0';
                           
-                        if (cnt > 3) then
-                            rd_en <= '0';
+                        if (cnt > 3) then                            
                             state <= s3;                                        
                         else
-                            rd_en <= '0';
                             state <= s2;
                         end if; 
                 end case;

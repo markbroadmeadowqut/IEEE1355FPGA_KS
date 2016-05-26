@@ -74,7 +74,7 @@ begin
                         to_cnt <= (others => '0');
                 else
                        bit_valid   <= '0';
-                        to_cnt <= to_cnt + 1;      
+                       to_cnt <= to_cnt + 1;      
                 end if;                  
 
                         
@@ -93,6 +93,7 @@ begin
                     
                 if (to_cnt > "111100") then
                         time_out <= '1';
+                        to_cnt <= (others => '0');
                 else
                         time_out <= '0';    
                 end if;                     
