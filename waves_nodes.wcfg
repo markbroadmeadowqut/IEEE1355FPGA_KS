@@ -12,9 +12,9 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="10909090909fs"></ZoomStartTime>
-      <ZoomEndTime time="12488038278fs"></ZoomEndTime>
-      <Cursor1Time time="11988344000fs"></Cursor1Time>
+      <ZoomStartTime time="10652542372fs"></ZoomStartTime>
+      <ZoomEndTime time="13601694916fs"></ZoomEndTime>
+      <Cursor1Time time="10750014000fs"></Cursor1Time>
    </zoom_setting>
    <WVObjectSize size="4" />
    <wvobject type="divider" fp_name="divider246">
@@ -151,6 +151,7 @@
          <wvobject fp_name="group220" type="group">
             <obj_property name="label">exc</obj_property>
             <obj_property name="DisplayName">label</obj_property>
+            <obj_property name="isExpanded"></obj_property>
             <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_A/RX_pipeline/Exchange_rx/clk" type="logic">
                <obj_property name="ElementShortName">clk</obj_property>
                <obj_property name="ObjectShortName">clk</obj_property>
@@ -182,6 +183,7 @@
             <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_A/RX_pipeline/Exchange_rx/char" type="array">
                <obj_property name="ElementShortName">char[7:0]</obj_property>
                <obj_property name="ObjectShortName">char[7:0]</obj_property>
+               <obj_property name="isExpanded"></obj_property>
             </wvobject>
             <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_A/RX_pipeline/Exchange_rx/ExRxTx" type="array">
                <obj_property name="ElementShortName">ExRxTx</obj_property>
@@ -223,7 +225,7 @@
          </wvobject>
       </wvobject>
       <wvobject type="divider" fp_name="divider246">
-         <obj_property name="label">TXB</obj_property>
+         <obj_property name="label">Packet</obj_property>
          <obj_property name="DisplayName">label</obj_property>
          <obj_property name="BkColor">#FFFF00</obj_property>
       </wvobject>
@@ -270,7 +272,7 @@
          </wvobject>
       </wvobject>
       <wvobject type="divider" fp_name="divider246">
-         <obj_property name="label">Packet</obj_property>
+         <obj_property name="label">TXB</obj_property>
          <obj_property name="DisplayName">label</obj_property>
          <obj_property name="BkColor">#FFFF00</obj_property>
       </wvobject>
@@ -288,13 +290,9 @@
                <obj_property name="ElementShortName">reset_n</obj_property>
                <obj_property name="ObjectShortName">reset_n</obj_property>
             </wvobject>
-            <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_B/TX_pipeline/Exchange_tx/empty" type="logic">
-               <obj_property name="ElementShortName">empty</obj_property>
-               <obj_property name="ObjectShortName">empty</obj_property>
-            </wvobject>
-            <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_B/TX_pipeline/Exchange_tx/char" type="array">
-               <obj_property name="ElementShortName">char[7:0]</obj_property>
-               <obj_property name="ObjectShortName">char[7:0]</obj_property>
+            <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_B/TX_pipeline/Exchange_tx/PkgEx" type="array">
+               <obj_property name="ElementShortName">PkgEx</obj_property>
+               <obj_property name="ObjectShortName">PkgEx</obj_property>
                <obj_property name="isExpanded"></obj_property>
             </wvobject>
             <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_B/TX_pipeline/Exchange_tx/ExRxTx" type="array">
@@ -342,9 +340,9 @@
                <obj_property name="ElementShortName">cnt_max[3:0]</obj_property>
                <obj_property name="ObjectShortName">cnt_max[3:0]</obj_property>
             </wvobject>
-            <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_B/TX_pipeline/Exchange_tx/eop_sent" type="logic">
-               <obj_property name="ElementShortName">eop_sent</obj_property>
-               <obj_property name="ObjectShortName">eop_sent</obj_property>
+            <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_B/TX_pipeline/Exchange_tx/send_eop1" type="logic">
+               <obj_property name="ElementShortName">send_eop1</obj_property>
+               <obj_property name="ObjectShortName">send_eop1</obj_property>
             </wvobject>
             <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_B/TX_pipeline/Exchange_tx/first_dat_rcvd" type="logic">
                <obj_property name="ElementShortName">first_dat_rcvd</obj_property>
@@ -682,13 +680,9 @@
                <obj_property name="ElementShortName">reset_n</obj_property>
                <obj_property name="ObjectShortName">reset_n</obj_property>
             </wvobject>
-            <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_A/TX_pipeline/Exchange_tx/empty" type="logic">
-               <obj_property name="ElementShortName">empty</obj_property>
-               <obj_property name="ObjectShortName">empty</obj_property>
-            </wvobject>
-            <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_A/TX_pipeline/Exchange_tx/char" type="array">
-               <obj_property name="ElementShortName">char[7:0]</obj_property>
-               <obj_property name="ObjectShortName">char[7:0]</obj_property>
+            <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_A/TX_pipeline/Exchange_tx/PkgEx" type="array">
+               <obj_property name="ElementShortName">PkgEx</obj_property>
+               <obj_property name="ObjectShortName">PkgEx</obj_property>
             </wvobject>
             <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_A/TX_pipeline/Exchange_tx/ExRxTx" type="array">
                <obj_property name="ElementShortName">ExRxTx</obj_property>
@@ -734,9 +728,9 @@
                <obj_property name="ElementShortName">cnt_max[3:0]</obj_property>
                <obj_property name="ObjectShortName">cnt_max[3:0]</obj_property>
             </wvobject>
-            <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_A/TX_pipeline/Exchange_tx/eop_sent" type="logic">
-               <obj_property name="ElementShortName">eop_sent</obj_property>
-               <obj_property name="ObjectShortName">eop_sent</obj_property>
+            <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_A/TX_pipeline/Exchange_tx/send_eop1" type="logic">
+               <obj_property name="ElementShortName">send_eop1</obj_property>
+               <obj_property name="ObjectShortName">send_eop1</obj_property>
             </wvobject>
             <wvobject db_ref_id="1" fp_name="/tb_fpga/node_0/Side_A/TX_pipeline/Exchange_tx/first_dat_rcvd" type="logic">
                <obj_property name="ElementShortName">first_dat_rcvd</obj_property>
@@ -818,7 +812,7 @@
       </wvobject>
    </wvobject>
    <wvobject type="divider" fp_name="divider246">
-      <obj_property name="label">Node 0</obj_property>
+      <obj_property name="label">Node 1</obj_property>
       <obj_property name="DisplayName">label</obj_property>
       <obj_property name="BkColor">#008000</obj_property>
    </wvobject>
@@ -1080,7 +1074,6 @@
          <wvobject fp_name="group220" type="group">
             <obj_property name="label">exc</obj_property>
             <obj_property name="DisplayName">label</obj_property>
-            <obj_property name="isExpanded"></obj_property>
             <wvobject db_ref_id="1" fp_name="/tb_fpga/node_1/Side_B/TX_pipeline/Exchange_tx/clk" type="logic">
                <obj_property name="ElementShortName">clk</obj_property>
                <obj_property name="ObjectShortName">clk</obj_property>
@@ -1089,13 +1082,9 @@
                <obj_property name="ElementShortName">reset_n</obj_property>
                <obj_property name="ObjectShortName">reset_n</obj_property>
             </wvobject>
-            <wvobject db_ref_id="1" fp_name="/tb_fpga/node_1/Side_B/TX_pipeline/Exchange_tx/empty" type="logic">
-               <obj_property name="ElementShortName">empty</obj_property>
-               <obj_property name="ObjectShortName">empty</obj_property>
-            </wvobject>
-            <wvobject db_ref_id="1" fp_name="/tb_fpga/node_1/Side_B/TX_pipeline/Exchange_tx/char" type="array">
-               <obj_property name="ElementShortName">char[7:0]</obj_property>
-               <obj_property name="ObjectShortName">char[7:0]</obj_property>
+            <wvobject db_ref_id="1" fp_name="/tb_fpga/node_1/Side_B/TX_pipeline/Exchange_tx/PkgEx" type="array">
+               <obj_property name="ElementShortName">PkgEx</obj_property>
+               <obj_property name="ObjectShortName">PkgEx</obj_property>
             </wvobject>
             <wvobject db_ref_id="1" fp_name="/tb_fpga/node_1/Side_B/TX_pipeline/Exchange_tx/ExRxTx" type="array">
                <obj_property name="ElementShortName">ExRxTx</obj_property>
@@ -1141,9 +1130,9 @@
                <obj_property name="ElementShortName">cnt_max[3:0]</obj_property>
                <obj_property name="ObjectShortName">cnt_max[3:0]</obj_property>
             </wvobject>
-            <wvobject db_ref_id="1" fp_name="/tb_fpga/node_1/Side_B/TX_pipeline/Exchange_tx/eop_sent" type="logic">
-               <obj_property name="ElementShortName">eop_sent</obj_property>
-               <obj_property name="ObjectShortName">eop_sent</obj_property>
+            <wvobject db_ref_id="1" fp_name="/tb_fpga/node_1/Side_B/TX_pipeline/Exchange_tx/send_eop1" type="logic">
+               <obj_property name="ElementShortName">send_eop1</obj_property>
+               <obj_property name="ObjectShortName">send_eop1</obj_property>
             </wvobject>
             <wvobject db_ref_id="1" fp_name="/tb_fpga/node_1/Side_B/TX_pipeline/Exchange_tx/first_dat_rcvd" type="logic">
                <obj_property name="ElementShortName">first_dat_rcvd</obj_property>
@@ -1470,6 +1459,7 @@
       <wvobject fp_name="group220" type="group">
          <obj_property name="label">TX A</obj_property>
          <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
          <wvobject fp_name="group220" type="group">
             <obj_property name="label">exc</obj_property>
             <obj_property name="DisplayName">label</obj_property>
@@ -1481,13 +1471,9 @@
                <obj_property name="ElementShortName">reset_n</obj_property>
                <obj_property name="ObjectShortName">reset_n</obj_property>
             </wvobject>
-            <wvobject db_ref_id="1" fp_name="/tb_fpga/node_1/Side_A/TX_pipeline/Exchange_tx/empty" type="logic">
-               <obj_property name="ElementShortName">empty</obj_property>
-               <obj_property name="ObjectShortName">empty</obj_property>
-            </wvobject>
-            <wvobject db_ref_id="1" fp_name="/tb_fpga/node_1/Side_A/TX_pipeline/Exchange_tx/char" type="array">
-               <obj_property name="ElementShortName">char[7:0]</obj_property>
-               <obj_property name="ObjectShortName">char[7:0]</obj_property>
+            <wvobject db_ref_id="1" fp_name="/tb_fpga/node_1/Side_A/TX_pipeline/Exchange_tx/PkgEx" type="array">
+               <obj_property name="ElementShortName">PkgEx</obj_property>
+               <obj_property name="ObjectShortName">PkgEx</obj_property>
             </wvobject>
             <wvobject db_ref_id="1" fp_name="/tb_fpga/node_1/Side_A/TX_pipeline/Exchange_tx/ExRxTx" type="array">
                <obj_property name="ElementShortName">ExRxTx</obj_property>
@@ -1533,9 +1519,9 @@
                <obj_property name="ElementShortName">cnt_max[3:0]</obj_property>
                <obj_property name="ObjectShortName">cnt_max[3:0]</obj_property>
             </wvobject>
-            <wvobject db_ref_id="1" fp_name="/tb_fpga/node_1/Side_A/TX_pipeline/Exchange_tx/eop_sent" type="logic">
-               <obj_property name="ElementShortName">eop_sent</obj_property>
-               <obj_property name="ObjectShortName">eop_sent</obj_property>
+            <wvobject db_ref_id="1" fp_name="/tb_fpga/node_1/Side_A/TX_pipeline/Exchange_tx/send_eop1" type="logic">
+               <obj_property name="ElementShortName">send_eop1</obj_property>
+               <obj_property name="ObjectShortName">send_eop1</obj_property>
             </wvobject>
             <wvobject db_ref_id="1" fp_name="/tb_fpga/node_1/Side_A/TX_pipeline/Exchange_tx/first_dat_rcvd" type="logic">
                <obj_property name="ElementShortName">first_dat_rcvd</obj_property>

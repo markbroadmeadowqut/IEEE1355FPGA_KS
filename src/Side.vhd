@@ -50,6 +50,8 @@ architecture Behavioral of Side is
 
 begin
 
+    ExPkg.eop1_rcvd <= ExRxTx.eop1_rcvd;
+
 RST_man: entity work.RST_manager                -- instantiate reset manager
     port map (
         clk         => clk_rx,

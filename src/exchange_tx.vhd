@@ -31,8 +31,7 @@ entity exchange_tx is
     Port ( 
         clk         : in std_logic;             -- receiver clock
         reset_n     : in std_logic;             -- reset
-        empty       : in std_logic;
-        char        : in std_logic_vector(7 downto 0);             -- raw data char
+        PkgEx       : in PkgEx_rec;             -- raw data char
         ExRxTx      : in ExRxExTx_rec;
         char_valid  : out std_logic;
         rd_en       : out std_logic;
@@ -51,7 +50,7 @@ architecture Behavioral of exchange_tx is
     signal char_cnt         : std_logic_vector (4 downto 0);              -- for counting out fcc call for characters
     signal cnt              : std_logic_vector (3 downto 0);         -- counter for counting 10 bit character out 
     signal cnt_max          : std_logic_vector (3 downto 0);
-    signal eop_sent         : std_logic;
+    signal send_eop1        : std_logic;
     signal first_dat_rcvd   : std_logic;
     
 begin       
@@ -73,7 +72,7 @@ begin
                     char_cnt        <= (others => '0');
                     char_valid      <= '0';
                     rd_en           <= '0'; 
-                    eop_sent        <= '0';
+                    send_eop1       <= '0';
                     first_dat_rcvd  <= '0';
                     
             elsif rising_edge(clk) then  
@@ -82,7 +81,12 @@ begin
                     cnt <= cnt - 1;
                 else
                     cnt <= cnt_max ;   
-                end if;     
+                end if; 
+                
+                if (PkgEx.eop1_rcvd = '1') then
+                    send_eop1 <= '1';
+                end if;
+                   
                              
                 case state is
                      when s0 =>
@@ -96,73 +100,39 @@ begin
                             send_end_null <= '0';
                         
                         elsif  (ExRxTx.null_rcvd = '1') then
-                            if (char_cnt < "11000") then
+                            if (char_cnt < "10001") then
                                 char_reg(3 downto 1)  <=  C_CHAR_FCC;            -- send FCC if buffer has less than 24 chars in it
                                 char_reg(9 downto 4)  <= "000000"; 
                                 cnt_max <= "0011";
                                 char_cnt <= char_cnt + 8;
                                 first_dat_rcvd <= '1';
                                                                
-                            elsif (empty = '0') then
-                                char_reg(9 downto 2) <= char;
+                            elsif (PkgEx.empty = '0') then
+                                char_reg(9 downto 2) <= PkgEx.dout;
                                 rd_en <= '1';
                                 char_reg(1) <= '0';  
                                 cnt_max <= "1001";                          
-                                char_cnt <= char_cnt - 1;
-                                first_dat_rcvd <= '1';                               
-                                
+                                char_cnt <= char_cnt - 1;                               
                             else
-                                if (eop_sent = '0') and (first_dat_rcvd = '1') then
-                                    char_reg(3 downto 1)  <= C_CHAR_EOP1;
-                                    char_reg(9 downto 4)  <= "000000";           -- send EOP 1 when emptying buffer
-                                    cnt_max <= "0011"; 
-                                    eop_sent <= '1';                                
+                                if (send_eop1 = '1') then
+                                    char_reg(3 downto 1)  <=  C_CHAR_EOP1;       -- Send EOP1
+                                    char_reg(9 downto 4)  <= "000000";
+                                    cnt_max <= "0011";
+                                    send_eop1 <= '0';
                                 else
-                                     char_reg(3 downto 1)  <=  C_CHAR_ESC;       -- send first half of Null Char
-                                     char_reg(9 downto 4)  <= "000000";
-                                     cnt_max <= "0011";
-                                     send_end_null <= '1';  
-                                end if;
-                            
+                                    char_reg(3 downto 1)  <=  C_CHAR_ESC;       -- send first half of Null Char
+                                    char_reg(9 downto 4)  <= "000000";
+                                    cnt_max <= "0011";
+                                    send_end_null <= '1';
+                                end if;               
                             end if;
                             
                         else
                             char_reg(3 downto 1)  <=  C_CHAR_ESC;            -- send first half of Null Char
                             send_end_null <= '1';
                             char_reg(9 downto 4)  <= "000000";
+                        end if;   
                         
-                        end if;                            
-                                    
---                                elsif (char_cnt < "11000") then                 -- send FCC
---                                    char_reg(3 downto 1)  <= C_CHAR_FCC;
---                                    char_reg(9 downto 4)  <= "000000";
- --                                   cnt_max <= "0011";
---                                    char_cnt <=  char_cnt + 8;
---                                elsif ( empty = '1') then
---                                    if () then
---                                        char_reg(3 downto 1)  <= C_CHAR_EOP1;
---                                        char_reg(9 downto 4)  <= "000000";                               -- send EOP 1 
---                                        cnt_max <= "0011";  
---                                    else
---                                        char_reg(3 downto 1)  <=  C_CHAR_ESC;            -- send first half of Null Char
---                                        char_reg(9 downto 4)  <= "000000";
---                                        cnt_max <= "0011";
---                                        send_end_null <= '1';
---                                    end if;                                                             
---                                else 
- --                                                                   char_reg(9 downto 2) <= char;
---                                                                    rd_en <= '1';
---                                                                    char_reg(1) <= '0';  
---                                                                    cnt_max <= "1001";                          
---                                                                    char_cnt <= char_cnt - 1;
---                                                                 end if;      
---                                else
---                                    if (ExRxTx.null_rcvd = '1') then
---                                        char_reg(3 downto 1)  <=  C_CHAR_FCC;
- --                                       cnt_max <= "0011";
---                                        char_cnt <= "1010";
-                                               
-                               
                      when s1 =>                                              -- calcuate the parity of data in previous character
                             data_parity <= ((char_reg(9) xor char_reg(8)) xor (char_reg(7) xor char_reg(6))) xor ((char_reg(5) xor char_reg(4)) xor (char_reg(3) xor char_reg(2)));       
                             state <= s0;

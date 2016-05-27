@@ -60,7 +60,8 @@ END COMPONENT;
        
 begin
 
-
+    PkgExB.eop1_rcvd <= ExPkgA.eop1_rcvd;
+    PkgExA.eop1_rcvd <= ExPkgB.eop1_rcvd;
   
 fifo_AtoB : fifo_generator_0
     PORT MAP (

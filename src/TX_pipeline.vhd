@@ -61,8 +61,7 @@ Exchange_tx: entity work.exchange_tx            -- instantiate Ckl prescaler
     port map ( 
         clk             => clk,                    
         reset_n         => reset_n,
-        empty           => PkgEx.empty,
-        char            => PkgEx.dout,
+        PkgEx           => PkgEx,
         ExRxTx          => ExRxTx,
         char_valid      => char_valid,
         rd_en           => rd_en,
