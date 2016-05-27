@@ -49,6 +49,7 @@ architecture behavioral of signal_rx is
     signal s_hold       : std_logic;                    -- latch previous strobe bit
     signal enable       : std_logic;                    -- bit clock latched for use
     signal to_cnt       : std_logic_vector(6 downto 0); -- counter for time out detection.
+    signal fst_d_rcvd   : std_logic;
     
 begin 
 
@@ -66,15 +67,19 @@ begin
                 enable      <= '0';
                 to_cnt      <= (others => '0');
                 time_out    <= '0';
+                fst_d_rcvd  <= '0';
                 
             elsif rising_edge(clk) then
                                
                 if (enable = '1') then
                         bit_valid   <=  '1';
                         to_cnt <= (others => '0');
+                        fst_d_rcvd <= '1';
                 else
-                       bit_valid   <= '0';
-                       to_cnt <= to_cnt + 1;      
+                    bit_valid   <= '0';
+                    if (fst_d_rcvd = '1') then
+                        to_cnt <= to_cnt + 1;
+                    end if;          
                 end if;                  
 
                         

@@ -21,6 +21,7 @@
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.std_logic_unsigned.all;
 use work.bus_pkg.all;
 
 entity RST_manager is
@@ -34,24 +35,28 @@ entity RST_manager is
 end RST_manager;
 
 architecture Behavioral of RST_manager is
-    --signal err_cnt  : integer; 
+    signal cnt      : std_logic_vector(5 downto 0); 
+    signal rsting   : std_logic; 
 begin
 
 reset : process(rstn_hw, clk)
 
     begin
-        if (rstn_hw = '0') then
+        if (rstn_hw = '0') or (RxRst.parity_err = '1')or (RxRst.timeout = '1')  then
             reset_n <= '0';
-        else 
-            reset_n <= '1';
-        end if;
+            rsting  <= '1';
+            cnt <= (others => '0');
+        end if;    
+       
             
-        if rising_edge(clk) then  
-            if (RxRst.parity_err = '1') then --or (RxRst.timeout = '1') then
-                reset_n <= '0';
-            else
-                 reset_n <= '1';       
-            end if;
+        if rising_edge(clk) then 
+            if (rsting = '1') then
+            cnt <= cnt + 1;
+                if (cnt >= "111110") then
+                    reset_n <= '1';
+                    rsting  <= '0';   
+                end if;
+            end if;     
         end if;      
 end process reset;
 
