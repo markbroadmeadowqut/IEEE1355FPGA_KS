@@ -51,7 +51,7 @@ architecture Behavioral of RX_pipeline is
     signal bit_valid    : std_logic;
     signal char_valid   : std_logic;
 begin
-
+    
 signal_rx_inst: entity work.signal_rx           -- Instantiate receiver controller.
 
     generic map(
@@ -78,6 +78,7 @@ char_rx_ins: entity work.char_rx                -- instantiate character layer u
         d_in            => data,
         bit_valid       => bit_valid,
         char_valid      => char_valid,
+        link_actv       => RxRst.link_actv,
         pc_char         => pc_char     
         );    	
 	
@@ -97,7 +98,5 @@ Exchange_rx: entity work.exchange_rx            -- instantiate Ckl prescaler
         char            => char,
         ExRxTx          => ExRxTx      
         );  	
-	
-
-
+        
 end Behavioral;

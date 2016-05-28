@@ -26,7 +26,15 @@ library WORK;
 
 entity node is
     generic ( 
-        char_width  : integer := 8                               -- character width       
+        char_width  : integer := 8;                               -- character width       
+        
+        
+        -- this field indicates the type of node that is generated.
+        -- it alters the packet layer according to following inputs.
+        -- "pkt_slave" produces a general node for the use in the field.
+        -- "pkt_master produces a terminal node with pushbutton inputs.
+        -- "pkt_counter produces a testing device that sends two counter signals for testing reliability of node.
+        packet      : node_type := pkt_master
     );
 
 	port (
@@ -90,7 +98,7 @@ TXRX_clks : pll
 --    port map ( 
 --        clkin           => clk_pad,
 --        clkout          => clk_tx,                      
- --       rst_n           => rst_n
+--        rst_n           => rst_n
 --        );    
 
 --RX_clock: entity work.clk_prescaler             -- instantiate Ckl prescaler
@@ -136,7 +144,8 @@ Side_B: entity work.side                      -- instantiate Ckl prescaler
         ExPkg           => ExPkgB        
         );         
 
-packet_ins: entity work.packet       -- instantiate common packet layer 
+packet_sel0: if packet = pkt_slave generate
+    pkt_slave_ins: entity work.packet       -- instantiate common packet layer 
                 
     generic map(
         char_width      => char_width
@@ -152,7 +161,28 @@ packet_ins: entity work.packet       -- instantiate common packet layer
         display         => display,
         PkgExA          => PkgExA, 
         PkgExB          => PkgExB         
-        );                	
+        );
+end generate;               
+
+packet_sel1: if packet = pkt_master generate
+    pkt_master_ins: entity work.pkt_master       -- instantiate common packet layer 
+                
+    generic map(
+        char_width      => char_width
+         )          
+    port map ( 
+        wr_clk          => clk_rx,
+        rd_clk          => clk_tx,
+        rst_n           => rst_n,
+        sw              => sw,
+        btn             => btn,
+        ExPkgA          => ExPkgA,        
+        ExPkgB          => ExPkgB,          
+        display         => display,
+        PkgExA          => PkgExA, 
+        PkgExB          => PkgExB         
+        );
+end generate;                          	
 	
 	led       <= display(7 downto 4);
 	ledb      <= display(3 downto 0);  

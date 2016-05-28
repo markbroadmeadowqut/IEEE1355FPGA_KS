@@ -24,6 +24,9 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 
 package bus_pkg is
+
+    -- Indicates a configuration for the node.
+    type node_type is ( pkt_slave, pkt_master, pkt_counter );
     
     -- control chars last three bits without parity bit in little endian form 
     -- MSB is on ritht of character
@@ -49,6 +52,7 @@ package bus_pkg is
     type RxRst_rec is record
         parity_err    : std_logic;            -- parity error detected flag
         timeout       : std_logic;            -- Timeout flag for reset manager
+        link_actv     : std_logic;            -- first null detected in Rx char layer
     end record; 
     
    

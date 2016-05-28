@@ -36,6 +36,7 @@ entity char_rx is
         d_in            : in std_logic;             -- data bit from signal layer
         bit_valid       : in std_logic;             -- bit clk from signal layer indicates valid bit
         char_valid      : out std_logic;            -- indicates valid character in register;
+        link_actv       : out std_logic;
         pc_char         : out std_logic_vector(9 downto 0)      -- character out           
     );
     
@@ -56,6 +57,7 @@ begin
                 shft_reg    <= (others => '0');
                 cnt         <= (others => '0');
                 dtct_null   <= '1';
+                link_actv   <= '0';
             elsif rising_edge(clk) then                   -- Shift valid bit into register
                 if (bit_valid = '1') then
                     shft_reg(9)  <= d_in;
@@ -69,6 +71,7 @@ begin
                             cnt <= "0011";                  -- reset clock to count out character
                             dtct_null <= '0';
                             char_valid <= '1'; 
+                            link_actv <= '1';
                                                         
                         end if;     
                     else                    

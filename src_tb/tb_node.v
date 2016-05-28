@@ -27,23 +27,31 @@ module tb_node;
     reg     [3:0]   btn;
     reg             d_inA;
     reg             s_inA;
+    reg             d_inB;
+    reg             s_inB;
       
     wire    [3:0]   led;
     wire    [3:0]   ledb;
     wire            d_outA;
     wire            s_outA;
+    wire            D_outB;
+    wire            s_outB;
     
     node dut  (
         .clk_pad        ( clk ),
         .rst_n          ( rst_n ),
         .sw             ( sw ),
         .btn            ( btn ),
-        .d_inA           ( d_inA),
-        .s_inA           ( s_inA),
+        .d_inA          ( d_inA),
+        .s_inA          ( s_inA),
+        .d_inB          ( d_inB),
+        .s_inB          ( s_inB),
 		.led		    ( led ),
         .ledb           ( ledb ),
-        .d_outA          ( d_outA ),
-        .s_outA          ( s_outA )
+        .d_outA         ( d_outA ),
+        .s_outA         ( s_outA ),
+        .d_outB         ( d_outB ),
+        .s_outB         ( s_outB )
     );
     
    initial
@@ -64,15 +72,18 @@ module tb_node;
     always
     begin
         #5      clk = !clk;
-        #1      d_inA = d_outA;
-        #1      s_inA = s_outA;
+        #1      d_inA = d_outB;
+        #1      s_inA = s_outB;
+        #1      d_inB = d_outA;
+        #1      s_inB = s_outA;       
+        
     end
     
     initial
     begin
         $display("TEST STARTED");
             
-        #820
+        #1820
         sw      <= 4'b1010;
         btn     <= 4'b1010;        
         #160

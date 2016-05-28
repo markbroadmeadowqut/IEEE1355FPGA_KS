@@ -37,15 +37,21 @@ end RST_manager;
 architecture Behavioral of RST_manager is
     signal cnt      : std_logic_vector(5 downto 0); 
     signal rsting   : std_logic; 
+    signal start_rst: std_logic;
+    
 begin
+
+    
 
 reset : process(rstn_hw, clk)
 
     begin
-        if (rstn_hw = '0') or (RxRst.parity_err = '1')or (RxRst.timeout = '1')  then
-            reset_n <= '0';
-            rsting  <= '1';
-            cnt <= (others => '0');
+        if (rstn_hw = '0') then -- or 
+            --if 
+                reset_n <= '0';
+                rsting  <= '1';
+                cnt <= (others => '0');
+           -- end if;
         end if;    
        
             
@@ -56,6 +62,12 @@ reset : process(rstn_hw, clk)
                     reset_n <= '1';
                     rsting  <= '0';   
                 end if;
+            elsif (RxRst.link_actv = '1')then
+                if(RxRst.parity_err = '1')or (RxRst.timeout = '1')  then
+                    reset_n <= '0';
+                    rsting  <= '1';
+                    cnt <= (others => '0'); 
+                end if;                          
             end if;     
         end if;      
 end process reset;
