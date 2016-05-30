@@ -34,7 +34,7 @@ entity node is
         -- "pkt_slave" produces a general node for the use in the field.
         -- "pkt_master produces a terminal node with pushbutton inputs.
         -- "pkt_counter produces a testing device that sends two counter signals for testing reliability of node.
-        packet      : node_type := pkt_master
+        packet      : node_type := pkt_slave
     );
 
 	port (
@@ -62,16 +62,21 @@ architecture RTL of node is
 
     -- clocks
 	signal clk_tx       : std_logic;                            -- transmitter clock
-	signal clk_rx       : std_logic;                            -- receiver clock
+	signal clk_rx       : std_logic;                            -- receiver clockdata
 
     -- data signals
     signal display          : std_logic_vector(7 downto 0);         -- output to led's
-        
+    
+    --signal d_ab : std_logic;
+    --signal s_ab : std_logic;
+    --signal d_ba : std_logic;
+    --signal s_ba : std_logic;
+            
     -- Records
-    signal ExPkgA          : ExPkg_rec;        
-    signal ExPkgB          : ExPkg_rec; 
-    signal PkgExA          : PkgEx_rec; 
-    signal PkgExB          : PkgEx_rec;   
+    signal ExPktA          : ExPkt_rec;        
+    signal ExPktB          : ExPkt_rec; 
+    signal PktExA          : PktEx_rec; 
+    signal PktExB          : PktEx_rec;   
     
     -- components
     component pll
@@ -86,24 +91,23 @@ begin
  
 TXRX_clks : pll
     port map ( 
-       clk_pad => clk_pad,     -- Clock in ports
-       clk_tx => clk_tx,        -- Clock out ports  
-       clk_rx => clk_rx              
- );
+        clk_pad => clk_pad,     -- Clock in ports
+        clk_tx => clk_tx,        -- Clock out ports  
+        clk_rx => clk_rx              
+    );
         
 --TX_clock: entity work.clk_prescaler             -- instantiate Ckl prescaler
 --    generic map (                                       
---        PRESCALER 				=> 2          
+--       PRESCALER 				=> 2      
 --        )
 --    port map ( 
 --        clkin           => clk_pad,
 --        clkout          => clk_tx,                      
 --        rst_n           => rst_n
 --        );    
-
 --RX_clock: entity work.clk_prescaler             -- instantiate Ckl prescaler
 --    generic map (                                       
---        PRESCALER 				=> 1             
+--        PRESCALER 				=> 1           
 --      )
 --    port map ( 
 --        clkin           => clk_pad,
@@ -122,10 +126,10 @@ Side_A: entity work.side                      -- instantiate Ckl prescaler
         rst_n           => rst_n,
         d_in            => d_inA,
         s_in            => s_inA,
-        PkgEx           => PkgExA,
+        PktEx           => PktExA,
         d_out           => d_outA,
         s_out           => s_outA,
-        ExPkg           => ExPkgA        
+        ExPkt           => ExPktA        
         );        
         
 Side_B: entity work.side                      -- instantiate Ckl prescaler
@@ -138,10 +142,10 @@ Side_B: entity work.side                      -- instantiate Ckl prescaler
         rst_n           => rst_n,
         d_in            => d_inB,
         s_in            => s_inB,
-        PkgEx           => PkgExB,
+        PktEx           => PktExB,
         d_out           => d_outB,
         s_out           => s_outB,
-        ExPkg           => ExPkgB        
+        ExPkt           => ExPktB        
         );         
 
 packet_sel0: if packet = pkt_slave generate
@@ -156,11 +160,11 @@ packet_sel0: if packet = pkt_slave generate
         rst_n           => rst_n,
         sw              => sw,
         btn             => btn,
-        ExPkgA          => ExPkgA,        
-        ExPkgB          => ExPkgB,          
+        ExPktA          => ExPktA,        
+        ExPktB          => ExPktB,          
         display         => display,
-        PkgExA          => PkgExA, 
-        PkgExB          => PkgExB         
+        PktExA          => PktExA, 
+        PktExB          => PktExB         
         );
 end generate;               
 
@@ -176,11 +180,11 @@ packet_sel1: if packet = pkt_master generate
         rst_n           => rst_n,
         sw              => sw,
         btn             => btn,
-        ExPkgA          => ExPkgA,        
-        ExPkgB          => ExPkgB,          
+        ExPktA          => ExPktA,        
+        ExPktB          => ExPktB,          
         display         => display,
-        PkgExA          => PkgExA, 
-        PkgExB          => PkgExB         
+        PktExA          => PktExA, 
+        PktExB          => PktExB         
         );
 end generate;                          	
 	

@@ -1,10 +1,10 @@
 -- Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2015.4 (win64) Build 1412921 Wed Nov 18 09:43:45 MST 2015
--- Date        : Sun May 22 16:16:47 2016
+-- Date        : Mon May 30 12:00:24 2016
 -- Host        : DESKTOP-K3PR8B2 running 64-bit major release  (build 9200)
--- Command     : write_vhdl -force -mode synth_stub {C:/Users/Elical-LAP-1/Documents/Uni/My project/Code/backup
---               git/22.5.16 Side AB/IEEE1355FPGA_KS/src_ip/fifo_generator_0/fifo_generator_0_stub.vhdl}
+-- Command     : write_vhdl -force -mode synth_stub
+--               c:/Github/IEEE1355FPGA_KS/src_ip/fifo_generator_0/fifo_generator_0_stub.vhdl
 -- Design      : fifo_generator_0
 -- Purpose     : Stub declaration of top-level module interface
 -- Device      : xc7a35ticsg324-1L

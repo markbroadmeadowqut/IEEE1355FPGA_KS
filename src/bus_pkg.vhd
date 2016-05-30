@@ -57,22 +57,20 @@ package bus_pkg is
     
    
     -- record from both exchage layers to fifo in pkg layers
-    type ExPkg_rec is record
+    type ExPkt_rec is record
         din         : std_logic_vector(7 downto 0);
         wr_en       : std_logic;
         rd_en       : std_logic;
-        eop1_rcvd   : std_logic;        
+        eop1_rcvd   : std_logic;
     end record;
         
    
     -- record from fifo in pkg layer to both exchange layers
-    type PkgEx_rec is record
+    type PktEx_rec is record
         dout        : std_logic_vector(7 downto 0); 
         full        : std_logic;
         empty       : std_logic;
         eop1_rcvd   : std_logic;
     end record;
-
-    
-    
+   
 end package;

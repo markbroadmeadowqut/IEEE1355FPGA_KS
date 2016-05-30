@@ -22,6 +22,7 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
+use IEEE.std_logic_unsigned.all;
 use work.bus_pkg.all;
 
 entity Side is
@@ -35,10 +36,10 @@ entity Side is
         rst_n       : in std_logic;
         d_in        : in std_logic;
         s_in        : in std_logic;
-        PkgEx       : in PkgEx_rec;
+        PktEx       : in PktEx_rec;
         d_out       : out std_logic;
         s_out       : out std_logic;
-        ExPkg       : out ExPkg_rec
+        ExPkt       : out ExPkt_rec
         );
 end Side;
 
@@ -48,9 +49,11 @@ architecture Behavioral of Side is
     signal RxRst        : RxRst_rec;
     signal reset_n      : std_logic;
 
+    
+
 begin
 
-    ExPkg.eop1_rcvd <= ExRxTx.eop1_rcvd;
+    ExPkt.eop1_rcvd <= ExRxTx.eop1_rcvd;
 
 RST_man: entity work.RST_manager                -- instantiate reset manager
     port map (
@@ -70,9 +73,9 @@ RX_pipeline: entity work.RX_pipeline        -- instantiate receiver pipeline
         reset_n     => reset_n,
         d_in        => d_in,
         s_in        => s_in,
-        PkgEx       => PkgEx,        
-        wr_en       => ExPkg.wr_en,
-        char        => ExPkg.din,
+        PktEx       => PktEx,        
+        wr_en       => ExPkt.wr_en,
+        char        => ExPkt.din,
         ExRxTx      => ExRxTx,
         RxRst       => RxRst
         ); 	
@@ -84,11 +87,12 @@ TX_pipeline: entity work.TX_pipeline        -- instantiate transmission pipeline
     port map ( 
          clk         => clk_tx,                      
          reset_n     => reset_n,
-         PkgEx       => PkgEx,         
+         PktEx       => PktEx,         
          ExRxTx      => ExRxTx,
-         rd_en       => ExPkg.rd_en,
+         rd_en       => ExPkt.rd_en,
          d_out       => d_out,
          s_out       => s_out       
          );   
- 
+         
+   
 end Behavioral;

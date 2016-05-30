@@ -31,7 +31,7 @@ entity exchange_tx is
     Port ( 
         clk         : in std_logic;             -- receiver clock
         reset_n     : in std_logic;             -- reset
-        PkgEx       : in PkgEx_rec;             -- raw data char
+        PktEx       : in PktEx_rec;             -- raw data char
         ExRxTx      : in ExRxExTx_rec;
         char_valid  : out std_logic;
         rd_en       : out std_logic;
@@ -83,7 +83,7 @@ begin
                     cnt <= cnt_max ;   
                 end if; 
                 
-                if (PkgEx.eop1_rcvd = '1') then
+                if (PktEx.eop1_rcvd = '1') then
                     send_eop1 <= '1';
                 end if;
                    
@@ -107,8 +107,8 @@ begin
                                 char_cnt <= char_cnt + 8;
                                 first_dat_rcvd <= '1';
                                                                
-                            elsif (PkgEx.empty = '0') then
-                                char_reg(9 downto 2) <= PkgEx.dout;
+                            elsif (PktEx.empty = '0') then
+                                char_reg(9 downto 2) <= PktEx.dout;
                                 rd_en <= '1';
                                 char_reg(1) <= '0';  
                                 cnt_max <= "1001";                          

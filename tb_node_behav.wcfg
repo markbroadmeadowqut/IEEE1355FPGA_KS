@@ -12,30 +12,18 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="2254000fs"></ZoomStartTime>
-      <ZoomEndTime time="7057254001fs"></ZoomEndTime>
-      <Cursor1Time time="1902254000fs"></Cursor1Time>
+      <ZoomStartTime time="0fs"></ZoomStartTime>
+      <ZoomEndTime time="8642243047fs"></ZoomEndTime>
+      <Cursor1Time time="0fs"></Cursor1Time>
    </zoom_setting>
    <WVObjectSize size="13" />
    <wave_markers>
-      <marker time="2799314000" label="" />
+      <marker time="6503000000" label="" />
    </wave_markers>
    <wvobject fp_name="group148" type="group">
       <obj_property name="label">Clk</obj_property>
       <obj_property name="DisplayName">label</obj_property>
       <obj_property name="isExpanded"></obj_property>
-      <wvobject db_ref_id="1" fp_name="/tb_node/dut/TXRX_clks/clk_pad" type="logic">
-         <obj_property name="ElementShortName">clk_pad</obj_property>
-         <obj_property name="ObjectShortName">clk_pad</obj_property>
-      </wvobject>
-      <wvobject db_ref_id="1" fp_name="/tb_node/dut/TXRX_clks/clk_tx" type="logic">
-         <obj_property name="ElementShortName">clk_tx</obj_property>
-         <obj_property name="ObjectShortName">clk_tx</obj_property>
-      </wvobject>
-      <wvobject db_ref_id="1" fp_name="/tb_node/dut/TXRX_clks/clk_rx" type="logic">
-         <obj_property name="ElementShortName">clk_rx</obj_property>
-         <obj_property name="ObjectShortName">clk_rx</obj_property>
-      </wvobject>
    </wvobject>
    <wvobject type="divider" fp_name="divider702">
       <obj_property name="label">rst</obj_property>
@@ -99,51 +87,69 @@
          <obj_property name="ElementShortName">btn[3:0]</obj_property>
          <obj_property name="ObjectShortName">btn[3:0]</obj_property>
       </wvobject>
-      <wvobject db_ref_id="1" fp_name="/tb_node/dut/packet_sel1/pkt_master_ins/ExPkgA" type="array">
-         <obj_property name="ElementShortName">ExPkgA</obj_property>
-         <obj_property name="ObjectShortName">ExPkgA</obj_property>
+      <wvobject db_ref_id="1" fp_name="/tb_node/dut/packet_sel1/pkt_master_ins/ExPktA" type="array">
+         <obj_property name="ElementShortName">ExPktA</obj_property>
+         <obj_property name="ObjectShortName">ExPktA</obj_property>
       </wvobject>
-      <wvobject db_ref_id="1" fp_name="/tb_node/dut/packet_sel1/pkt_master_ins/ExPkgB" type="array">
-         <obj_property name="ElementShortName">ExPkgB</obj_property>
-         <obj_property name="ObjectShortName">ExPkgB</obj_property>
+      <wvobject db_ref_id="1" fp_name="/tb_node/dut/packet_sel1/pkt_master_ins/ExPktB" type="array">
+         <obj_property name="ElementShortName">ExPktB</obj_property>
+         <obj_property name="ObjectShortName">ExPktB</obj_property>
       </wvobject>
       <wvobject db_ref_id="1" fp_name="/tb_node/dut/packet_sel1/pkt_master_ins/display" type="array">
          <obj_property name="ElementShortName">display[7:0]</obj_property>
          <obj_property name="ObjectShortName">display[7:0]</obj_property>
-      </wvobject>
-      <wvobject db_ref_id="1" fp_name="/tb_node/dut/packet_sel1/pkt_master_ins/PkgExA" type="array">
-         <obj_property name="ElementShortName">PkgExA</obj_property>
-         <obj_property name="ObjectShortName">PkgExA</obj_property>
-      </wvobject>
-      <wvobject db_ref_id="1" fp_name="/tb_node/dut/packet_sel1/pkt_master_ins/PkgExB" type="array">
-         <obj_property name="ElementShortName">PkgExB</obj_property>
-         <obj_property name="ObjectShortName">PkgExB</obj_property>
          <obj_property name="isExpanded"></obj_property>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/packet_sel1/pkt_master_ins/PkgExB.dout" type="array">
+      </wvobject>
+      <wvobject db_ref_id="1" fp_name="/tb_node/dut/packet_sel1/pkt_master_ins/PktExA" type="array">
+         <obj_property name="ElementShortName">PktExA</obj_property>
+         <obj_property name="ObjectShortName">PktExA</obj_property>
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/packet_sel1/pkt_master_ins/PktExA.dout" type="array">
             <obj_property name="ElementShortName">.dout[7:0]</obj_property>
-            <obj_property name="ObjectShortName">PkgExB.dout[7:0]</obj_property>
+            <obj_property name="ObjectShortName">PktExA.dout[7:0]</obj_property>
             <obj_property name="isExpanded"></obj_property>
          </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/packet_sel1/pkt_master_ins/PkgExB.full" type="logic">
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/packet_sel1/pkt_master_ins/PktExA.full" type="logic">
             <obj_property name="ElementShortName">.full</obj_property>
-            <obj_property name="ObjectShortName">PkgExB.full</obj_property>
+            <obj_property name="ObjectShortName">PktExA.full</obj_property>
          </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/packet_sel1/pkt_master_ins/PkgExB.empty" type="logic">
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/packet_sel1/pkt_master_ins/PktExA.empty" type="logic">
             <obj_property name="ElementShortName">.empty</obj_property>
-            <obj_property name="ObjectShortName">PkgExB.empty</obj_property>
+            <obj_property name="ObjectShortName">PktExA.empty</obj_property>
          </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/packet_sel1/pkt_master_ins/PkgExB.eop1_rcvd" type="logic">
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/packet_sel1/pkt_master_ins/PktExA.eop1_rcvd" type="logic">
             <obj_property name="ElementShortName">.eop1_rcvd</obj_property>
-            <obj_property name="ObjectShortName">PkgExB.eop1_rcvd</obj_property>
+            <obj_property name="ObjectShortName">PktExA.eop1_rcvd</obj_property>
          </wvobject>
+      </wvobject>
+      <wvobject db_ref_id="1" fp_name="/tb_node/dut/packet_sel1/pkt_master_ins/PktExB" type="array">
+         <obj_property name="ElementShortName">PktExB</obj_property>
+         <obj_property name="ObjectShortName">PktExB</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/packet_sel1/pkt_master_ins/PktExB.dout" type="array">
+            <obj_property name="ElementShortName">.dout[7:0]</obj_property>
+            <obj_property name="ObjectShortName">PktExB.dout[7:0]</obj_property>
+            <obj_property name="isExpanded"></obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/packet_sel1/pkt_master_ins/PktExB.full" type="logic">
+            <obj_property name="ElementShortName">.full</obj_property>
+            <obj_property name="ObjectShortName">PktExB.full</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/packet_sel1/pkt_master_ins/PktExB.empty" type="logic">
+            <obj_property name="ElementShortName">.empty</obj_property>
+            <obj_property name="ObjectShortName">PktExB.empty</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/packet_sel1/pkt_master_ins/PktExB.eop1_rcvd" type="logic">
+            <obj_property name="ElementShortName">.eop1_rcvd</obj_property>
+            <obj_property name="ObjectShortName">PktExB.eop1_rcvd</obj_property>
+         </wvobject>
+      </wvobject>
+      <wvobject db_ref_id="1" fp_name="/tb_node/dut/packet_sel1/pkt_master_ins/rst" type="logic">
+         <obj_property name="ElementShortName">rst</obj_property>
+         <obj_property name="ObjectShortName">rst</obj_property>
       </wvobject>
       <wvobject db_ref_id="1" fp_name="/tb_node/dut/packet_sel1/pkt_master_ins/char_width" type="other">
          <obj_property name="ElementShortName">char_width</obj_property>
          <obj_property name="ObjectShortName">char_width</obj_property>
-      </wvobject>
-      <wvobject db_ref_id="1" fp_name="/tb_node/dut/packet_sel1/pkt_master_ins/PkgEx_rst" type="array">
-         <obj_property name="ElementShortName">PkgEx_rst</obj_property>
-         <obj_property name="ObjectShortName">PkgEx_rst</obj_property>
       </wvobject>
    </wvobject>
    <wvobject type="divider" fp_name="divider134">
@@ -153,9 +159,11 @@
    <wvobject fp_name="group139" type="group">
       <obj_property name="label">TXB</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
       <wvobject fp_name="group170" type="group">
          <obj_property name="label">exc</obj_property>
          <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_B/TX_pipeline/Exchange_tx/clk" type="logic">
             <obj_property name="ElementShortName">clk</obj_property>
             <obj_property name="ObjectShortName">clk</obj_property>
@@ -163,10 +171,6 @@
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_B/TX_pipeline/Exchange_tx/reset_n" type="logic">
             <obj_property name="ElementShortName">reset_n</obj_property>
             <obj_property name="ObjectShortName">reset_n</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_B/TX_pipeline/Exchange_tx/PkgEx" type="array">
-            <obj_property name="ElementShortName">PkgEx</obj_property>
-            <obj_property name="ObjectShortName">PkgEx</obj_property>
          </wvobject>
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_B/TX_pipeline/Exchange_tx/ExRxTx" type="array">
             <obj_property name="ElementShortName">ExRxTx</obj_property>
@@ -200,7 +204,6 @@
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_B/TX_pipeline/Exchange_tx/char_reg" type="array">
             <obj_property name="ElementShortName">char_reg[9:0]</obj_property>
             <obj_property name="ObjectShortName">char_reg[9:0]</obj_property>
-            <obj_property name="isExpanded"></obj_property>
          </wvobject>
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_B/TX_pipeline/Exchange_tx/char_cnt" type="array">
             <obj_property name="ElementShortName">char_cnt[4:0]</obj_property>
@@ -230,6 +233,7 @@
       <wvobject fp_name="group169" type="group">
          <obj_property name="label">char</obj_property>
          <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_B/TX_pipeline/char_tx_ins/clk" type="logic">
             <obj_property name="ElementShortName">clk</obj_property>
             <obj_property name="ObjectShortName">clk</obj_property>
@@ -245,6 +249,7 @@
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_B/TX_pipeline/char_tx_ins/char_in" type="array">
             <obj_property name="ElementShortName">char_in[9:0]</obj_property>
             <obj_property name="ObjectShortName">char_in[9:0]</obj_property>
+            <obj_property name="isExpanded"></obj_property>
          </wvobject>
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_B/TX_pipeline/char_tx_ins/d_out" type="logic">
             <obj_property name="ElementShortName">d_out</obj_property>
@@ -253,6 +258,7 @@
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_B/TX_pipeline/char_tx_ins/shft_reg" type="array">
             <obj_property name="ElementShortName">shft_reg[9:0]</obj_property>
             <obj_property name="ObjectShortName">shft_reg[9:0]</obj_property>
+            <obj_property name="isExpanded"></obj_property>
          </wvobject>
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_B/TX_pipeline/char_tx_ins/char_width" type="other">
             <obj_property name="ElementShortName">char_width</obj_property>
@@ -262,6 +268,7 @@
       <wvobject fp_name="group168" type="group">
          <obj_property name="label">Sig</obj_property>
          <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_B/TX_pipeline/signal_tx_ins/clk" type="logic">
             <obj_property name="ElementShortName">clk</obj_property>
             <obj_property name="ObjectShortName">clk</obj_property>
@@ -303,127 +310,10 @@
    <wvobject fp_name="group137" type="group">
       <obj_property name="label">RX A</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <wvobject fp_name="group170" type="group">
-         <obj_property name="label">exc</obj_property>
-         <obj_property name="DisplayName">label</obj_property>
-         <obj_property name="isExpanded"></obj_property>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/clk" type="logic">
-            <obj_property name="ElementShortName">clk</obj_property>
-            <obj_property name="ObjectShortName">clk</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/char_valid" type="logic">
-            <obj_property name="ElementShortName">char_valid</obj_property>
-            <obj_property name="ObjectShortName">char_valid</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/reset_n" type="logic">
-            <obj_property name="ElementShortName">reset_n</obj_property>
-            <obj_property name="ObjectShortName">reset_n</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/full" type="logic">
-            <obj_property name="ElementShortName">full</obj_property>
-            <obj_property name="ObjectShortName">full</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/pc_char" type="array">
-            <obj_property name="ElementShortName">pc_char[9:0]</obj_property>
-            <obj_property name="ObjectShortName">pc_char[9:0]</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/parity_err" type="logic">
-            <obj_property name="ElementShortName">parity_err</obj_property>
-            <obj_property name="ObjectShortName">parity_err</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/wr_en" type="logic">
-            <obj_property name="ElementShortName">wr_en</obj_property>
-            <obj_property name="ObjectShortName">wr_en</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/char" type="array">
-            <obj_property name="ElementShortName">char[7:0]</obj_property>
-            <obj_property name="ObjectShortName">char[7:0]</obj_property>
-            <obj_property name="isExpanded"></obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/ExRxTx" type="array">
-            <obj_property name="ElementShortName">ExRxTx</obj_property>
-            <obj_property name="ObjectShortName">ExRxTx</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/state" type="other">
-            <obj_property name="ElementShortName">state</obj_property>
-            <obj_property name="ObjectShortName">state</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/data_parity" type="logic">
-            <obj_property name="ElementShortName">data_parity</obj_property>
-            <obj_property name="ObjectShortName">data_parity</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/total_parity" type="logic">
-            <obj_property name="ElementShortName">total_parity</obj_property>
-            <obj_property name="ObjectShortName">total_parity</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/half_null_dtcd" type="logic">
-            <obj_property name="ElementShortName">half_null_dtcd</obj_property>
-            <obj_property name="ObjectShortName">half_null_dtcd</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/null_rcvd" type="logic">
-            <obj_property name="ElementShortName">null_rcvd</obj_property>
-            <obj_property name="ObjectShortName">null_rcvd</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/char_width" type="other">
-            <obj_property name="ElementShortName">char_width</obj_property>
-            <obj_property name="ObjectShortName">char_width</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/ExRxTx_rst" type="array">
-            <obj_property name="ElementShortName">ExRxTx_rst</obj_property>
-            <obj_property name="ObjectShortName">ExRxTx_rst</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/ExRxTx_clr" type="array">
-            <obj_property name="ElementShortName">ExRxTx_clr</obj_property>
-            <obj_property name="ObjectShortName">ExRxTx_clr</obj_property>
-         </wvobject>
-      </wvobject>
-      <wvobject fp_name="group169" type="group">
-         <obj_property name="label">char</obj_property>
-         <obj_property name="DisplayName">label</obj_property>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/char_rx_ins/clk" type="logic">
-            <obj_property name="ElementShortName">clk</obj_property>
-            <obj_property name="ObjectShortName">clk</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/char_rx_ins/reset_n" type="logic">
-            <obj_property name="ElementShortName">reset_n</obj_property>
-            <obj_property name="ObjectShortName">reset_n</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/char_rx_ins/d_in" type="logic">
-            <obj_property name="ElementShortName">d_in</obj_property>
-            <obj_property name="ObjectShortName">d_in</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/char_rx_ins/bit_valid" type="logic">
-            <obj_property name="ElementShortName">bit_valid</obj_property>
-            <obj_property name="ObjectShortName">bit_valid</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/char_rx_ins/char_valid" type="logic">
-            <obj_property name="ElementShortName">char_valid</obj_property>
-            <obj_property name="ObjectShortName">char_valid</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/char_rx_ins/pc_char" type="array">
-            <obj_property name="ElementShortName">pc_char[9:0]</obj_property>
-            <obj_property name="ObjectShortName">pc_char[9:0]</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/char_rx_ins/shft_reg" type="array">
-            <obj_property name="ElementShortName">shft_reg[9:0]</obj_property>
-            <obj_property name="ObjectShortName">shft_reg[9:0]</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/char_rx_ins/cnt" type="array">
-            <obj_property name="ElementShortName">cnt[3:0]</obj_property>
-            <obj_property name="ObjectShortName">cnt[3:0]</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/char_rx_ins/dtct_null" type="logic">
-            <obj_property name="ElementShortName">dtct_null</obj_property>
-            <obj_property name="ObjectShortName">dtct_null</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/char_rx_ins/char_width" type="other">
-            <obj_property name="ElementShortName">char_width</obj_property>
-            <obj_property name="ObjectShortName">char_width</obj_property>
-         </wvobject>
-      </wvobject>
       <wvobject fp_name="group168" type="group">
          <obj_property name="label">Sig</obj_property>
          <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/signal_rx_inst/clk" type="logic">
             <obj_property name="ElementShortName">clk</obj_property>
             <obj_property name="ObjectShortName">clk</obj_property>
@@ -493,6 +383,127 @@
             <obj_property name="ObjectShortName">char_width</obj_property>
          </wvobject>
       </wvobject>
+      <wvobject fp_name="group169" type="group">
+         <obj_property name="label">char</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/char_rx_ins/clk" type="logic">
+            <obj_property name="ElementShortName">clk</obj_property>
+            <obj_property name="ObjectShortName">clk</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/char_rx_ins/reset_n" type="logic">
+            <obj_property name="ElementShortName">reset_n</obj_property>
+            <obj_property name="ObjectShortName">reset_n</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/char_rx_ins/d_in" type="logic">
+            <obj_property name="ElementShortName">d_in</obj_property>
+            <obj_property name="ObjectShortName">d_in</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/char_rx_ins/bit_valid" type="logic">
+            <obj_property name="ElementShortName">bit_valid</obj_property>
+            <obj_property name="ObjectShortName">bit_valid</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/char_rx_ins/char_valid" type="logic">
+            <obj_property name="ElementShortName">char_valid</obj_property>
+            <obj_property name="ObjectShortName">char_valid</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/char_rx_ins/pc_char" type="array">
+            <obj_property name="ElementShortName">pc_char[9:0]</obj_property>
+            <obj_property name="ObjectShortName">pc_char[9:0]</obj_property>
+            <obj_property name="isExpanded"></obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/char_rx_ins/shft_reg" type="array">
+            <obj_property name="ElementShortName">shft_reg[9:0]</obj_property>
+            <obj_property name="ObjectShortName">shft_reg[9:0]</obj_property>
+            <obj_property name="isExpanded"></obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/char_rx_ins/cnt" type="array">
+            <obj_property name="ElementShortName">cnt[3:0]</obj_property>
+            <obj_property name="ObjectShortName">cnt[3:0]</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/char_rx_ins/dtct_null" type="logic">
+            <obj_property name="ElementShortName">dtct_null</obj_property>
+            <obj_property name="ObjectShortName">dtct_null</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/char_rx_ins/char_width" type="other">
+            <obj_property name="ElementShortName">char_width</obj_property>
+            <obj_property name="ObjectShortName">char_width</obj_property>
+         </wvobject>
+      </wvobject>
+      <wvobject fp_name="group170" type="group">
+         <obj_property name="label">exc</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/clk" type="logic">
+            <obj_property name="ElementShortName">clk</obj_property>
+            <obj_property name="ObjectShortName">clk</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/char_valid" type="logic">
+            <obj_property name="ElementShortName">char_valid</obj_property>
+            <obj_property name="ObjectShortName">char_valid</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/reset_n" type="logic">
+            <obj_property name="ElementShortName">reset_n</obj_property>
+            <obj_property name="ObjectShortName">reset_n</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/full" type="logic">
+            <obj_property name="ElementShortName">full</obj_property>
+            <obj_property name="ObjectShortName">full</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/pc_char" type="array">
+            <obj_property name="ElementShortName">pc_char[9:0]</obj_property>
+            <obj_property name="ObjectShortName">pc_char[9:0]</obj_property>
+            <obj_property name="isExpanded"></obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/parity_err" type="logic">
+            <obj_property name="ElementShortName">parity_err</obj_property>
+            <obj_property name="ObjectShortName">parity_err</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/wr_en" type="logic">
+            <obj_property name="ElementShortName">wr_en</obj_property>
+            <obj_property name="ObjectShortName">wr_en</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/char" type="array">
+            <obj_property name="ElementShortName">char[7:0]</obj_property>
+            <obj_property name="ObjectShortName">char[7:0]</obj_property>
+            <obj_property name="isExpanded"></obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/ExRxTx" type="array">
+            <obj_property name="ElementShortName">ExRxTx</obj_property>
+            <obj_property name="ObjectShortName">ExRxTx</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/state" type="other">
+            <obj_property name="ElementShortName">state</obj_property>
+            <obj_property name="ObjectShortName">state</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/data_parity" type="logic">
+            <obj_property name="ElementShortName">data_parity</obj_property>
+            <obj_property name="ObjectShortName">data_parity</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/total_parity" type="logic">
+            <obj_property name="ElementShortName">total_parity</obj_property>
+            <obj_property name="ObjectShortName">total_parity</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/half_null_dtcd" type="logic">
+            <obj_property name="ElementShortName">half_null_dtcd</obj_property>
+            <obj_property name="ObjectShortName">half_null_dtcd</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/null_rcvd" type="logic">
+            <obj_property name="ElementShortName">null_rcvd</obj_property>
+            <obj_property name="ObjectShortName">null_rcvd</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/char_width" type="other">
+            <obj_property name="ElementShortName">char_width</obj_property>
+            <obj_property name="ObjectShortName">char_width</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/ExRxTx_rst" type="array">
+            <obj_property name="ElementShortName">ExRxTx_rst</obj_property>
+            <obj_property name="ObjectShortName">ExRxTx_rst</obj_property>
+         </wvobject>
+         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/ExRxTx_clr" type="array">
+            <obj_property name="ElementShortName">ExRxTx_clr</obj_property>
+            <obj_property name="ObjectShortName">ExRxTx_clr</obj_property>
+         </wvobject>
+      </wvobject>
    </wvobject>
    <wvobject type="divider" fp_name="divider140">
       <obj_property name="label">TX A</obj_property>
@@ -501,6 +512,10 @@
    <wvobject fp_name="group136" type="group">
       <obj_property name="label">TXA</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+      <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_B/RX_pipeline/Exchange_rx/null_rcvd" type="logic">
+         <obj_property name="ElementShortName">null_rcvd</obj_property>
+         <obj_property name="ObjectShortName">null_rcvd</obj_property>
+      </wvobject>
       <wvobject fp_name="group170" type="group">
          <obj_property name="label">exc</obj_property>
          <obj_property name="DisplayName">label</obj_property>
@@ -512,10 +527,6 @@
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/TX_pipeline/Exchange_tx/reset_n" type="logic">
             <obj_property name="ElementShortName">reset_n</obj_property>
             <obj_property name="ObjectShortName">reset_n</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/TX_pipeline/Exchange_tx/PkgEx" type="array">
-            <obj_property name="ElementShortName">PkgEx</obj_property>
-            <obj_property name="ObjectShortName">PkgEx</obj_property>
          </wvobject>
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/TX_pipeline/Exchange_tx/ExRxTx" type="array">
             <obj_property name="ElementShortName">ExRxTx</obj_property>
@@ -578,6 +589,7 @@
       <wvobject fp_name="group169" type="group">
          <obj_property name="label">char</obj_property>
          <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/TX_pipeline/char_tx_ins/clk" type="logic">
             <obj_property name="ElementShortName">clk</obj_property>
             <obj_property name="ObjectShortName">clk</obj_property>
@@ -601,6 +613,7 @@
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/TX_pipeline/char_tx_ins/shft_reg" type="array">
             <obj_property name="ElementShortName">shft_reg[9:0]</obj_property>
             <obj_property name="ObjectShortName">shft_reg[9:0]</obj_property>
+            <obj_property name="isExpanded"></obj_property>
          </wvobject>
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/TX_pipeline/char_tx_ins/char_width" type="other">
             <obj_property name="ElementShortName">char_width</obj_property>
@@ -610,6 +623,7 @@
       <wvobject fp_name="group168" type="group">
          <obj_property name="label">Sig</obj_property>
          <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/TX_pipeline/signal_tx_ins/clk" type="logic">
             <obj_property name="ElementShortName">clk</obj_property>
             <obj_property name="ObjectShortName">clk</obj_property>
@@ -706,10 +720,6 @@
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_B/RX_pipeline/Exchange_rx/half_null_dtcd" type="logic">
             <obj_property name="ElementShortName">half_null_dtcd</obj_property>
             <obj_property name="ObjectShortName">half_null_dtcd</obj_property>
-         </wvobject>
-         <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_B/RX_pipeline/Exchange_rx/null_rcvd" type="logic">
-            <obj_property name="ElementShortName">null_rcvd</obj_property>
-            <obj_property name="ObjectShortName">null_rcvd</obj_property>
          </wvobject>
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_B/RX_pipeline/Exchange_rx/char_width" type="other">
             <obj_property name="ElementShortName">char_width</obj_property>

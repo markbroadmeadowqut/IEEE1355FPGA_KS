@@ -32,7 +32,7 @@ entity TX_pipeline is
     Port ( 
         clk         : in std_logic;
         reset_n     : in std_logic;
-        PkgEx       : in PkgEx_rec;
+        PktEx       : in PktEx_rec;
         ExRxTx      : in ExRxExTx_rec;
         rd_en       : out std_logic;
         d_out       : out std_logic;
@@ -61,7 +61,7 @@ Exchange_tx: entity work.exchange_tx            -- instantiate Ckl prescaler
     port map ( 
         clk             => clk,                    
         reset_n         => reset_n,
-        PkgEx           => PkgEx,
+        PktEx           => PktEx,
         ExRxTx          => ExRxTx,
         char_valid      => char_valid,
         rd_en           => rd_en,

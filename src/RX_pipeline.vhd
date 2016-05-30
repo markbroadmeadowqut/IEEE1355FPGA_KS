@@ -33,7 +33,7 @@ entity RX_pipeline is
         reset_n     : in std_logic;
         d_in        : in std_logic;
         s_in        : in std_logic;
-        PkgEx       : in PkgEx_rec;
+        PktEx       : in PktEx_rec;
         wr_en       : out std_logic;
         char        : out std_logic_vector(7 downto 0);
         ExRxTx      : out ExRxExTx_rec;
@@ -91,7 +91,7 @@ Exchange_rx: entity work.exchange_rx            -- instantiate Ckl prescaler
         clk             => clk,
         char_valid      => char_valid,                    
         reset_n         => reset_n,
-        full            => PkgEx.full,
+        full            => PktEx.full,
         pc_char         => pc_char,
         parity_err      => RxRst.parity_err, 
         wr_en           => wr_en,
