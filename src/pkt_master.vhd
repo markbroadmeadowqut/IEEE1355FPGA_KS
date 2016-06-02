@@ -24,9 +24,7 @@ use IEEE.NUMERIC_STD.ALL;
 use work.bus_pkg.all;
 
 entity pkt_master is
-    generic(
-        char_width  : integer
-        );
+
     Port ( 
     wr_clk          : in  std_logic;                         -- RX clock 
     rd_clk          : in  std_logic;        
@@ -59,8 +57,6 @@ architecture behavioral of pkt_master is
             empty   : OUT STD_LOGIC
         );
     END COMPONENT;      
-
-
        
 begin
     
@@ -99,8 +95,7 @@ process(rd_clk,rst_n)
                 PktExB.empty <= '0';
                 PktExB.full  <= '0';  
                 PktExB.dout(3 downto 0)    <= btn;
-                PktExB.dout(7 downto 4)    <= sw;   
-                display <= ExPktA.din;                      
+                PktExB.dout(7 downto 4)    <= sw;                     
              end if;              
         end if;           
     end process;              

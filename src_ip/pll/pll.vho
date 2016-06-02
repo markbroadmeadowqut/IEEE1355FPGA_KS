@@ -68,7 +68,7 @@
 component pll
 port
  (-- Clock in ports
-  clk_pad           : in     std_logic;
+  sys_clk           : in     std_logic;
   -- Clock out ports
   clk_tx          : out    std_logic;
   clk_rx          : out    std_logic
@@ -83,7 +83,7 @@ your_instance_name : pll
    port map ( 
 
    -- Clock in ports
-   clk_pad => clk_pad,
+   sys_clk => sys_clk,
   -- Clock out ports  
    clk_tx => clk_tx,
    clk_rx => clk_rx              

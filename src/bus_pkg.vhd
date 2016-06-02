@@ -39,12 +39,13 @@ package bus_pkg is
    
     -- RX char record for flags indicating status of received character
     type ExRxExTx_rec is record
+        link_est        : std_logic;            -- when = 1 first null received and link established    
         fcc_rcvd        : std_logic;            -- when = 1 fcc received
+        send_fcc        : std_logic;            -- when = 1 send fcc
         eop1_rcvd       : std_logic;            -- when = 1 eop1 received
         eop2_rcvd       : std_logic;            -- when = 1 eop2 received
-        esc_rcvd        : std_logic;            -- when = 1 exc received
-        null_rcvd       : std_logic;            -- when = 1 null received
-        send_fcc        : std_logic;            -- when = 1 request data from other node
+        esc_rcvd        : std_logic;            -- when = 1 exc received        
+        data_rcvd       : std_logic;            -- when = 1 request data from other node
     end record;
     
    

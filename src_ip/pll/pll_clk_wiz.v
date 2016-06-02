@@ -67,7 +67,7 @@
 
 module pll_clk_wiz 
  (// Clock in ports
-  input         clk_pad,
+  input         sys_clk,
   // Clock out ports
   output        clk_tx,
   output        clk_rx
@@ -76,8 +76,8 @@ module pll_clk_wiz
   // Input buffering
   //------------------------------------
   IBUF clkin1_ibufg
-   (.O (clk_pad_pll),
-    .I (clk_pad));
+   (.O (sys_clk_pll),
+    .I (sys_clk));
 
 
 
@@ -127,7 +127,7 @@ module pll_clk_wiz
     .CLKOUT5             (clkout5_unused),
      // Input clock control
     .CLKFBIN             (clkfbout_buf_pll),
-    .CLKIN1              (clk_pad_pll),
+    .CLKIN1              (sys_clk_pll),
     .CLKIN2              (1'b0),
      // Tied to always select the primary input clock
     .CLKINSEL            (1'b1),
