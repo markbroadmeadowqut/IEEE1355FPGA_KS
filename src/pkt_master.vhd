@@ -17,12 +17,15 @@
 -- Additional Comments:
 -- 
 ----------------------------------------------------------------------------------
-
 library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.NUMERIC_STD.ALL;
-use work.bus_pkg.all;
-
+    use IEEE.STD_LOGIC_1164.ALL;
+    use IEEE.NUMERIC_STD.ALL;
+library UNISIM;    
+    use UNISIM.VComponents.all;
+library WORK;
+    use work.bus_pkg.all;
+    
+    
 entity pkt_master is
 
     Port ( 
@@ -92,10 +95,11 @@ process(rd_clk,rst_n)
              if rising_edge(rd_clk) then
                 PktExA.eop1_rcvd <= ExPktB.eop1_rcvd;
                 PktExB.eop1_rcvd <= ExPktA.eop1_rcvd; 
-                PktExB.empty <= '0';
-                PktExB.full  <= '0';  
+                --PktExB.empty <= '0';
+                --PktExB.full  <= '0';  
                 PktExB.dout(3 downto 0)    <= btn;
-                PktExB.dout(7 downto 4)    <= sw;                     
+                PktExB.dout(7 downto 4)    <= sw;  
+                display <= ExPktA.din;                   
              end if;              
         end if;           
     end process;              

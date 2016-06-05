@@ -26,7 +26,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 package bus_pkg is
 
     -- Indicates a configuration for the node.
-    type node_type is ( pkt_slave, pkt_master, pkt_counter );
+    type node_type is ( slave, master );
     
     -- control chars last three bits without parity bit in little endian form 
     -- MSB is on ritht of character
@@ -48,6 +48,10 @@ package bus_pkg is
         data_rcvd       : std_logic;            -- when = 1 request data from other node
     end record;
     
+    type ExTxExRx_rec is record
+        fcc_sent        : std_logic;            -- when = 1 data being ordered   
+        fcc_rcvd_ack    : std_logic;            -- when = 1 fcc received acknowledged
+    end record;    
    
     --Rx Exchange layer record for flags to reset manager
     type RxRst_rec is record
@@ -73,5 +77,6 @@ package bus_pkg is
         empty       : std_logic;
         eop1_rcvd   : std_logic;
     end record;
+    
    
 end package;

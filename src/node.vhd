@@ -14,19 +14,20 @@
 ----------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------
 library IEEE;
-	use IEEE.std_logic_1164.all;
-	use IEEE.numeric_std.all;
-
+    use IEEE.STD_LOGIC_1164.ALL;
+    use IEEE.NUMERIC_STD.ALL;
+library UNISIM;    
+    use UNISIM.VComponents.all;
 library WORK;
-	use work.bus_pkg.all;
+    use work.bus_pkg.all;
 
 entity node is
     generic ( 
         -- this field indicates the type of node that is generated.
         -- it alters the packet layer according to following inputs.
-        -- "pkt_slave" produces a general node for the use in the field.
-        -- "pkt_master produces a terminal node with pushbutton inputs.
-        packet      : node_type := pkt_slave
+        -- "slave" produces a general node for the use in the field.
+        -- "master produces a terminal node with pushbutton inputs.
+        packet      : node_type := master
     );
 
 	port (
@@ -43,7 +44,8 @@ entity node is
         d_outA          : out       std_logic;                      -- Side A data out pin
         s_outA          : out       std_logic;                      -- Side A strobe out pin
         d_outB          : out       std_logic;                      -- Side B data out pin
-        s_outB          : out       std_logic                       -- Side B strobe out pin
+        s_outB          : out       std_logic;                       -- Side B strobe out pin
+        debugr          : out       std_logic_vector(35 downto 0)
 	);
 end node;
 
@@ -54,63 +56,88 @@ architecture RTL of node is
 	signal clk_rx       : std_logic;               -- receiver clock must be 
 	                                               -- 1.5 times faster than tx clock
     -- data signals
-    signal display          : std_logic_vector(7 downto 0);     -- output to led's for debugging
+    signal display      : std_logic_vector(7 downto 0);     -- output to led's for debugging
+    signal dd           : std_logic;
+    signal sd           : std_logic;
+    signal du           : std_logic;
+    signal su           : std_logic;
             
     -- Records
-    signal ExPktA          : ExPkt_rec;             -- Exchange layer to packet layer records
-    signal ExPktB          : ExPkt_rec;                 -- Side A and B
-    signal PktExA          : PktEx_rec;             -- Packet layer to exchange layer records
-    signal PktExB          : PktEx_rec;                 -- Side A and B
+    signal ExPktA       : ExPkt_rec;             -- Exchange layer to packet layer records
+    signal ExPktB       : ExPkt_rec;                 -- Side A and B
+    signal PktExA       : PktEx_rec;             -- Packet layer to exchange layer records
+    signal PktExB       : PktEx_rec;                 -- Side A and B
     
     -- components
-    component pll                                   -- pll clock creation component
+    component pll                                -- pll clock creation component
         port (
-            sys_clk         : in     std_logic;     -- Clock in ports
-            clk_tx          : out    std_logic;     -- Clock out ports
-            clk_rx          : out    std_logic
+            sys_clk     : in     std_logic;      -- Clock in ports
+            clk_tx      : out    std_logic;      -- Clock out ports
+            clk_rx      : out    std_logic
          );
         end component;        
 begin
 
  
-TXRX_clks : pll                                 -- Instantiation of PLL (from IP library
+TXRX_clks : pll                               -- Instantiation of PLL (from IP library
     port map ( 
         sys_clk => clk_pad,       
         clk_tx  => clk_tx,          
         clk_rx  => clk_rx              
     );
+    
+--TX_clock: entity work.clk_prescaler             -- instantiate Ckl prescaler
+--    generic map (                                       
+--       PRESCALER                 => 2     
+--        )
+--    port map ( 
+--        clkin           => clk_pad,
+--        clkout          => clk_tx,                      
+--        rst_n           => rst_n
+--        );    
+--RX_clock: entity work.clk_prescaler             -- instantiate Ckl prescaler
+--    generic map (                                       
+--        PRESCALER                 => 1           
+--      )
+--    port map ( 
+--        clkin           => clk_pad,
+--        clkout          => clk_rx,                       
+--        rst_n           => rst_n
+--        );     
               
-Side_A: entity work.side                      -- instantiate Side A of node     
+Side_A: entity work.side                        -- instantiate Side A of node     
         
     port map ( 
         clk_tx          => clk_tx,
         clk_rx          => clk_rx,                       
         rst_n           => rst_n,
-        d_in            => d_inA,
-        s_in            => s_inA,
+        d_in            => dd, --d_inA,
+        s_in            => sd, --s_inA,
         PktEx           => PktExA,
-        d_out           => d_outA,
-        s_out           => s_outA,
-        ExPkt           => ExPktA        
+        d_out           => du,  --d_outA,
+        s_out           => su,  --s_outA,
+        ExPkt           => ExPktA,
+        debugr          => open       
         );        
         
-Side_B: entity work.side                      -- instantiate Side B of node
+Side_B: entity work.side                        -- instantiate Side B of node
     port map ( 
         clk_tx          => clk_tx,
         clk_rx          => clk_rx,                       
         rst_n           => rst_n,
-        d_in            => d_inB,
-        s_in            => s_inB,
+        d_in            => du, --d_inB,
+        s_in            => su, --s_inB,
         PktEx           => PktExB,
-        d_out           => d_outB,
-        s_out           => s_outB,
-        ExPkt           => ExPktB        
+        d_out           => dd, --d_outB,
+        s_out           => sd, --s_outB,
+        ExPkt           => ExPktB,
+        debugr          => debugr      
         );         
 
-packet_sel0: if packet = pkt_slave generate
-    pkt_slave_ins: entity work.packet       -- instantiate common packet layer 
-    port map (                              -- This packet layer forms a normal    
-        wr_clk          => clk_rx,          -- node as outlined by the project 
+packet_sel0: if packet = slave generate
+    pkt_slave_ins: entity work.packet           -- instantiate common packet layer 
+    port map (                                  -- This packet layer forms a normal    
+        wr_clk          => clk_rx,              -- node as outlined by the project 
         rd_clk          => clk_tx,
         rst_n           => rst_n,
         sw              => sw,
@@ -123,7 +150,7 @@ packet_sel0: if packet = pkt_slave generate
         );
 end generate;               
 
-packet_sel1: if packet = pkt_master generate
+packet_sel1: if packet = master generate
     pkt_master_ins: entity work.pkt_master      -- instantiate common packet layer                                                 
     port map (                                  -- This packet layer forms a terminal 
         wr_clk          => clk_rx,              -- for testing purposes, it establishes  
@@ -137,28 +164,14 @@ packet_sel1: if packet = pkt_master generate
         PktExA          => PktExA, 
         PktExB          => PktExB         
         );
-end generate;     
+end generate; 
+
+
+            
 	led       <= display(7 downto 4);
-	ledb      <= display(3 downto 0); 
+	ledb      <= display(3 downto 0);
+	
 end RTL;
 
 
 
---TX_clock: entity work.clk_prescaler             -- instantiate Ckl prescaler
---    generic map (                                       
---       PRESCALER 				=> 2      
---        )
---    port map ( 
---        clkin           => clk_pad,
---        clkout          => clk_tx,                      
---        rst_n           => rst_n
---        );    
---RX_clock: entity work.clk_prescaler             -- instantiate Ckl prescaler
---    generic map (                                       
---        PRESCALER 				=> 1           
---      )
---    port map ( 
---        clkin           => clk_pad,
---        clkout          => clk_rx,                       
---        rst_n           => rst_n
---   ); 

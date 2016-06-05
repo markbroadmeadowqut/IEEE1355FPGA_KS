@@ -14,12 +14,15 @@
 -- Additional Comments:
 ----------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------
-
 library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.NUMERIC_STD.ALL;
-use IEEE.std_logic_unsigned.all;
-use work.bus_pkg.all;
+    use IEEE.STD_LOGIC_1164.ALL;
+    use IEEE.NUMERIC_STD.ALL;
+library UNISIM;    
+    use UNISIM.VComponents.all;
+library WORK;
+    use work.bus_pkg.all;
+
+--use IEEE.std_logic_unsigned.all;
 
 entity signal_rx is
     Port ( 
@@ -29,7 +32,8 @@ entity signal_rx is
         s_in            : in  std_logic;        -- strobe bit in . 
         d_out           : out std_logic;        -- data bit to character layer
         bit_valid       : out std_logic;        -- valid bit on stream
-        time_out        : out std_logic         -- timeout flag for reset manager
+        time_out        : out std_logic;         -- timeout flag for reset manager
+        debugr          : out std_logic_vector(35 downto 0) -- debug chanel
     );
 end signal_rx;
 
@@ -42,12 +46,15 @@ architecture behavioral of signal_rx is
     signal d_hold       : std_logic;                    -- keep data for one extra clk cycle   
     signal s_hold       : std_logic;                    -- also hold previous strobe bit
     signal enable       : std_logic;                    -- sample correct bit from stream.
-    signal to_cnt       : std_logic_vector(6 downto 0); -- counter for time out detection.
+    --signal to_cnt       : std_logic_vector(6 downto 0); -- counter for time out detection.
     signal fst_d_rcvd   : std_logic;                    -- first null char detected.
     
 begin 
 
-    process(clk, reset_n )                  
+    process(clk, reset_n ) 
+        
+        variable to_cnt : integer range 0 to 63;
+                     
         begin   
             if (reset_n  = '0') then            -- reset all signals
                 d_out       <= '0';
@@ -59,7 +66,7 @@ begin
                 s_hold      <= '0';
                 d_hold      <= '0';
                 enable      <= '0';
-                to_cnt      <= (others => '0');
+                to_cnt      := 0; -- (others => '0');
                 time_out    <= '0';
                 fst_d_rcvd  <= '0';
                 
@@ -67,12 +74,12 @@ begin
                                
                 if (enable = '1') then              -- found a valid bit in data stream
                         bit_valid   <=  '1';        -- flag a valid bit
-                        to_cnt <= (others => '0');  -- reset counter if bit detected
+                        to_cnt := 0;--(others => '0');  -- reset counter if bit detected
                         fst_d_rcvd <= '1';          -- flag the first character received
                 else
                     bit_valid   <= '0';             
                     if (fst_d_rcvd = '1') then      -- if it doesn't sample a bit of data
-                        to_cnt <= to_cnt + 1;       -- count every clock cycle  
+                        to_cnt := to_cnt + 1;       -- count every clock cycle  
                     end if;          
                 end if;                  
                         
@@ -88,9 +95,9 @@ begin
                         
                 end if;
                     
-                if (to_cnt > "111100") then         -- flag set if timeout of link has occurred
+                if (to_cnt > 60) then         -- flag set if timeout of link has occurred
                         time_out <= '1';
-                        to_cnt <= (others => '0');
+                        to_cnt := 0;--(others => '0');
                 else
                         time_out <= '0';    
                 end if;                     

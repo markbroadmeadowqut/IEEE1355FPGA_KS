@@ -14,12 +14,14 @@
 -- Additional Comments:
 ----------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------
-
-
 library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.NUMERIC_STD.ALL;
-use IEEE.std_logic_unsigned.all;
+    use IEEE.STD_LOGIC_1164.ALL;
+    use IEEE.NUMERIC_STD.ALL;
+library UNISIM;
+    use UNISIM.VComponents.all;
+library WORK;
+    use work.bus_pkg.all;
+--use IEEE.std_logic_unsigned.all;
 
 
 entity signal_tx is
@@ -29,7 +31,8 @@ entity signal_tx is
         reset_n   	: in std_logic;     -- Side reset signal
         d_in        : in std_logic;     -- data stream in      
         d_out       : out std_logic;    -- data stream out
-        s_out       : out std_logic     -- strobe stream out    
+        s_out       : out std_logic;     -- strobe stream out 
+        debugr      : out std_logic_vector(35 downto 0) -- debug chanel   
         );
     
 end signal_tx;

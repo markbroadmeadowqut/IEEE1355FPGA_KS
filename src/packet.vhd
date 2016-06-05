@@ -14,12 +14,16 @@
 -- Additional Comments:
 ----------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------
-
 library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.NUMERIC_STD.ALL;
-use IEEE.std_logic_unsigned.all;
-use work.bus_pkg.all;
+    use IEEE.STD_LOGIC_1164.ALL;
+    use IEEE.NUMERIC_STD.ALL;
+library UNISIM;    
+    use UNISIM.VComponents.all;
+library WORK;
+    use work.bus_pkg.all;
+
+--use IEEE.std_logic_unsigned.all;
+
 
 entity packet is
 

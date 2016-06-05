@@ -16,10 +16,14 @@
 ----------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------
 library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.NUMERIC_STD.ALL;
-use IEEE.std_logic_unsigned.all;
-use work.bus_pkg.all;
+    use IEEE.STD_LOGIC_1164.ALL;
+    use IEEE.NUMERIC_STD.ALL;
+library UNISIM;    
+    use UNISIM.VComponents.all;
+library WORK;
+    use work.bus_pkg.all;
+--use IEEE.std_logic_unsigned.all;
+
 
 entity char_rx is
 
@@ -30,38 +34,42 @@ entity char_rx is
         bit_valid       : in std_logic;             -- bit clk from signal layer indicates valid bit
         char_valid      : out std_logic;            -- indicates valid character in register;
         link_actv       : out std_logic;
-        pc_char         : out std_logic_vector(9 downto 0)  -- character out with parity           
-    );                                                      -- and control bits
+        pc_char         : out std_logic_vector(9 downto 0);  -- character out with parity 
+        debugr          : out std_logic_vector(35 downto 0)  -- debug chanel          
+    );                                                       -- and control bits
     
 end char_rx;
 
 architecture Behavioral of char_rx is
     
-    signal shft_reg     : std_logic_vector(9 downto 0);     -- 10 bit shift register
-    signal cnt          : std_logic_vector(3 downto 0);     -- counter 0 to 9 for timing       
-    signal dtct_null    : std_logic;                        -- if 1 look for null char 
+    signal shft_reg     : std_logic_vector(9 downto 0);     -- 10 bit shift register        
+    signal dtct_null    : std_logic;                        -- if 1 look for null char
+    signal temp_cnt     : std_logic_vector(3 downto 0);     -- convert var to std_logic_vector  
     
 begin
     process(clk, reset_n  )
+    
+        variable cnt    : integer range 0 to 10;
+    
         begin
             if (reset_n  = '0') then                        -- reset registers for link reset 
                 char_valid  <= '0';
                 pc_char     <= (others => '0');
                 shft_reg    <= (others => '0');
-                cnt         <= (others => '0');
+                cnt         := 0; -- (others => '0');
                 dtct_null   <= '1';
                 link_actv   <= '0';
             elsif rising_edge(clk) then                   
                 if (bit_valid = '1') then                   
                     shft_reg(9)  <= d_in;                   -- Shift valid bit into register
                     shft_reg(8 downto 0) <= shft_reg(9 downto 1); 
-                    cnt <= cnt - 1;
+                    cnt := cnt - 1;
                         
                     if (dtct_null = '1') then               -- detect null char in shift register
                         if (shft_reg(7 downto 1) = C_CHAR_NULL) then
                             pc_char(3 downto 0) <= shft_reg(3 downto 0);
                             pc_char(9 downto 4) <= "000000";-- zero pad register 
-                            cnt <= "0011";                  -- reset clock to count out character
+                            cnt := 4;                  -- reset clock to count out character
                             dtct_null <= '0';               -- don't enter this segment unless
                             char_valid <= '1';              -- link reset
                             link_actv <= '1';               -- indicate the link is active
@@ -72,10 +80,10 @@ begin
                             if (shft_reg(1) = '1') then         -- detect control char
                                 pc_char(3 downto 0) <= shft_reg(3 downto 0);  -- send to exchange layer
                                 pc_char(9 downto 4) <= "000000";-- zero pad register
-                                cnt <= "0011";                  -- set counter to count out current 
+                                cnt := 4;                  -- set counter to count out current 
                             else                                -- control char bits
                                 pc_char <= shft_reg;            -- send data char to exchange layer
-                                cnt <= "1001";                                   
+                                cnt := 10;                                    
                             end if;
                             if (bit_valid = '1') then
                                 char_valid <= '1';              --  flag to indicate char is 
@@ -85,7 +93,10 @@ begin
                         end if;                    
                     end if; 
                 end if;                   
-            end if;      
+            end if;  
+            
+            temp_cnt <= std_logic_vector(to_unsigned(cnt,4));
+                
         end process;
 end Behavioral;                  
 

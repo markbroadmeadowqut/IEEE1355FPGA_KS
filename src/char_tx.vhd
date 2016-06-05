@@ -15,12 +15,13 @@
 -- Additional Comments:
 ----------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------
-
-
 library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.NUMERIC_STD.ALL;
-use work.bus_pkg.all;
+    use IEEE.STD_LOGIC_1164.ALL;
+    use IEEE.NUMERIC_STD.ALL;
+library UNISIM;    
+    use UNISIM.VComponents.all;
+library WORK;
+    use work.bus_pkg.all;
 
 entity char_tx is
 
@@ -29,7 +30,8 @@ entity char_tx is
         char_valid  : in std_logic;     -- valid character signal    
         reset_n     : in std_logic;     -- side reset signal       
         char_in     : in std_logic_vector(9 downto 0);  -- character from exchange layer
-        d_out       : out std_logic     -- data stream out
+        d_out       : out std_logic;     -- data stream out
+        debugr      : out std_logic_vector(35 downto 0) -- debug chanel
     );
         
 end char_tx;
@@ -55,5 +57,13 @@ begin
                     end if;         
                 end if;  
             end if;                                
-        end process; 
+        end process;
+        
+        debugr(0)           <= clk;
+        debugr(1)           <= reset_n;
+        debugr(2)           <= char_valid;
+        debugr(12 downto 3) <= char_in(9 downto 0);
+        debugr(22 downto 13)<= shft_reg(9 downto 0);
+        debugr(35 downto 23)<= (others => '0');
+                    
 end Behavioral;

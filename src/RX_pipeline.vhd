@@ -26,12 +26,13 @@ entity RX_pipeline is
         reset_n     : in std_logic;     -- side reset signal
         d_in        : in std_logic;     -- data stream received
         s_in        : in std_logic;     -- strobe stream received
-        fcc_sent    : in std_logic;     -- acknowledge of fcc sent
+        ExTxRx      : in ExTxExRx_rec;  -- flags to same side exchange layer
         PktEx       : in PktEx_rec;     -- Packet to exchange layer record
         wr_en       : out std_logic;    -- write enable to packet layer    
         char        : out std_logic_vector(7 downto 0); -- character received
         ExRxTx      : out ExRxExTx_rec; -- flags to same side exchange layer
-        RxRst       : out RxRst_rec     -- flags to reset manager
+        RxRst       : out RxRst_rec;    -- flags to reset manager
+        debugr      : out std_logic_vector(35 downto 0) -- debug chanel
         );
         
 end RX_pipeline;
@@ -53,7 +54,8 @@ signal_rx_inst: entity work.signal_rx           -- Instantiate receiver signal l
         s_in            => s_in,
         d_out           => data,                -- data stream captured
         bit_valid       => bit_valid,           -- valid bit in stream
-        time_out        => RxRst.timeout        -- timeout flag for reset manager
+        time_out        => RxRst.timeout,        -- timeout flag for reset manager
+        debugr          => open
         );
 	   
 char_rx_ins: entity work.char_rx                -- instantiate receiver character layer                      
@@ -64,7 +66,8 @@ char_rx_ins: entity work.char_rx                -- instantiate receiver characte
         bit_valid       => bit_valid,
         char_valid      => char_valid,          -- valid character in register
         link_actv       => RxRst.link_actv,     -- two nodes have an active link
-        pc_char         => pc_char              -- ten bit character with parity and control bits
+        pc_char         => pc_char,              -- ten bit character with parity and control bits
+        debugr          => open
         );    	
 	
 Exchange_rx: entity work.exchange_rx            -- instantiate receiver exchange layer    
@@ -73,12 +76,13 @@ Exchange_rx: entity work.exchange_rx            -- instantiate receiver exchange
         char_valid      => char_valid,                    
         reset_n         => reset_n,
         full            => PktEx.full,          -- FIFO if full flag if ='1'
-        fcc_sent        => fcc_sent,            -- fcc has been sent by TX layer
+        ExTxRx          => ExTxRx,              -- fcc has been sent by TX layer
         pc_char         => pc_char,             
         parity_err      => RxRst.parity_err,    -- parity error detected flag for reset manager    
         wr_en           => wr_en,               -- write enable to write to FIFO
         char            => char,                -- 8 bit character to write to FIFO
-        ExRxTx          => ExRxTx      
+        ExRxTx          => ExRxTx,
+        debugr          => open      
         );  	
         
 end Behavioral;
