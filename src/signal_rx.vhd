@@ -104,5 +104,19 @@ begin
                         
             end if;
         enable    <=  (d_ff2 xor s_ff2) xor (d_hold xor s_hold);  -- TX clock latched in DS signal  
-    end process;   
+    end process;  
+    
+    debugr(0)           <= clk;
+    debugr(1)           <= reset_n;
+    debugr(2)           <= d_in;
+    debugr(3)           <= s_in;
+    debugr(4)           <= d_ff1;
+    debugr(5)           <= d_ff2;    
+    debugr(6)           <= s_ff1;
+    debugr(7)           <= s_ff2;    
+    debugr(8)           <= d_hold;
+    debugr(9)           <= s_hold;
+    debugr(10)          <= enable;
+    debugr(11)          <= fst_d_rcvd;          
+     
 end behavioral;

@@ -98,6 +98,15 @@ begin
             temp_cnt <= std_logic_vector(to_unsigned(cnt,4));
                 
         end process;
+        
+        debugr(0)           <= clk;
+        debugr(1)           <= reset_n;
+        debugr(2)           <= d_in;
+        debugr(3)           <= bit_valid;
+        debugr(13 downto 4) <= shft_reg(9 downto 0);
+        debugr(14)          <= dtct_null;
+        debugr(18 downto 15)<= temp_cnt(3 downto 0);
+        debugr(35 downto 19)<= (others => '0');         
 end Behavioral;                  
 
 

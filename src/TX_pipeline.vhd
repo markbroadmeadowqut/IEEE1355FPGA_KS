@@ -57,7 +57,7 @@ Exchange_tx: entity work.exchange_tx            -- instantiate Exchange layer
         rd_en           => rd_en,
         ExTxRx          => ExTxRx,
         pc_char         => pc_char, 
-        debugr          => debugr           
+        debugr          => open           
         );  	
         
 char_tx_ins: entity work.char_tx                -- instantiate character layer

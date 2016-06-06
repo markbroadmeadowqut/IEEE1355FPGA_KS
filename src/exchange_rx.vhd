@@ -175,5 +175,19 @@ begin
             
             temp_char_req_cnt    <= std_logic_vector(to_unsigned(char_req_cnt,4));
                                   
-        end process;      
+        end process;  
+        
+        debugr(0)           <= clk;
+        debugr(1)           <= reset_n;
+        debugr(2)           <= char_valid;
+        debugr(3)           <= full;
+        debugr(4)           <= ExTxRx.fcc_sent;
+        debugr(5)           <= ExTxRx.fcc_rcvd_ack;
+        debugr(17 downto 8) <= pc_char (9 downto 0);
+        debugr(18)          <= data_parity;
+        debugr(19)          <= total_parity;
+        debugr(20)          <= half_null_dtcd;
+        debugr(21)          <= send_fcc;
+        debugr(35 downto 22)    <= (others => '0');
+            
 end Behavioral;

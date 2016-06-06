@@ -12,9 +12,9 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="2462544000fs"></ZoomStartTime>
-      <ZoomEndTime time="5234544001fs"></ZoomEndTime>
-      <Cursor1Time time="3998544000fs"></Cursor1Time>
+      <ZoomStartTime time="813333000fs"></ZoomStartTime>
+      <ZoomEndTime time="12393333001fs"></ZoomEndTime>
+      <Cursor1Time time="2743333000fs"></Cursor1Time>
    </zoom_setting>
    <WVObjectSize size="17" />
    <wave_markers>
@@ -93,58 +93,91 @@
    <wvobject fp_name="group377" type="group">
       <obj_property name="label">clk rx</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <wvobject db_ref_id="1" fp_name="/tb_node/dut/RX_clock/clkin" type="logic">
-         <obj_property name="ElementShortName">clkin</obj_property>
-         <obj_property name="ObjectShortName">clkin</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject db_ref_id="1" fp_name="/tb_node/dut/TXRX_clks/inst/sys_clk" type="logic">
+         <obj_property name="ElementShortName">sys_clk</obj_property>
+         <obj_property name="ObjectShortName">sys_clk</obj_property>
       </wvobject>
-      <wvobject db_ref_id="1" fp_name="/tb_node/dut/RX_clock/clkout" type="logic">
-         <obj_property name="ElementShortName">clkout</obj_property>
-         <obj_property name="ObjectShortName">clkout</obj_property>
+      <wvobject db_ref_id="1" fp_name="/tb_node/dut/TXRX_clks/inst/clk_tx" type="logic">
+         <obj_property name="ElementShortName">clk_tx</obj_property>
+         <obj_property name="ObjectShortName">clk_tx</obj_property>
       </wvobject>
-      <wvobject db_ref_id="1" fp_name="/tb_node/dut/RX_clock/rst_n" type="logic">
-         <obj_property name="ElementShortName">rst_n</obj_property>
-         <obj_property name="ObjectShortName">rst_n</obj_property>
+      <wvobject db_ref_id="1" fp_name="/tb_node/dut/TXRX_clks/inst/clk_rx" type="logic">
+         <obj_property name="ElementShortName">clk_rx</obj_property>
+         <obj_property name="ObjectShortName">clk_rx</obj_property>
       </wvobject>
-      <wvobject db_ref_id="1" fp_name="/tb_node/dut/RX_clock/COUNT" type="other">
-         <obj_property name="ElementShortName">COUNT</obj_property>
-         <obj_property name="ObjectShortName">COUNT</obj_property>
+      <wvobject db_ref_id="1" fp_name="/tb_node/dut/TXRX_clks/inst/do_unused" type="array">
+         <obj_property name="ElementShortName">do_unused[15:0]</obj_property>
+         <obj_property name="ObjectShortName">do_unused[15:0]</obj_property>
       </wvobject>
-      <wvobject db_ref_id="1" fp_name="/tb_node/dut/RX_clock/clk_int" type="logic">
-         <obj_property name="ElementShortName">clk_int</obj_property>
-         <obj_property name="ObjectShortName">clk_int</obj_property>
+      <wvobject db_ref_id="1" fp_name="/tb_node/dut/TXRX_clks/inst/drdy_unused" type="logic">
+         <obj_property name="ElementShortName">drdy_unused</obj_property>
+         <obj_property name="ObjectShortName">drdy_unused</obj_property>
       </wvobject>
-      <wvobject db_ref_id="1" fp_name="/tb_node/dut/RX_clock/PRESCALER" type="other">
-         <obj_property name="ElementShortName">PRESCALER</obj_property>
-         <obj_property name="ObjectShortName">PRESCALER</obj_property>
+      <wvobject db_ref_id="1" fp_name="/tb_node/dut/TXRX_clks/inst/psdone_unused" type="logic">
+         <obj_property name="ElementShortName">psdone_unused</obj_property>
+         <obj_property name="ObjectShortName">psdone_unused</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" fp_name="/tb_node/dut/TXRX_clks/inst/locked_int" type="logic">
+         <obj_property name="ElementShortName">locked_int</obj_property>
+         <obj_property name="ObjectShortName">locked_int</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" fp_name="/tb_node/dut/TXRX_clks/inst/clkfbout_pll" type="logic">
+         <obj_property name="ElementShortName">clkfbout_pll</obj_property>
+         <obj_property name="ObjectShortName">clkfbout_pll</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" fp_name="/tb_node/dut/TXRX_clks/inst/clkfbout_buf_pll" type="logic">
+         <obj_property name="ElementShortName">clkfbout_buf_pll</obj_property>
+         <obj_property name="ObjectShortName">clkfbout_buf_pll</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" fp_name="/tb_node/dut/TXRX_clks/inst/clkfboutb_unused" type="logic">
+         <obj_property name="ElementShortName">clkfboutb_unused</obj_property>
+         <obj_property name="ObjectShortName">clkfboutb_unused</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" fp_name="/tb_node/dut/TXRX_clks/inst/clkout2_unused" type="logic">
+         <obj_property name="ElementShortName">clkout2_unused</obj_property>
+         <obj_property name="ObjectShortName">clkout2_unused</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" fp_name="/tb_node/dut/TXRX_clks/inst/clkout3_unused" type="logic">
+         <obj_property name="ElementShortName">clkout3_unused</obj_property>
+         <obj_property name="ObjectShortName">clkout3_unused</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" fp_name="/tb_node/dut/TXRX_clks/inst/clkout4_unused" type="logic">
+         <obj_property name="ElementShortName">clkout4_unused</obj_property>
+         <obj_property name="ObjectShortName">clkout4_unused</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" fp_name="/tb_node/dut/TXRX_clks/inst/clkout5_unused" type="logic">
+         <obj_property name="ElementShortName">clkout5_unused</obj_property>
+         <obj_property name="ObjectShortName">clkout5_unused</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" fp_name="/tb_node/dut/TXRX_clks/inst/clkout6_unused" type="logic">
+         <obj_property name="ElementShortName">clkout6_unused</obj_property>
+         <obj_property name="ObjectShortName">clkout6_unused</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" fp_name="/tb_node/dut/TXRX_clks/inst/clkfbstopped_unused" type="logic">
+         <obj_property name="ElementShortName">clkfbstopped_unused</obj_property>
+         <obj_property name="ObjectShortName">clkfbstopped_unused</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" fp_name="/tb_node/dut/TXRX_clks/inst/clkinstopped_unused" type="logic">
+         <obj_property name="ElementShortName">clkinstopped_unused</obj_property>
+         <obj_property name="ObjectShortName">clkinstopped_unused</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" fp_name="/tb_node/dut/TXRX_clks/inst/sys_clk_pll" type="logic">
+         <obj_property name="ElementShortName">sys_clk_pll</obj_property>
+         <obj_property name="ObjectShortName">sys_clk_pll</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" fp_name="/tb_node/dut/TXRX_clks/inst/clk_tx_pll" type="logic">
+         <obj_property name="ElementShortName">clk_tx_pll</obj_property>
+         <obj_property name="ObjectShortName">clk_tx_pll</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" fp_name="/tb_node/dut/TXRX_clks/inst/clk_rx_pll" type="logic">
+         <obj_property name="ElementShortName">clk_rx_pll</obj_property>
+         <obj_property name="ObjectShortName">clk_rx_pll</obj_property>
       </wvobject>
    </wvobject>
    <wvobject fp_name="group148" type="group">
       <obj_property name="label">Clk tx</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_clock/clkin" type="logic">
-         <obj_property name="ElementShortName">clkin</obj_property>
-         <obj_property name="ObjectShortName">clkin</obj_property>
-      </wvobject>
-      <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_clock/clkout" type="logic">
-         <obj_property name="ElementShortName">clkout</obj_property>
-         <obj_property name="ObjectShortName">clkout</obj_property>
-      </wvobject>
-      <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_clock/rst_n" type="logic">
-         <obj_property name="ElementShortName">rst_n</obj_property>
-         <obj_property name="ObjectShortName">rst_n</obj_property>
-      </wvobject>
-      <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_clock/COUNT" type="other">
-         <obj_property name="ElementShortName">COUNT</obj_property>
-         <obj_property name="ObjectShortName">COUNT</obj_property>
-      </wvobject>
-      <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_clock/clk_int" type="logic">
-         <obj_property name="ElementShortName">clk_int</obj_property>
-         <obj_property name="ObjectShortName">clk_int</obj_property>
-      </wvobject>
-      <wvobject db_ref_id="1" fp_name="/tb_node/dut/TX_clock/PRESCALER" type="other">
-         <obj_property name="ElementShortName">PRESCALER</obj_property>
-         <obj_property name="ObjectShortName">PRESCALER</obj_property>
-      </wvobject>
    </wvobject>
    <wvobject type="divider" fp_name="divider702">
       <obj_property name="label">rst</obj_property>
@@ -317,7 +350,6 @@
       <wvobject fp_name="group6295" type="group">
          <obj_property name="label">exc</obj_property>
          <obj_property name="DisplayName">label</obj_property>
-         <obj_property name="isExpanded"></obj_property>
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_B/TX_pipeline/Exchange_tx/clk" type="logic">
             <obj_property name="ElementShortName">clk</obj_property>
             <obj_property name="ObjectShortName">clk</obj_property>
@@ -397,6 +429,7 @@
       <wvobject fp_name="group169" type="group">
          <obj_property name="label">char</obj_property>
          <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_B/TX_pipeline/char_tx_ins/clk" type="logic">
             <obj_property name="ElementShortName">clk</obj_property>
             <obj_property name="ObjectShortName">clk</obj_property>
@@ -431,6 +464,7 @@
       <wvobject fp_name="group168" type="group">
          <obj_property name="label">Sig</obj_property>
          <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_B/TX_pipeline/signal_tx_ins/clk" type="logic">
             <obj_property name="ElementShortName">clk</obj_property>
             <obj_property name="ObjectShortName">clk</obj_property>
@@ -442,14 +476,20 @@
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_B/TX_pipeline/signal_tx_ins/d_in" type="logic">
             <obj_property name="ElementShortName">d_in</obj_property>
             <obj_property name="ObjectShortName">d_in</obj_property>
+            <obj_property name="CustomSignalColor">#00FF00</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
          </wvobject>
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_B/TX_pipeline/signal_tx_ins/d_out" type="logic">
             <obj_property name="ElementShortName">d_out</obj_property>
             <obj_property name="ObjectShortName">d_out</obj_property>
+            <obj_property name="CustomSignalColor">#00FF00</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
          </wvobject>
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_B/TX_pipeline/signal_tx_ins/s_out" type="logic">
             <obj_property name="ElementShortName">s_out</obj_property>
             <obj_property name="ObjectShortName">s_out</obj_property>
+            <obj_property name="CustomSignalColor">#00FF00</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
          </wvobject>
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_B/TX_pipeline/signal_tx_ins/debugr" type="array">
             <obj_property name="ElementShortName">debugr[35:0]</obj_property>
@@ -476,6 +516,7 @@
       <wvobject fp_name="group168" type="group">
          <obj_property name="label">Sig</obj_property>
          <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/signal_rx_inst/clk" type="logic">
             <obj_property name="ElementShortName">clk</obj_property>
             <obj_property name="ObjectShortName">clk</obj_property>
@@ -487,10 +528,14 @@
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/signal_rx_inst/d_in" type="logic">
             <obj_property name="ElementShortName">d_in</obj_property>
             <obj_property name="ObjectShortName">d_in</obj_property>
+            <obj_property name="CustomSignalColor">#00FF00</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
          </wvobject>
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/signal_rx_inst/s_in" type="logic">
             <obj_property name="ElementShortName">s_in</obj_property>
             <obj_property name="ObjectShortName">s_in</obj_property>
+            <obj_property name="CustomSignalColor">#00FF00</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
          </wvobject>
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/signal_rx_inst/d_out" type="logic">
             <obj_property name="ElementShortName">d_out</obj_property>
@@ -630,6 +675,7 @@
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/char" type="array">
             <obj_property name="ElementShortName">char[7:0]</obj_property>
             <obj_property name="ObjectShortName">char[7:0]</obj_property>
+            <obj_property name="isExpanded"></obj_property>
          </wvobject>
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/ExRxTx" type="array">
             <obj_property name="ElementShortName">ExRxTx</obj_property>
@@ -639,6 +685,7 @@
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/debugr" type="array">
             <obj_property name="ElementShortName">debugr[35:0]</obj_property>
             <obj_property name="ObjectShortName">debugr[35:0]</obj_property>
+            <obj_property name="isExpanded"></obj_property>
          </wvobject>
          <wvobject db_ref_id="1" fp_name="/tb_node/dut/Side_A/RX_pipeline/Exchange_rx/state" type="other">
             <obj_property name="ElementShortName">state</obj_property>
@@ -806,7 +853,6 @@
    <wvobject fp_name="group138" type="group">
       <obj_property name="label">RX B</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="isExpanded"></obj_property>
       <wvobject fp_name="group7104" type="group">
          <obj_property name="label">exc</obj_property>
          <obj_property name="DisplayName">label</obj_property>

@@ -60,5 +60,13 @@ begin
                     s_out       <= s_hold;                               
                 end if;
             end if;          
-    end process;       
+    end process; 
+     
+    debugr(0)           <= clk;
+    debugr(1)           <= reset_n;
+    debugr(2)           <= d_in;
+    debugr(3)           <= d_hold;
+    debugr(4)           <= s_hold;    
+  
+          
 end Behavioral;

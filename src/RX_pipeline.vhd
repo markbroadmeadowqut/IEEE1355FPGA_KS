@@ -55,7 +55,7 @@ signal_rx_inst: entity work.signal_rx           -- Instantiate receiver signal l
         d_out           => data,                -- data stream captured
         bit_valid       => bit_valid,           -- valid bit in stream
         time_out        => RxRst.timeout,        -- timeout flag for reset manager
-        debugr          => open
+        debugr          => debugr
         );
 	   
 char_rx_ins: entity work.char_rx                -- instantiate receiver character layer                      

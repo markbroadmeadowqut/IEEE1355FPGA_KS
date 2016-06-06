@@ -195,7 +195,5 @@ begin
         debugr(16)          <= send_end_null;
         debugr(26 downto 17)    <= char_reg(9 downto 0);
         debugr(35 downto 31)    <= (others => '0');
-        debugr(30 downto 27)    <= temp_char_cnt_out;
-        --debugr(34 downto 31)    <= std_logic_vector(cnt(3 downto 0));
-        --debugr(35)          <= (std_logic_vector(cnt_max))(1);      
+        debugr(30 downto 27)    <= temp_char_cnt_out;    
 end Behavioral;

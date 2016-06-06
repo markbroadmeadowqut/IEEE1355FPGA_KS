@@ -64,6 +64,6 @@ begin
         debugr(2)           <= char_valid;
         debugr(12 downto 3) <= char_in(9 downto 0);
         debugr(22 downto 13)<= shft_reg(9 downto 0);
-        debugr(35 downto 23)<= (others => '0');
-                    
+        debugr(35 downto 23)<= (others => '0');     
+                   
 end Behavioral;

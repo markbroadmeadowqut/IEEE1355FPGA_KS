@@ -68,7 +68,7 @@ RX_pipeline: entity work.RX_pipeline        -- instantiate receiver pipeline
         char        => ExPkt.din,
         ExRxTx      => ExRxTx,              -- signals between exchange layers
         RxRst       => RxRst,                -- parity and time out flags to rst man
-        debugr      => open
+        debugr      => debugr
         ); 	
         
 TX_pipeline: entity work.TX_pipeline        -- instantiate transmitter pipeline
@@ -82,7 +82,7 @@ TX_pipeline: entity work.TX_pipeline        -- instantiate transmitter pipeline
          d_out       => d_out,              -- data signal out
          s_out       => s_out,              -- strobe signal out
          ExTxRx     =>  ExTxRx,
-         debugr      => debugr 
+         debugr      => open
          ); 
                    
 end Behavioral;

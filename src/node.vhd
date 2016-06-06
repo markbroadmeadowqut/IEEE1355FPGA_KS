@@ -27,7 +27,7 @@ entity node is
         -- it alters the packet layer according to following inputs.
         -- "slave" produces a general node for the use in the field.
         -- "master produces a terminal node with pushbutton inputs.
-        packet      : node_type := master
+        packet      : node_type := slave
     );
 
 	port (
@@ -81,7 +81,7 @@ begin
  
 TXRX_clks : pll                               -- Instantiation of PLL (from IP library
     port map ( 
-        sys_clk => clk_pad,       
+       sys_clk => clk_pad,       
         clk_tx  => clk_tx,          
         clk_rx  => clk_rx              
     );
@@ -98,7 +98,7 @@ TXRX_clks : pll                               -- Instantiation of PLL (from IP l
 --RX_clock: entity work.clk_prescaler             -- instantiate Ckl prescaler
 --    generic map (                                       
 --        PRESCALER                 => 1           
---      )
+--        )
 --    port map ( 
 --        clkin           => clk_pad,
 --        clkout          => clk_rx,                       
@@ -111,13 +111,13 @@ Side_A: entity work.side                        -- instantiate Side A of node
         clk_tx          => clk_tx,
         clk_rx          => clk_rx,                       
         rst_n           => rst_n,
-        d_in            => dd, --d_inA,
-        s_in            => sd, --s_inA,
+        d_in            => d_inA, --dd, --d_inA, --
+        s_in            => s_inA, --sd, --s_inA, --
         PktEx           => PktExA,
-        d_out           => du,  --d_outA,
-        s_out           => su,  --s_outA,
+        d_out           => d_outA, --du,  --d_outA, --
+        s_out           => s_outA, --su,  --s_outA, --
         ExPkt           => ExPktA,
-        debugr          => open       
+        debugr          => debugr      
         );        
         
 Side_B: entity work.side                        -- instantiate Side B of node
@@ -125,13 +125,13 @@ Side_B: entity work.side                        -- instantiate Side B of node
         clk_tx          => clk_tx,
         clk_rx          => clk_rx,                       
         rst_n           => rst_n,
-        d_in            => du, --d_inB,
-        s_in            => su, --s_inB,
+        d_in            => d_inB, --du, --d_inB, --
+        s_in            => s_inB, --su, --s_inB, --
         PktEx           => PktExB,
-        d_out           => dd, --d_outB,
-        s_out           => sd, --s_outB,
+        d_out           => d_outB, --dd, --d_outB, --
+        s_out           => s_outB, --sd, --s_outB, --
         ExPkt           => ExPktB,
-        debugr          => debugr      
+        debugr          => open      
         );         
 
 packet_sel0: if packet = slave generate
