@@ -94,14 +94,6 @@
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
-        <CompFileExtendedInfo CompFileName="pll.xci" FileRelPathName="pll.xml"/>
-        <CompFileExtendedInfo CompFileName="pll.xci" FileRelPathName="pll.v"/>
-        <CompFileExtendedInfo CompFileName="pll.xci" FileRelPathName="pll_ooc.xdc"/>
-        <CompFileExtendedInfo CompFileName="pll.xci" FileRelPathName="pll.xdc"/>
-        <CompFileExtendedInfo CompFileName="pll.xci" FileRelPathName="pll.vho"/>
-        <CompFileExtendedInfo CompFileName="pll.xci" FileRelPathName="pll_clk_wiz.v"/>
-        <CompFileExtendedInfo CompFileName="pll.xci" FileRelPathName="doc/clk_wiz_v5_2_changelog.txt"/>
-        <CompFileExtendedInfo CompFileName="pll.xci" FileRelPathName="pll_board.xdc"/>
       </File>
       <File Path="$PPRDIR/src/Side.vhd">
         <FileInfo>
@@ -123,13 +115,6 @@
       </File>
       <File Path="$PPRDIR/src/node.vhd">
         <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/src/clk_prescaler.vhd">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>

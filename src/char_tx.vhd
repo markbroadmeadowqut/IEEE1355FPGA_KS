@@ -31,7 +31,7 @@ entity char_tx is
         reset_n     : in std_logic;     -- side reset signal       
         char_in     : in std_logic_vector(9 downto 0);  -- character from exchange layer
         d_out       : out std_logic;     -- data stream out
-        debugr      : out std_logic_vector(35 downto 0) -- debug chanel
+        debug       : out std_logic_vector(35 downto 0) -- debug chanel
     );
         
 end char_tx;
@@ -59,11 +59,11 @@ begin
             end if;                                
         end process;
         
-        debugr(0)           <= clk;
-        debugr(1)           <= reset_n;
-        debugr(2)           <= char_valid;
-        debugr(12 downto 3) <= char_in(9 downto 0);
-        debugr(22 downto 13)<= shft_reg(9 downto 0);
-        debugr(35 downto 23)<= (others => '0');     
+        debug(0)           <= clk;
+        debug(1)           <= reset_n;
+        debug(2)           <= char_valid;
+        debug(12 downto 3) <= char_in(9 downto 0);
+        debug(22 downto 13)<= shft_reg(9 downto 0);
+        debug(35 downto 23)<= (others => '0');     
                    
 end Behavioral;

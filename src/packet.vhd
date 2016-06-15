@@ -48,23 +48,20 @@ architecture behavioral of packet is
                                             
     COMPONENT fifo_generator_0                  -- FIFO generated from IP catalog     
         PORT (                                  -- has upper limit of 500 MHz
-            rst     : IN STD_LOGIC;             -- operating speed                
-            wr_clk  : IN STD_LOGIC;                         
-            rd_clk  : IN STD_LOGIC;
-            din     : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
-            wr_en   : IN STD_LOGIC;
-            rd_en   : IN STD_LOGIC;
-            dout    : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
-            full    : OUT STD_LOGIC;
-            empty   : OUT STD_LOGIC
+            rst     : in  std_logic;                 -- operating speed                
+            wr_clk  : in  std_logic;                             
+            rd_clk  : in  std_logic;    
+            din     : in std_logic_vector(7 downto 0);
+            wr_en   : in  std_logic;    
+            rd_en   : in  std_logic;    
+            dout    : out std_logic_vector(7 downto 0);
+            full    : out  std_logic;
+            empty   : out  std_logic            
         );
     END COMPONENT;      
        
 begin
 
-    PktExB.eop1_rcvd <= ExPktA.eop1_rcvd;       -- EOP pass from TX to RX.  unable    
-    PktExA.eop1_rcvd <= ExPktB.eop1_rcvd;       -- to pass through FIFO (no control
-                                                -- chars
 fifo_AtoB : fifo_generator_0        -- FIFO connecting RX side A to TX side B
     PORT MAP (                              
         rst     => rst,                 -- active high reset
@@ -89,6 +86,7 @@ fifo_BtoA : fifo_generator_0        -- FIFO connecting RX side B to TX side A
         dout    => PktExA.dout,
         full    => PktExB.full,
         empty   => PktExA.empty
+
     );     
 
 process(rst_n,rd_clk)       --This process displays the received character
@@ -99,8 +97,9 @@ process(rst_n,rd_clk)       --This process displays the received character
     
         if (rst_n  = '0') then
             display     <= (others => '0');
-        else
+        else           
            display <= ExPktA.din;  
         end if;           
-    end process;              
+    end process;   
+               
 end behavioral;

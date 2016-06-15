@@ -32,7 +32,7 @@ entity Side is
         d_out       : out std_logic;
         s_out       : out std_logic;
         ExPkt       : out ExPkt_rec;
-        debugr      : out std_logic_vector(35 downto 0) -- debug chanel
+        debug       : out std_logic_vector(35 downto 0) -- debug chanel
         );
 end Side;
 
@@ -52,7 +52,8 @@ RST_man: entity work.RST_manager            -- instantiate reset manager
         clk         => clk_rx,              -- so they can shut down
         rstn_hw     => rst_n,               -- independantly
         RxRst       => RxRst,
-        reset_n     => reset_n
+        reset_n     => reset_n,
+        debug       => open
     );
 
 RX_pipeline: entity work.RX_pipeline        -- instantiate receiver pipeline
@@ -68,7 +69,7 @@ RX_pipeline: entity work.RX_pipeline        -- instantiate receiver pipeline
         char        => ExPkt.din,
         ExRxTx      => ExRxTx,              -- signals between exchange layers
         RxRst       => RxRst,                -- parity and time out flags to rst man
-        debugr      => debugr
+        debug       => open
         ); 	
         
 TX_pipeline: entity work.TX_pipeline        -- instantiate transmitter pipeline
@@ -81,8 +82,8 @@ TX_pipeline: entity work.TX_pipeline        -- instantiate transmitter pipeline
          rd_en       => ExPkt.rd_en,
          d_out       => d_out,              -- data signal out
          s_out       => s_out,              -- strobe signal out
-         ExTxRx     =>  ExTxRx,
-         debugr      => open
+         ExTxRx      =>  ExTxRx,
+         debug       =>  debug
          ); 
                    
 end Behavioral;

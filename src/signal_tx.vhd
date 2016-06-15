@@ -32,7 +32,7 @@ entity signal_tx is
         d_in        : in std_logic;     -- data stream in      
         d_out       : out std_logic;    -- data stream out
         s_out       : out std_logic;     -- strobe stream out 
-        debugr      : out std_logic_vector(35 downto 0) -- debug chanel   
+        debug      : out std_logic_vector(35 downto 0) -- debug chanel   
         );
     
 end signal_tx;
@@ -62,11 +62,11 @@ begin
             end if;          
     end process; 
      
-    debugr(0)           <= clk;
-    debugr(1)           <= reset_n;
-    debugr(2)           <= d_in;
-    debugr(3)           <= d_hold;
-    debugr(4)           <= s_hold;    
+    debug(0)           <= clk;
+    debug(1)           <= reset_n;
+    debug(2)           <= d_in;
+    debug(3)           <= d_hold;
+    debug(4)           <= s_hold;    
   
           
 end Behavioral;

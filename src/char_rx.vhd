@@ -35,7 +35,7 @@ entity char_rx is
         char_valid      : out std_logic;            -- indicates valid character in register;
         link_actv       : out std_logic;
         pc_char         : out std_logic_vector(9 downto 0);  -- character out with parity 
-        debugr          : out std_logic_vector(35 downto 0)  -- debug chanel          
+        debug           : out std_logic_vector(35 downto 0)  -- debug chanel          
     );                                                       -- and control bits
     
 end char_rx;
@@ -99,14 +99,14 @@ begin
                 
         end process;
         
-        debugr(0)           <= clk;
-        debugr(1)           <= reset_n;
-        debugr(2)           <= d_in;
-        debugr(3)           <= bit_valid;
-        debugr(13 downto 4) <= shft_reg(9 downto 0);
-        debugr(14)          <= dtct_null;
-        debugr(18 downto 15)<= temp_cnt(3 downto 0);
-        debugr(35 downto 19)<= (others => '0');         
+        debug(0)           <= clk;
+        debug(1)           <= reset_n;
+        debug(2)           <= d_in;
+        debug(3)           <= bit_valid;
+        debug(13 downto 4) <= shft_reg(9 downto 0);
+        debug(14)          <= dtct_null;
+        debug(18 downto 15)<= temp_cnt(3 downto 0);
+        debug(35 downto 19)<= (others => '0');         
 end Behavioral;                  
 
 

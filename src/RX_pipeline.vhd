@@ -32,7 +32,7 @@ entity RX_pipeline is
         char        : out std_logic_vector(7 downto 0); -- character received
         ExRxTx      : out ExRxExTx_rec; -- flags to same side exchange layer
         RxRst       : out RxRst_rec;    -- flags to reset manager
-        debugr      : out std_logic_vector(35 downto 0) -- debug chanel
+        debug      : out std_logic_vector(35 downto 0) -- debug chanel
         );
         
 end RX_pipeline;
@@ -55,7 +55,7 @@ signal_rx_inst: entity work.signal_rx           -- Instantiate receiver signal l
         d_out           => data,                -- data stream captured
         bit_valid       => bit_valid,           -- valid bit in stream
         time_out        => RxRst.timeout,        -- timeout flag for reset manager
-        debugr          => debugr
+        debug          =>  open
         );
 	   
 char_rx_ins: entity work.char_rx                -- instantiate receiver character layer                      
@@ -67,7 +67,7 @@ char_rx_ins: entity work.char_rx                -- instantiate receiver characte
         char_valid      => char_valid,          -- valid character in register
         link_actv       => RxRst.link_actv,     -- two nodes have an active link
         pc_char         => pc_char,              -- ten bit character with parity and control bits
-        debugr          => open
+        debug          => open 
         );    	
 	
 Exchange_rx: entity work.exchange_rx            -- instantiate receiver exchange layer    
@@ -82,7 +82,7 @@ Exchange_rx: entity work.exchange_rx            -- instantiate receiver exchange
         wr_en           => wr_en,               -- write enable to write to FIFO
         char            => char,                -- 8 bit character to write to FIFO
         ExRxTx          => ExRxTx,
-        debugr          => open      
+        debug           => open    
         );  	
         
 end Behavioral;

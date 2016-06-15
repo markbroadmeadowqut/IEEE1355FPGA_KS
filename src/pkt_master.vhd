@@ -87,16 +87,10 @@ process(rd_clk,rst_n)
             PktExB.empty    <= '0';
             PktExB.dout     <= (others => '0');
             display         <= (others => '0');
-            PktExA.eop1_rcvd    <= '0';
-            PktExB.eop1_rcvd    <= '0';
             
             
         else
-             if rising_edge(rd_clk) then
-                PktExA.eop1_rcvd <= ExPktB.eop1_rcvd;
-                PktExB.eop1_rcvd <= ExPktA.eop1_rcvd; 
-                --PktExB.empty <= '0';
-                --PktExB.full  <= '0';  
+             if rising_edge(rd_clk) then 
                 PktExB.dout(3 downto 0)    <= btn;
                 PktExB.dout(7 downto 4)    <= sw;  
                 display <= ExPktA.din;                   
