@@ -55,8 +55,8 @@
 //  Output     Output      Phase    Duty Cycle   Pk-to-Pk     Phase
 //   Clock     Freq (MHz)  (degrees)    (%)     Jitter (ps)  Error (ps)
 //----------------------------------------------------------------------------
-// CLK_OUT1___100.000______0.000______50.0______130.958_____98.575
-// CLK_OUT2___200.000______0.000______50.0______114.829_____98.575
+// CLK_OUT1____25.000______0.000______50.0______235.962____155.540
+// CLK_OUT2____50.000______0.000______50.0______203.457____155.540
 //
 //----------------------------------------------------------------------------
 // Input Clock   Freq (MHz)    Input Jitter (UI)
@@ -67,7 +67,7 @@
 
 module pll_clk_wiz 
  (// Clock in ports
-  input         clk_pad,
+  input         sys_clk,
   // Clock out ports
   output        clk_tx,
   output        clk_rx
@@ -76,8 +76,8 @@ module pll_clk_wiz
   // Input buffering
   //------------------------------------
   IBUF clkin1_ibufg
-   (.O (clk_pad_pll),
-    .I (clk_pad));
+   (.O (sys_clk_pll),
+    .I (sys_clk));
 
 
 
@@ -105,13 +105,13 @@ module pll_clk_wiz
   PLLE2_ADV
   #(.BANDWIDTH            ("OPTIMIZED"),
     .COMPENSATION         ("ZHOLD"),
-    .DIVCLK_DIVIDE        (1),
-    .CLKFBOUT_MULT        (10),
+    .DIVCLK_DIVIDE        (2),
+    .CLKFBOUT_MULT        (17),
     .CLKFBOUT_PHASE       (0.000),
-    .CLKOUT0_DIVIDE       (10),
+    .CLKOUT0_DIVIDE       (34),
     .CLKOUT0_PHASE        (0.000),
     .CLKOUT0_DUTY_CYCLE   (0.500),
-    .CLKOUT1_DIVIDE       (5),
+    .CLKOUT1_DIVIDE       (17),
     .CLKOUT1_PHASE        (0.000),
     .CLKOUT1_DUTY_CYCLE   (0.500),
     .CLKIN1_PERIOD        (10.0))
@@ -127,7 +127,7 @@ module pll_clk_wiz
     .CLKOUT5             (clkout5_unused),
      // Input clock control
     .CLKFBIN             (clkfbout_buf_pll),
-    .CLKIN1              (clk_pad_pll),
+    .CLKIN1              (sys_clk_pll),
     .CLKIN2              (1'b0),
      // Tied to always select the primary input clock
     .CLKINSEL            (1'b1),

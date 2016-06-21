@@ -1,55 +1,55 @@
 ----------------------------------------------------------------------------------
 -- Project:             Final Year Project     
--- Engineer:            Ken Sands
--- 
+-- Engineer:            Ken Sands-- 
 -- Create Date:         10.04.2016 10:51:32
 -- Design Name: 
--- Module Name:         packet_rx - Behavioral
+-- Module Name:         packet - Behavioral
 -- Project Name:        High Speed Coms Bus Using FPGA
 -- Target Devices:      Artix 7
--- Description:         Packet layer for receiver 
+-- Description:         Common Packet layer 
 -- Dependencies:
--- 
 -- Dependencies: 
--- 
 -- Revision:
 -- Revision 0.01 -      File Created
 -- Additional Comments:
--- 
 ----------------------------------------------------------------------------------
-
+----------------------------------------------------------------------------------
 library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.NUMERIC_STD.ALL;
-use work.bus_pkg.all;
+    use IEEE.STD_LOGIC_1164.ALL;
+    use IEEE.NUMERIC_STD.ALL;
+library UNISIM;    
+    use UNISIM.VComponents.all;
+library WORK;
+    use work.bus_pkg.all;
+
+--use IEEE.std_logic_unsigned.all;
+
 
 entity packet is
-    generic(
-        char_width  : integer
-        );
+
     Port ( 
-    wr_clk          : in  std_logic;                         -- RX clock 
-    rd_clk          : in  std_logic;        
+    wr_clk          : in  std_logic;                        -- RX clock 
+    rd_clk          : in  std_logic;                        -- TX clock
     rst_n     	    : in  std_logic;
     sw              : in  std_logic_vector(3 downto 0);
     btn             : in  std_logic_vector(3 downto 0);
-    ExPktA          : in  ExPkt_rec;        
-    ExPktB          : in  ExPkt_rec;         
+    ExPktA          : in  ExPkt_rec;                        -- records - exchange
+    ExPktB          : in  ExPkt_rec;                        --   to packet layers
     display         : out std_logic_vector(7 downto 0);
-    PktExA          : out PktEx_rec; 
-    PktExB          : out PktEx_rec 
+    PktExA          : out PktEx_rec;                        -- records - packet to 
+    PktExB          : out PktEx_rec                         --      exchange layer
     );
 
 end packet;
 
 architecture behavioral of packet is
 
-    signal rst : std_logic;
-           
-    COMPONENT fifo_generator_0
-        PORT (
-            rst     : IN STD_LOGIC;
-            wr_clk  : IN STD_LOGIC;
+    signal rst : std_logic;                             
+                                            
+    COMPONENT fifo_generator_0                  -- FIFO generated from IP catalog     
+        PORT (                                  -- has upper limit of 500 MHz
+            rst     : IN STD_LOGIC;             -- operating speed                
+            wr_clk  : IN STD_LOGIC;                         
             rd_clk  : IN STD_LOGIC;
             din     : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
             wr_en   : IN STD_LOGIC;
@@ -62,23 +62,23 @@ architecture behavioral of packet is
        
 begin
 
-    PktExB.eop1_rcvd <= ExPktA.eop1_rcvd;
-    PktExA.eop1_rcvd <= ExPktB.eop1_rcvd;
-  
-fifo_AtoB : fifo_generator_0
-    PORT MAP (
-        rst     => rst,
-        wr_clk  => wr_clk,
-        rd_clk  => rd_clk,
-        din     => ExPktA.din,
-        wr_en   => ExPktA.wr_en,
-        rd_en   => ExPktB.rd_en,
-        dout    => PktExB.dout,
-        full    => PktExA.full,
-        empty   => PktExB.empty
+    PktExB.eop1_rcvd <= ExPktA.eop1_rcvd;       -- EOP pass from TX to RX.  unable    
+    PktExA.eop1_rcvd <= ExPktB.eop1_rcvd;       -- to pass through FIFO (no control
+                                                -- chars
+fifo_AtoB : fifo_generator_0        -- FIFO connecting RX side A to TX side B
+    PORT MAP (                              
+        rst     => rst,                 -- active high reset
+        wr_clk  => wr_clk,              -- two clock inputs (clk_rx)
+        rd_clk  => rd_clk,              --                  (clk_tx)
+        din     => ExPktA.din,          -- 8 bit character in
+        wr_en   => ExPktA.wr_en,        -- write enable flag
+        rd_en   => ExPktB.rd_en,        -- read enable flag
+        dout    => PktExB.dout,         -- 8 bit character out
+        full    => PktExA.full,         -- FIFO full flag
+        empty   => PktExB.empty         -- FIFO empty flag
     ); 
     
-fifo_BtoA : fifo_generator_0
+fifo_BtoA : fifo_generator_0        -- FIFO connecting RX side B to TX side A
     PORT MAP (
         rst     => rst,
         wr_clk  => wr_clk,
@@ -91,21 +91,16 @@ fifo_BtoA : fifo_generator_0
         empty   => PktExA.empty
     );     
 
-process(rst_n,rd_clk)  
+process(rst_n,rd_clk)       --This process displays the received character
+                            -- on the onboard LED's
     begin
     
         rst <= not rst_n;
     
         if (rst_n  = '0') then
             display     <= (others => '0');
-           -- char_out    <= (others => '0');
         else
-             --if rising_edge(clk) then
-                --char_out <= char_in;
-                --char_out(3 downto 0)    <= btn;
-                --char_out(7 downto 4)    <= sw;                       
-             --end if;
-             display <= ExPktA.din;  
+           display <= ExPktA.din;  
         end if;           
     end process;              
 end behavioral;
