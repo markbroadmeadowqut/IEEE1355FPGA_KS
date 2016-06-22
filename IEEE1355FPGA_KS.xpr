@@ -3,7 +3,7 @@
 <!--                                                         -->
 <!-- Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.   -->
 
-<Project Version="7" Minor="10" Path="C:/Github/IEEE1355FPGA_KS/IEEE1355FPGA_KS.xpr">
+<Project Version="7" Minor="10" Path="C:/Users/Elical-LAP-1/Documents/Uni/My project/Code/backup git/15.6.15playforde/IEEE1355FPGA_KS/IEEE1355FPGA_KS.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
     <Option Name="Id" Val="988517e43b1e494d996152a9d5742b15"/>
@@ -21,8 +21,8 @@
     <Option Name="DefaultLib" Val="xil_defaultlib"/>
     <Option Name="EnableCoreContainer" Val="FALSE"/>
     <Option Name="CreateRefXciForCoreContainers" Val="FALSE"/>
-    <Option Name="IPUserFilesDir" Val="$PPRDIR/../../Users/Elical-LAP-1/Documents/Uni/My project/Code/DS_SE_bus/DS_SE_bus.ip_user_files"/>
-    <Option Name="IPStaticSourceDir" Val="$PPRDIR/../../Users/Elical-LAP-1/Documents/Uni/My project/Code/DS_SE_bus/DS_SE_bus.ip_user_files/ipstatic"/>
+    <Option Name="IPUserFilesDir" Val="$PPRDIR/../../../DS_SE_bus/DS_SE_bus.ip_user_files"/>
+    <Option Name="IPStaticSourceDir" Val="$PPRDIR/../../../DS_SE_bus/DS_SE_bus.ip_user_files/ipstatic"/>
     <Option Name="EnableBDX" Val="FALSE"/>
   </Configuration>
   <FileSets Version="1" Minor="31">
@@ -119,7 +119,7 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../Users/Elical-LAP-1/Desktop/IEEE1355FPGA_KS/tb_node_behav.wcfg">
+      <File Path="$PPRDIR/../../../../../../../Desktop/IEEE1355FPGA_KS/tb_node_behav.wcfg">
         <FileInfo>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>

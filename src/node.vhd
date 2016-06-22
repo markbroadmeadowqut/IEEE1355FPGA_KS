@@ -33,16 +33,24 @@ entity node is
         rst_n     : in  std_logic;                      -- "reset" button input                
         sw        : in  std_logic_vector(3 downto 0);   -- 4 switches on FPGA board    
         btn       : in  std_logic_vector(3 downto 0);   -- 4 buttons on fpga board        
-        d_inA     : in  std_logic;                      -- Side A data in pin
-        s_inA     : in  std_logic;                      -- Side A strobe in pin  
-        d_inB     : in  std_logic;                      -- Side B data in pin
-        s_inB     : in  std_logic;                      -- Side B strobe in pin          
+        A_d_in_P  : in  std_logic;                      -- Side A data in pin
+        A_d_in_N  : in  std_logic;                       
+        A_s_in_P  : in  std_logic;                      -- Side A strobe in pin 
+        A_s_in_N  : in  std_logic;                       
+        B_d_in_P  : in  std_logic;                      -- Side B data in pin
+        B_d_in_N  : in  std_logic;                        
+        B_s_in_P  : in  std_logic;                      -- Side B strobe in pin
+        B_s_in_N  : in  std_logic;                                      
         led       : out std_logic_vector(3 downto 0);   -- 4 LEDs on FPGA board        
         ledb      : out std_logic_vector(3 downto 0);   -- 4 blue LEDs on FPGA board        
-        d_outA    : out std_logic;                      -- Side A data out pin
-        s_outA    : out std_logic;                      -- Side A strobe out pin
-        d_outB    : out std_logic;                      -- Side B data out pin
-        s_outB    : out std_logic;                      -- Side B strobe out pin
+        A_d_out_P : out std_logic;                      -- Side A data out pin
+        A_d_out_N : out std_logic;                      
+        A_s_out_P : out std_logic;                      -- Side A strobe out pin
+        A_s_out_N : out std_logic;                      
+        B_d_out_P : out std_logic;                      -- Side B data out pin
+        B_d_out_N : out std_logic;                      
+        B_s_out_P : out std_logic;                      -- Side B strobe out pin
+        B_s_out_N : out std_logic;                      
         debug     : out std_logic_vector(35 downto 0)   -- debug signal branches to  
 	);                                                  -- all lowest level of node           
 end node;
@@ -56,8 +64,14 @@ architecture RTL of node is
     -- data signals
     signal display      : std_logic_vector(7 downto 0); 
                                                     -- output to led's for debugging
-    --signal dd           : std_logic;              -- signals to connect IO internally
-    --signal sd           : std_logic;              -- signals to connect IO internally
+    signal d_inA           : std_logic;             -- Raw data signal to side A
+    signal s_inA           : std_logic;             -- Raw strobe signal to side A
+    signal d_outA          : std_logic;             -- Raw data signal from side A
+    signal s_outA          : std_logic;             -- Raw strobe signal from side A
+    signal d_inB           : std_logic;             -- Raw data signal to side B
+    signal s_inB           : std_logic;             -- Raw strobe signal to side B
+    signal d_outB          : std_logic;             -- Raw data signal from side B
+    signal s_outB          : std_logic;             -- Raw strobe signal from side B
     --signal du           : std_logic;              -- signals to connect IO internally
     --signal su           : std_logic;              -- signals to connect IO internally
             
@@ -145,6 +159,99 @@ packet_sel1: if packet = master generate
         PktExB          => PktExB         
         );
 end generate; 
+
+-- Generation of positive and negative signals for DE signalling
+-- ports are JB and JC pmods for A side, and B side respectively
+
+data_out_A : OBUFDS
+    generic map (
+        --IOSTANDARD => "DEFAULT", -- Specify the output I/O standard
+        SLEW => "SLOW") -- Specify the output slew rate 
+    port map(
+        I  => d_outA, -- Buffer output
+        O  => A_d_out_p,
+        OB => A_d_out_n
+    );
+  
+strobe_out_A : OBUFDS
+    generic map (
+        --IOSTANDARD => "DEFAULT", -- Specify the output I/O standard
+        SLEW => "SLOW") -- Specify the output slew rate  
+    port map(
+        I  => s_outA, -- Buffer output
+        O  => A_s_out_p,
+        OB => A_s_out_n
+    );  
+
+data_out_B : OBUFDS
+    generic map (
+        --IOSTANDARD => "DEFAULT", -- Specify the output I/O standard
+        SLEW => "SLOW") -- Specify the output slew rate  
+    port map(
+        I  => d_outB, -- Buffer output
+        O  => B_d_out_p,
+        OB => B_d_out_n
+    );  
+    
+strobe_out_B : OBUFDS
+    generic map (
+        --IOSTANDARD => "DEFAULT", -- Specify the output I/O standard
+        SLEW => "SLOW") -- Specify the output slew rate 
+    port map(
+        I  => s_outB, -- Buffer output
+        O  => B_s_out_p,
+        OB => B_s_out_n
+    );  
+    
+    
+data_in_A : IBUFDS 
+    generic map (
+        DIFF_TERM => FALSE, -- Differential Termination
+        IBUF_LOW_PWR => TRUE -- Low power (TRUE) vs. performance (FALSE) setting for referenced I/O standards
+        --IOSTANDARD => " T"
+        )
+    port map(
+        O  => d_inA, -- Buffer output
+        I  => A_d_in_p,
+        IB => A_d_in_n
+    );
+      
+strobe_in_A : IBUFDS 
+    generic map (
+        DIFF_TERM => FALSE, -- Differential Termination
+        IBUF_LOW_PWR => TRUE -- Low power (TRUE) vs. performance (FALSE) setting for referenced I/O standards
+        --IOSTANDARD => "DEFAULT"
+        )
+    port map(
+        O  => s_inA, -- Buffer output
+        I  => A_s_in_p,
+        IB => A_s_in_n
+    );  
+    
+data_in_B : IBUFDS 
+    generic map (
+        DIFF_TERM => FALSE, -- Differential Termination
+        IBUF_LOW_PWR => TRUE -- Low power (TRUE) vs. performance (FALSE) setting for referenced I/O standards
+        --IOSTANDARD => "DEFAULT"
+        )
+    port map(
+        O  => d_inB, -- Buffer output
+        I  => B_d_in_p,
+        IB => B_d_in_n
+    );  
+        
+strobe_in_B : IBUFDS 
+    generic map (
+        DIFF_TERM => FALSE, -- Differential Termination
+        IBUF_LOW_PWR => TRUE -- Low power (TRUE) vs. performance (FALSE) setting for referenced I/O standards
+        --IOSTANDARD => "DEFAULT"
+        )
+    port map(
+        O  => s_inB, -- Buffer output
+        I  => B_s_in_p,
+        IB => B_s_in_n
+    );      
+            
             
 	led       <= display(7 downto 4);
 	ledb      <= display(3 downto 0);
