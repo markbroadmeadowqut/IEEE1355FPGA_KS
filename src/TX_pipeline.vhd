@@ -31,7 +31,7 @@ entity TX_pipeline is
         d_out       : out std_logic;        -- data stream out
         s_out       : out std_logic;        -- strobe stream out
         ExTxRx      : out ExTxExRx_rec;        -- fcc sent flag for rx exchange layer
-        debugr      : out std_logic_vector(35 downto 0) -- debug chanel
+        debug      : out std_logic_vector(35 downto 0) -- debug chanel
         );
         
 end TX_pipeline;
@@ -57,7 +57,7 @@ Exchange_tx: entity work.exchange_tx            -- instantiate Exchange layer
         rd_en           => rd_en,
         ExTxRx          => ExTxRx,
         pc_char         => pc_char, 
-        debugr          => open           
+        debug           => debug           
         );  	
         
 char_tx_ins: entity work.char_tx                -- instantiate character layer
@@ -68,7 +68,7 @@ char_tx_ins: entity work.char_tx                -- instantiate character layer
         reset_n         => reset_n,
         char_in         => pc_char,
         d_out           => data,
-        debugr          => open
+        debug           => open
         );            
 
 signal_tx_ins: entity work.signal_tx            -- instantiate signal layer 
@@ -79,7 +79,7 @@ signal_tx_ins: entity work.signal_tx            -- instantiate signal layer
         d_in            => data,
         d_out           => d_out,
         s_out           => s_out,
-        debugr          => open
+        debug           => open
         );  
           
 end Behavioral;

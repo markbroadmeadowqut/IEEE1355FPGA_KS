@@ -36,7 +36,7 @@ entity exchange_rx is
         wr_en       : out std_logic;        -- write enable FIFO in register
         char        : out std_logic_vector( 7 downto 0);    -- FIFO in register
         ExRxTx      : out ExRxExTx_rec;     -- Records from this exchange to other 
-        debugr      : out std_logic_vector(35 downto 0) -- debug chanel       
+        debug       : out std_logic_vector(35 downto 0) -- debug chanel       
         );                                  -- transmitter exchange
         
 end exchange_rx;
@@ -177,17 +177,17 @@ begin
                                   
         end process;  
         
-        debugr(0)           <= clk;
-        debugr(1)           <= reset_n;
-        debugr(2)           <= char_valid;
-        debugr(3)           <= full;
-        debugr(4)           <= ExTxRx.fcc_sent;
-        debugr(5)           <= ExTxRx.fcc_rcvd_ack;
-        debugr(17 downto 8) <= pc_char (9 downto 0);
-        debugr(18)          <= data_parity;
-        debugr(19)          <= total_parity;
-        debugr(20)          <= half_null_dtcd;
-        debugr(21)          <= send_fcc;
-        debugr(35 downto 22)    <= (others => '0');
+        debug(0)           <= clk;
+        debug(1)           <= reset_n;
+        debug(2)           <= char_valid;
+        debug(3)           <= full;
+        debug(4)           <= ExTxRx.fcc_sent;
+        debug(5)           <= ExTxRx.fcc_rcvd_ack;
+        debug(15 downto 6) <= pc_char (9 downto 0);
+        debug(16)          <= data_parity;
+        debug(17)          <= total_parity;
+        debug(18)          <= half_null_dtcd;
+        debug(19)          <= send_fcc;
+        debug(35 downto 20)    <= (others => '0');
             
 end Behavioral;

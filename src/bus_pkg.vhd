@@ -9,19 +9,16 @@
 -- Target Devices:      Artix 7
 -- Tool Versions: 
 -- Description:         templates for records containing signals to modules
--- 
 -- Dependencies: 
--- 
 -- Revision:
--- Revision 0.01 - File Created
+-- Revision             1
 -- Additional Comments:
--- 
+----------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------
 
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
 
 package bus_pkg is
 
@@ -37,7 +34,7 @@ package bus_pkg is
     constant C_CHAR_NULL    : std_logic_vector(6 downto 0) := "0010111";
 
    
-    -- RX char record for flags indicating status of received character
+    -- Flags to be passed between exchange layers from RX to TX.
     type ExRxExTx_rec is record
         link_est        : std_logic;            -- when = 1 first null received and link established    
         fcc_rcvd        : std_logic;            -- when = 1 fcc received
@@ -48,6 +45,7 @@ package bus_pkg is
         data_rcvd       : std_logic;            -- when = 1 request data from other node
     end record;
     
+    -- Flags to be passed between exchange layers from TX to RX.
     type ExTxExRx_rec is record
         fcc_sent        : std_logic;            -- when = 1 data being ordered   
         fcc_rcvd_ack    : std_logic;            -- when = 1 fcc received acknowledged
@@ -61,22 +59,21 @@ package bus_pkg is
     end record; 
     
    
-    -- record from both exchage layers to fifo in pkg layers
+    -- record from both exchage layers to fifo in ackage layer
     type ExPkt_rec is record
-        din         : std_logic_vector(7 downto 0);
-        wr_en       : std_logic;
-        rd_en       : std_logic;
-        eop1_rcvd   : std_logic;
+        din         : std_logic_vector(7 downto 0); -- received character byte
+        wr_en       : std_logic;                    -- write enable to FIFO
+        rd_en       : std_logic;                    -- read enable from FIFO
+        eop1_rcvd   : std_logic;                    -- end of packet received
     end record;
         
    
     -- record from fifo in pkg layer to both exchange layers
     type PktEx_rec is record
-        dout        : std_logic_vector(7 downto 0); 
-        full        : std_logic;
-        empty       : std_logic;
-        eop1_rcvd   : std_logic;
+        dout        : std_logic_vector(7 downto 0); -- data byte from FIFO
+        full        : std_logic;                    -- FIFO is full
+        empty       : std_logic;                    -- FIFO is empty
+        eop1_rcvd   : std_logic;                    -- end of packet received
     end record;
-    
-   
+       
 end package;

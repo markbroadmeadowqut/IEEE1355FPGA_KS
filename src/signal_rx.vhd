@@ -33,7 +33,7 @@ entity signal_rx is
         d_out           : out std_logic;        -- data bit to character layer
         bit_valid       : out std_logic;        -- valid bit on stream
         time_out        : out std_logic;         -- timeout flag for reset manager
-        debugr          : out std_logic_vector(35 downto 0) -- debug chanel
+        debug          : out std_logic_vector(35 downto 0) -- debug chanel
     );
 end signal_rx;
 
@@ -58,24 +58,24 @@ begin
         begin   
             if (reset_n  = '0') then            -- reset all signals
                 d_out       <= '0';
-                bit_valid   <= '0';            
+                bit_valid   <= '0';            -- valid bit in register d_ff2
                 d_ff1       <= '0';
                 d_ff2       <= '0';
                 s_ff1       <= '0';
-                s_ff2       <= '0';
-                s_hold      <= '0';
-                d_hold      <= '0';
-                enable      <= '0';
-                to_cnt      := 0; -- (others => '0');
-                time_out    <= '0';
-                fst_d_rcvd  <= '0';
+                s_ff2       <= '0';             
+                s_hold      <= '0';             -- strobe held for character determination
+                d_hold      <= '0';             -- held data for character determination
+                enable      <= '0';             -- select a bit
+                to_cnt      := 0;               -- timeout counter
+                time_out    <= '0';             -- flag to send to rst manager to indicated time out
+                fst_d_rcvd  <= '0';             -- stops resetting new link attempt before anything has started.
                 
             elsif rising_edge(clk) then
                                
                 if (enable = '1') then              -- found a valid bit in data stream
-                        bit_valid   <=  '1';        -- flag a valid bit
-                        to_cnt := 0;--(others => '0');  -- reset counter if bit detected
-                        fst_d_rcvd <= '1';          -- flag the first character received
+                    bit_valid   <=  '1';            -- flag a valid bit
+                    to_cnt := 0;                    -- reset counter if bit detected
+                    fst_d_rcvd <= '1';              -- flag the first character received
                 else
                     bit_valid   <= '0';             
                     if (fst_d_rcvd = '1') then      -- if it doesn't sample a bit of data
@@ -83,21 +83,22 @@ begin
                     end if;          
                 end if;                  
                         
-            d_ff1       <=  d_in;                   -- use two stage Flip Flops
-            s_ff1       <=  s_in;                   -- to stabilise signal 
-            d_ff2       <=  d_ff1;                  -- counter acts metastability
-            s_ff2       <=  s_ff1;
+                d_ff1       <=  d_in;                   -- use two stage Flip Flops
+                s_ff1       <=  s_in;                   -- to stabilise signal 
+                d_ff2       <=  d_ff1;                  -- counter acts metastability
+                s_ff2       <=  s_ff1;
 
                 if (enable = '1') then              -- select a bit to build a character 
-                        d_out       <=  d_ff2;      -- samples when an edge is detected
-                        d_hold      <=  d_ff2;
-                        s_hold      <=  s_ff2;
+                    d_out       <=  d_ff2;          -- samples when an edge is detected
+                    d_hold      <=  d_ff2;
+                    s_hold      <=  s_ff2;
                         
                 end if;
                     
-                if (to_cnt > 60) then         -- flag set if timeout of link has occurred
+                if (to_cnt > 40) then         -- flag set if timeout of link has occurred
                         time_out <= '1';
                         to_cnt := 0;--(others => '0');
+                        fst_d_rcvd <= '0';
                 else
                         time_out <= '0';    
                 end if;                     
@@ -106,17 +107,18 @@ begin
         enable    <=  (d_ff2 xor s_ff2) xor (d_hold xor s_hold);  -- TX clock latched in DS signal  
     end process;  
     
-    debugr(0)           <= clk;
-    debugr(1)           <= reset_n;
-    debugr(2)           <= d_in;
-    debugr(3)           <= s_in;
-    debugr(4)           <= d_ff1;
-    debugr(5)           <= d_ff2;    
-    debugr(6)           <= s_ff1;
-    debugr(7)           <= s_ff2;    
-    debugr(8)           <= d_hold;
-    debugr(9)           <= s_hold;
-    debugr(10)          <= enable;
-    debugr(11)          <= fst_d_rcvd;          
+    debug(0)           <= clk;
+    debug(1)           <= reset_n;
+    debug(2)           <= d_in;
+    debug(3)           <= s_in;
+    debug(4)           <= d_ff1;
+    debug(5)           <= d_ff2;    
+    debug(6)           <= s_ff1;
+    debug(7)           <= s_ff2;    
+    debug(8)           <= d_hold;
+    debug(9)           <= s_hold;
+    debug(10)          <= enable;
+    debug(11)          <= fst_d_rcvd;
+    debug(35 downto 12)    <= (others => '0');          
      
 end behavioral;

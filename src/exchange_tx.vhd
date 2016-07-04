@@ -33,7 +33,7 @@ entity exchange_tx is
         rd_en       : out std_logic;                    -- read from FIFO enable
         ExTxRx      : out ExTxExRx_rec;                 -- FCC sent from TX flag for RX exchange layer
         pc_char     : out std_logic_vector( 9 downto 0);-- char with parity and control bit
-        debugr      : out std_logic_vector(35 downto 0) -- debug chanel
+        debug      : out std_logic_vector(35 downto 0) -- debug chanel
         );
 end exchange_tx;
 
@@ -93,7 +93,7 @@ begin
                     cnt := cnt_max ;        -- current character
                 end if; 
                 
-                if (PktEx.eop1_rcvd = '1') then
+                if (ExRxTx.eop1_rcvd = '1') then
                     send_eop1 <= '1';       -- send EOP
                 end if;
                 
@@ -183,17 +183,17 @@ begin
            temp_cnt_max         <= std_logic_vector(to_unsigned(cnt_max,4));
                                  
         end process;  
-        debugr(0)           <= clk;
-        debugr(1)           <= reset_n;
-        debugr(9 downto 2)  <= PktEx.dout (7 downto 0);
-        debugr(10)          <= PktEx.empty;
-        debugr(11)          <= ExRxTx. link_est;
-        debugr(12)          <= ExRxTx.fcc_rcvd;
-        debugr(13)          <= ExRxTx.send_fcc;
-        debugr(14)          <= ExRxTx.data_rcvd;
-        debugr(15)          <= data_parity;
-        debugr(16)          <= send_end_null;
-        debugr(26 downto 17)    <= char_reg(9 downto 0);
-        debugr(35 downto 31)    <= (others => '0');
-        debugr(30 downto 27)    <= temp_char_cnt_out;    
+        debug(0)           <= clk;
+        debug(1)           <= reset_n;
+        debug(9 downto 2)  <= PktEx.dout (7 downto 0);
+        debug(10)          <= PktEx.empty;
+        debug(11)          <= ExRxTx. link_est;
+        debug(12)          <= ExRxTx.fcc_rcvd;
+        debug(13)          <= ExRxTx.send_fcc;
+        debug(14)          <= ExRxTx.data_rcvd;
+        debug(15)          <= data_parity;
+        debug(16)          <= send_end_null;
+        debug(26 downto 17)    <= char_reg(9 downto 0);
+        debug(35 downto 31)    <= (others => '0');
+        debug(30 downto 27)    <= temp_char_cnt_out;    
 end Behavioral;
